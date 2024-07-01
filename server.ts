@@ -14,4 +14,3 @@ app.listen(port, async () => {
   await sequelize.sync();
   console.log(`Server is running at http://localhost:${port}`);
 });
-
