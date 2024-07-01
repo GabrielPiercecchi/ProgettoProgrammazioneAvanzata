@@ -4,6 +4,7 @@ const sequelize = new Sequelize('autostrade', 'root', 'root', {
   dialect: 'postgres',
 });
 
+// ciao
 class Utente extends Model {}
 Utente.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
