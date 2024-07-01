@@ -1,8 +1,7 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
-
 const sequelize = new Sequelize('autostrade', 'root', 'root', {
   host: 'db',
-  dialect: 'mysql',
+  dialect: 'postgres',
 });
 
 class Utente extends Model {}
