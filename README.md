@@ -12,6 +12,7 @@ The project aims to develop a monitoring system for calculating fines following 
 #### UML Diagrams
 
 ![Use Case Diagram](./diagrams/use_case_diagram.png)
+
 ![Sequence Diagram](./diagrams/sequence_diagram.png)
 
 #### Design Patterns Used
