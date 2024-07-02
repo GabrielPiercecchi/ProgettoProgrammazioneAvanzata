@@ -5,7 +5,9 @@ services:
     build: .
     restart: always
     ports:
-      - "3000:3000"
+      - "${SERVICE_HOST}:${SERVICE_PORT}"
+    env_file:
+      - .env
     depends_on:
       - postgres
 #    environment:
@@ -18,11 +20,13 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_USER: yourusername
-      POSTGRES_PASSWORD: yourpassword
-      POSTGRES_DB: autostrade_monitoring
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    env_file:
+      - .env
     ports:
-      - "5423:5432"
+      - "${POSTGRES_HOST}:${POSTGRES_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
