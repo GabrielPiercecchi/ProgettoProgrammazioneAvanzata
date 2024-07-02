@@ -1,42 +1,44 @@
-# ProgettoProgrammazioneAvanzata
-Progetto di Programmazione Avanzata
+# Advanced Programming Project
+Advanced Programming Project
 
-# Autostrade Monitoring
+## Highways Monitoring
 
-## Obiettivo del Progetto
+### Project Objective
 
-Il progetto mira a sviluppare un sistema di monitoraggio per il calcolo delle multe a seguito del passaggio di veicoli attraverso diversi varchi autostradali.
+The project aims to develop a monitoring system for calculating fines following the passage of vehicles through various highway toll gates.
 
-## Progettazione
+### Design
 
-### Diagrammi UML
+#### UML Diagrams
 
-![Casi d'uso](./diagrams/use_case_diagram.png)
+![Use Case Diagram](./diagrams/use_case_diagram.png)
 
-![Diagramma delle sequenze](./diagrams/sequence_diagram.png)
+![Sequence Diagram](./diagrams/sequence_diagram.png)
 
-### Design Pattern Usati
+#### Design Patterns Used
 
-- Singleton per la connessione al database.
-- Repository Pattern per la gestione dell'accesso ai dati.
+- Singleton for database connection.
+- Repository Pattern for data access management.
 
-## Avvio del Progetto
+### Project Setup
 
-### Prerequisiti
+#### Prerequisites
 
-- Docker e Docker Compose installati.
+- Docker and Docker Compose installed.
 
-### Istruzioni
+#### Instructions
 
-1. Clonare il repository.
-2. Eseguire `docker-compose up` per avviare i servizi.
+1. Clone the repository.
+2. Run `docker-compose up` to start the services.
 
-## Test
+### Testing
 
-Utilizzare Postman per testare le API. Una collection di esempio è fornita nella cartella `postman`.
+Use Postman to test the APIs. An example collection is provided in the `postman` folder.
 
-## Autori
+### Authors
 
 Gabriel Piercecchi
 
 Francesco Romeo Parisi
+
+This is the readme.
