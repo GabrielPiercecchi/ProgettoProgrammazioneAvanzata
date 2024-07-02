@@ -40,5 +40,3 @@ Use Postman to test the APIs. An example collection is provided in the `postman`
 Gabriel Piercecchi
 
 Francesco Romeo Parisi
-
-This is the readme.
