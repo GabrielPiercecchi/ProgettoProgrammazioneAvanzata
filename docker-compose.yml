@@ -1,15 +1,28 @@
-version: '3.8'
+#version: '3.8'
 
 services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+#    environment:
+#      DATABASE_URL: postgres://yourusername:yourpassword@postgres:5432/autostrade_monitoring
+    volumes:
+      - .:/app
+#      - /app/node_modules
+
   postgres:
-    image: postgres:13
+    image: postgres:latest
     restart: always
     environment:
       POSTGRES_USER: yourusername
       POSTGRES_PASSWORD: yourpassword
       POSTGRES_DB: autostrade_monitoring
     ports:
-      - "5432:5432"
+      - "5423:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
