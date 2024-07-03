@@ -52,7 +52,7 @@ export const Gate = sequelize.define('gates', {
     }
 });
 
-// Verify if the Vehicle is in the database
+// Verify if the Gate is in the database
 //GET
 async function checkIfGateExists(username: string): Promise<any> {
     let result:any;
@@ -91,7 +91,7 @@ async function deleteGate(username: string): Promise<any> {
     try {
         result = await Gate.destroy({ where: { type: username } });
         if (result) {
-            return `Gate with type ${username} was deleted successfully.`;
+            return `Gate with username ${username} was deleted successfully.`;
         } else {
             throw new Error('Gate not found.');
         }
