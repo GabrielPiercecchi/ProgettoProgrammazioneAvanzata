@@ -7,19 +7,24 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
 /**
  * model 'Veichle'
  *
- * Define the model 'User' to interface with the "vehicles" table
+ * Define the model 'Veichle' to interface with the "vehicles" table
  */
 export const Vehicle = sequelize.define('vehicles', {
-    type: {type: DataTypes.STRING,  primaryKey: true, unique: true},
-    limit: {type: DataTypes.INTEGER, allowNull: false},
+    type: {
+        type: DataTypes.STRING,
+        primaryKey: true, 
+        unique: true},
+    limit: {
+        type: DataTypes.INTEGER, 
+        allowNull: false},
 },
 {
     modelName: 'vehicles',
-    timestamps: false,
-    //freezeTableName: true
+    timestamps: false
 });
 
 // Verify if the Vehicle is in the database
+//GET
 async function checkIfVehicleExists(type: string): Promise<any> {
     let result:any;
     try {
@@ -32,26 +37,49 @@ async function checkIfVehicleExists(type: string): Promise<any> {
     }
 }
 
+// UPDATE
+async function updateVehicle(type: string, newLimit: number): Promise<any> {
+    let result:any;
+    try {
+        result = await Vehicle.findByPk(type);
+        if (result) {
+            result.limit = newLimit;
+            await result.save();
+            return result;
+        } else {
+            throw new Error('Vehicle not found.');
+        }
+    } catch (error) {
+        console.error('Error during Vehicle update in the database:', error);
+        throw new Error('Error during Vehicle update in the database.');
+    }
+}
+
+// DELETE
+async function deleteVehicle(type: string): Promise<any> {
+    let result:any;
+    try {
+        result = await Vehicle.destroy({ where: { type: type } });
+        if (result) {
+            return `Vehicle with type ${type} was deleted successfully.`;
+        } else {
+            throw new Error('Vehicle not found.');
+        }
+    } catch (error) {
+        console.error('Error during Vehicle deletion in the database:', error);
+        throw new Error('Error during Vehicle deletion in the database.');
+    }
+}
 
 /**
- * Verifies if the request is made by an admin and if users exist.
- * @param chargedata Body of the request containing admin and destination user details.
+ * Verifies if the request is made by an operator.
+ * @param chargedata Body of the request containing operator details.
  * @returns Boolean indicating if the request is valid or a string error message.
  */
 export async function TokenChargeVal(chargedata: any): Promise<boolean | string> {
     try {
-        if (!chargedata.username_admin || chargedata.username_admin.role !== "admin") {
+        if (!chargedata.id_operator) {
             return 'User is not authorized to perform this operation.';
-        }
-
-        const admin = await checkIfUserExists(chargedata.username_admin.email);
-        if (!admin) {
-            return 'Admin user not found.';
-        }
-
-        const destinationUser = await checkIfUserExists(chargedata.destination_user);
-        if (!destinationUser) {
-            return 'Destination user not found.';
         }
 
         return true;
