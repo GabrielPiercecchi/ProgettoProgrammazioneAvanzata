@@ -1,5 +1,7 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, Model } from 'sequelize';
+import { Gate } from './gates'; // Import the Gate model
+
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -13,11 +15,11 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
  */
 export const Ticket = sequelize.define('tickets', {
     id_ticket: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
-    weather: { type: DataTypes.BOOLEAN, defaultValue: true }, // true means good conditions
+    weather: { type: DataTypes.ENUM('good weather, bad weather'), allowNull: false }, // true means good conditions
     plate: { type: DataTypes.STRING, allowNull: false },
     ticket_date: { type: DataTypes.DATE, allowNull: false },
-    initial_gate: { type: DataTypes.STRING, allowNull: false },
-    final_gate: { type: DataTypes.STRING, allowNull: false },
+    initial_gate: { type: DataTypes.STRING, allowNull: false, references:{model: Gate, key: 'location'} },
+    final_gate: { type: DataTypes.STRING, allowNull: false, references:{model: Gate, key: 'location'} },
     medium_speed: { type: DataTypes.FLOAT, allowNull: false },
     delta_limit: { type: DataTypes.FLOAT, allowNull: false },
 },
