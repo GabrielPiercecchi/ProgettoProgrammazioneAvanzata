@@ -12,8 +12,7 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
 export const Vehicle = sequelize.define('vehicles', {
     type: {
         type: DataTypes.STRING,
-        primaryKey: true, 
-        unique: true},
+        primaryKey: true,},
     limit: {
         type: DataTypes.INTEGER, 
         allowNull: false},

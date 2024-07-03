@@ -15,12 +15,7 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
 export const Gate = sequelize.define('gates', {
     location: {
         type: DataTypes.STRING,
-        primaryKey: true, 
-        unique: true},
-    role: {
-        type: DataTypes.STRING, 
-        allowNull: false,
-        defaultValue: 'gate'},
+        primaryKey: true,},
     username: {
         type: DataTypes.STRING,
         unique: true, 
@@ -34,17 +29,11 @@ export const Gate = sequelize.define('gates', {
     timestamps: false,
     hooks: {
         beforeCreate: async (gate, options) => {
-            if ((gate as any).changed('role')) {
-                throw new Error('Cannot modify the role.');
-            }
             if ((gate as any).changed('password')) {
                 (gate as any).password = await bcrypt.hash((gate as any).password, SALT_ROUNDS);
             }
         },
         beforeUpdate: async (gate, options) => {
-            if ((gate as any).changed('role')) {
-                throw new Error('Cannot modify the role.');
-            }
             if ((gate as any).changed('password')) {
                 (gate as any).password = await bcrypt.hash((gate as any).password, SALT_ROUNDS);
             }

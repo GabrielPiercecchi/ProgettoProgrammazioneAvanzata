@@ -57,7 +57,31 @@ export const Section = sequelize.define('sections', {
                     // Calculate distance using haversine formula
                     (section as any).distance = haversineDistance(coord1, coord2);
                 } else {
-                    console.error('initialGateCoords o finalGateCoords non sono di tipo string');
+                    console.error('initialGateCoords o finalGateCoords are not Type String');
+                }
+            } else {
+                throw new Error('Initial Gate or Final Gate not found.');
+            }
+        },
+        beforeUpdate: async (section, options) => {
+            // Fetch initialGate and finalGate coordinates from the database
+            const initialGate = await Gate.findByPk((section as any).initialGate);
+            const finalGate = await Gate.findByPk((section as any).finalGate);
+
+            if (initialGate && finalGate) {
+                const initialGateCoords = initialGate.get('location'); // Assume location holds GPS coordinates
+                const finalGateCoords = finalGate.get('location'); // Assume location holds GPS coordinates
+                
+                // Assicurati che initialGateCoords e finalGateCoords siano di tipo string
+                if (typeof initialGateCoords === 'string' && typeof finalGateCoords === 'string') {
+                    // Parse coordinates
+                    const coord1 = parseCoordinateString(initialGateCoords);
+                    const coord2 = parseCoordinateString(finalGateCoords);
+
+                    // Calculate distance using haversine formula
+                    (section as any).distance = haversineDistance(coord1, coord2);
+                } else {
+                    console.error('initialGateCoords o finalGateCoords are not Type String');
                 }
             } else {
                 throw new Error('Initial Gate or Final Gate not found.');
@@ -71,7 +95,7 @@ export const Section = sequelize.define('sections', {
 async function checkIfSectionExists(initialGate: string, finalGate: string): Promise<any> {
     let result:any;
     try {
-        // Utilizza `findOne` con una condizione `where` per cercare basandosi su `initialGate` e `finalGate`
+        // Use `findOne` with `where` for searching the Section with `initialGate` e `finalGate`
         result = await Section.findOne({
             where: {
                 initialGate: initialGate,
