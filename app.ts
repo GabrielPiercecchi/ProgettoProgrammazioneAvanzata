@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { createGate } from './controllers/gatesController';
 import { checkIfGateExists, getAllGates, Gate } from './models/gates';
-import { getAllOp } from './models/operator';
+import { getAllOp } from './models/operators';
 import { DBIsConnected } from './database/database';
 import { Transit } from './models/transits';
 import { Vehicle } from './models/vehicles';

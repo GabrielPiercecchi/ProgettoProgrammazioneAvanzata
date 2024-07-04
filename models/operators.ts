@@ -15,7 +15,7 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
  *
  * Define the model 'Operator'
  */
-export const Operator = sequelize.define('operator', {
+export const Operator = sequelize.define('operators', {
     id_operator: { 
         type: DataTypes.STRING, 
         defaultValue: process.env.DEFAULT_ID_OPERATOR, 
@@ -31,7 +31,7 @@ export const Operator = sequelize.define('operator', {
         allowNull: false }, //TODO:regex
 },
     {
-        modelName: 'operator',
+        modelName: 'operators',
         timestamps: false,
         /**
          * This hook is trigerred before the creation of the instance
