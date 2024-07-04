@@ -27,18 +27,18 @@ export const Gate = sequelize.define('gates', {
 {
     modelName: 'gates',
     timestamps: false,
-    hooks: {
-        beforeCreate: async (gate, options) => {
-            if ((gate as any).changed('password')) {
-                (gate as any).password = await bcrypt.hash((gate as any).password, SALT_ROUNDS);
-            }
-        },
-        beforeUpdate: async (gate, options) => {
-            if ((gate as any).changed('password')) {
-                (gate as any).password = await bcrypt.hash((gate as any).password, SALT_ROUNDS);
-            }
-        }
-    }
+    // hooks: {
+    //     beforeCreate: async (gate, options) => {
+    //         if ((gate as any).changed('password')) {
+    //             (gate as any).password = await bcrypt.hash((gate as any).password, SALT_ROUNDS);
+    //         }
+    //     },
+    //     beforeUpdate: async (gate, options) => {
+    //         if ((gate as any).changed('password')) {
+    //             (gate as any).password = await bcrypt.hash((gate as any).password, SALT_ROUNDS);
+    //         }
+    //     }
+    // }
 });
 
 // Verify if the Gate is in the database
@@ -86,13 +86,13 @@ export async function TokenChargeVal(chargedata: any): Promise<boolean | string>
     }
 }
 
-async function syncDatabase() {
-    try {
-      await Gate.sync(); // { force: true } ricrea la tabella, cancellando la precedente se esiste
-      console.log('Database synchronized');
-    } catch (error) {
-      console.error('Error synchronizing the database:', error);
-    }
-  }
+// async function syncDatabase() {
+//     try {
+//       await Gate.sync(); // { force: true } ricrea la tabella, cancellando la precedente se esiste
+//       console.log('Database synchronized');
+//     } catch (error) {
+//       console.error('Error synchronizing the database:', error);
+//     }
+//   }
   
-  syncDatabase();
+//   syncDatabase();

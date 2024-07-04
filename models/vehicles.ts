@@ -87,3 +87,14 @@ export async function TokenChargeVal(chargedata: any): Promise<boolean | string>
         throw new Error('Error in TokenChargeVal function');
     }
 }
+
+// async function syncDatabase() {
+//     try {
+//       await Vehicle.sync(); // { force: true } ricrea la tabella, cancellando la precedente se esiste
+//       console.log('Database synchronized');
+//     } catch (error) {
+//       console.error('Error synchronizing the database:', error);
+//     }
+//   }
+  
+//   syncDatabase();

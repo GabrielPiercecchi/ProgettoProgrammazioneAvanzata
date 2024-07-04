@@ -4,6 +4,8 @@ import { createGate } from './controllers/gatesController';
 import { checkIfGateExists, getAllGates, Gate } from './models/gates';
 import { getAllOp } from './models/operator';
 import { DBIsConnected } from './database/database';
+import { Transit } from './models/transits';
+import { Vehicle } from './models/vehicles';
 
 const app = express();
 const port = process.env.SERVICE_PORT || 3000;
@@ -23,7 +25,9 @@ app.get('/operator', (req, res) => {
   getAllOp();
 });
 
-// Rotta per inserire un nuovo gate
+// Gates routes
+
+// Route createGate
 app.post('/gates', async (req, res) => {
   const { location, username, password } = req.body;
 
@@ -39,7 +43,7 @@ app.post('/gates', async (req, res) => {
   }
 });
 
-// Rotta per mostrare tutte le istanze della tabella gates
+// Route view allgates
 app.get('/gates', async (req, res) => {
   try {
     const gates = await getAllGates();
@@ -53,24 +57,58 @@ app.get('/gates', async (req, res) => {
   }
 });
 
-// Sincronizza il database e avvia il server
-async function startServer() {
+
+
+// Gates routes
+
+// Route createTransit
+app.post('/transits', async (req, res) => {
+  const { plate, transit_date, speed, weather, vehicles_types, gate, used } = req.body;
+
   try {
-    await DBIsConnected.getInstance().authenticate();
-    console.log('Connection to the database has been established successfully.');
-
-    await Gate.sync(); // Sincronizza il modello Gate con il database
-    console.log('Database synchronized');
-
-    if (!serverStarted) {
-      app.listen(port, () => {
-        console.log(`Server is running at http://localhost:${port}`);
-        serverStarted = true;
-      });
-    }
+    const newTransit = await Transit.create({
+      plate,
+      transit_date,
+      speed,
+      weather,
+      vehicles_types,
+      gate,
+      used
+    });
+    res.status(201).json(newTransit);
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
   }
-}
+});
 
-startServer();
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+
+// Sync db and start server
+// async function startServer() {
+//   try {
+//     await DBIsConnected.getInstance().authenticate();
+//     console.log('Connection to the database has been established successfully.');
+
+//     // await Gate.sync(); // Sync modedel Gate with the db
+//     // await Transit.sync(); // Sync model Transit with the db
+//     // await Vehicle.sync(); // Sync model Vehicle with the db
+//     console.log('Database synchronized');
+
+//     if (!serverStarted) {
+//       app.listen(port, () => {
+//         console.log(`Server is running at http://localhost:${port}`);
+//         serverStarted = true;
+//       });
+//     }
+//   } catch (error) {
+//     console.error('Unable to connect to the database:', error);
+//   }
+// }
+
+// startServer();
