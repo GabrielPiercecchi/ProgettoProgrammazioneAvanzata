@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { createGate } from './controllers/gatesController';
-import { checkIfGateExists, getAllGates } from './models/gates';
+import { checkIfGateExists, getAllGates, Gate } from './models/gates';
 import { getAllOp } from './models/operator';
 import { DBIsConnected } from './database/database';
 
@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.SERVICE_PORT || 3000;
 
 // Middleware per il parsing del corpo delle richieste in formato JSON
-app.use(bodyParser.json());
+app.use(express.json());
 
 let serverStarted = false;
 
@@ -53,15 +53,24 @@ app.get('/gates', async (req, res) => {
   }
 });
 
-// Verifica connessione al database prima di avviare il server
-DBIsConnected.getInstance().authenticate().then(() => {
-  console.log('Connection to the database has been established successfully.');
-  if (!serverStarted) {
-    app.listen(port, () => {
-      console.log(`Server is running at http://localhost:${port}`);
-      serverStarted = true;
-    });
+// Sincronizza il database e avvia il server
+async function startServer() {
+  try {
+    await DBIsConnected.getInstance().authenticate();
+    console.log('Connection to the database has been established successfully.');
+
+    await Gate.sync(); // Sincronizza il modello Gate con il database
+    console.log('Database synchronized');
+
+    if (!serverStarted) {
+      app.listen(port, () => {
+        console.log(`Server is running at http://localhost:${port}`);
+        serverStarted = true;
+      });
+    }
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
   }
-}).catch((error) => {
-  console.error('Unable to connect to the database:', error);
-});
+}
+
+startServer();
