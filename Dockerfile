@@ -1,29 +1,20 @@
 FROM node:14
 
 # Imposta la directory di lavoro
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copia i file dell'applicazione
 COPY . .
 
 RUN npm install
 
-# Compila TypeScript in JavaScript
-#RUN npm run build  # Compila i file TypeScript in JavaScript
+# Install TypeScript, ts-node, nodemon e seqeulize-cli
 
-# Installa TypeScript, ts-node e nodemon
-#RUN npm install -g typescript ts-node nodemon
-RUN npm install -g typescript ts-node nodemon sequelize-cli sequelize-auto-migrations
+RUN npm install -g typescript ts-node nodemon sequelize-cli
 
-# Compila i file TypeScript in JavaScript
+# Compile ts in js
 RUN tsc
 
-# Espone la porta
-EXPOSE 3000
-
-# Comando per avviare l'applicazione
-#CMD ["nodemon", "--exec", "ts-node", "src/app.ts"]
-
+# Run the app
 CMD ["nodemon", "app.ts"]
 
 #CMD ["npm", "run", "dev"]
