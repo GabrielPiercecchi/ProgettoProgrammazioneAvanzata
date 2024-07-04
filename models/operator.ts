@@ -49,3 +49,17 @@ export const Operator = sequelize.define('operator', {
             },
         },
     });
+
+
+// GET ALL
+export async function getAllOp(): Promise<any> {
+    try {
+        const operators = await Operator.findAll();
+        console.log('Operators:');
+        console.log(operators);
+        return operators;
+    } catch (error) {
+        console.error('Error fetching operators:', error);
+        throw new Error('Error fetching operators.');
+    }
+}
