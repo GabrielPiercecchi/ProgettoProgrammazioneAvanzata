@@ -11,7 +11,7 @@ services:
     depends_on:
       - postgres
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV}
 #      DATABASE_URL: postgres://yourusername:yourpassword@postgres:5432/autostrade_monitoring
     volumes:
       - .:/app
