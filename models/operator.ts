@@ -38,16 +38,16 @@ export const Operator = sequelize.define('operator', {
          * 
          * operator and checks if the id_operator is equal to is default value
          */
-        hooks: {
-            beforeCreate: async (operator, options) => {
-                if (operator.getDataValue('id_operator') !== process.env.DEFAULT_ID_OPERATOR) {
-                    throw new Error('Id_operator cannot be changed.');
-                }
-                if ((operator as any).changed('password')) {
-                    (operator as any).password = await bcrypt.hash((operator as any).password, SALT_ROUNDS);
-                }
-            },
-        },
+        // hooks: {
+        //     beforeCreate: async (operator, options) => {
+        //         if (operator.getDataValue('id_operator') !== process.env.DEFAULT_ID_OPERATOR) {
+        //             throw new Error('Id_operator cannot be changed.');
+        //         }
+        //         if ((operator as any).changed('password')) {
+        //             (operator as any).password = await bcrypt.hash((operator as any).password, SALT_ROUNDS);
+        //         }
+        //     },
+        // },
     });
 
 
