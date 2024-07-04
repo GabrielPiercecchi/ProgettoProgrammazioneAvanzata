@@ -43,7 +43,7 @@ export const Gate = sequelize.define('gates', {
 
 // Verify if the Gate is in the database
 //GET
-async function checkIfGateExists(username: string): Promise<any> {
+export async function checkIfGateExists(username: string): Promise<any> {
     let result:any;
     try {
         result = await Gate.findByPk(username, {raw: true});
@@ -55,38 +55,16 @@ async function checkIfGateExists(username: string): Promise<any> {
     }
 }
 
-// UPDATE
-async function updateGates(location: string, newUsername: string, newPassword: string): Promise<any> {
-    let result:any;
+// GET ALL
+export async function getAllGates(): Promise<any> {
     try {
-        result = await Gate.findByPk(location);
-        if (result) {
-            result.username = newUsername;
-            result.password = newPassword;
-            await result.save();
-            return result;
-        } else {
-            throw new Error('Gate not found.');
-        }
+        const gates = await Gate.findAll();
+        console.log('Gates:');
+        console.log(gates);
+        return gates;
     } catch (error) {
-        console.error('Error during Gate update in the database:', error);
-        throw new Error('Error during Gate update in the database.');
-    }
-}
-
-// DELETE
-async function deleteGate(username: string): Promise<any> {
-    let result:any;
-    try {
-        result = await Gate.destroy({ where: { type: username } });
-        if (result) {
-            return `Gate with username ${username} was deleted successfully.`;
-        } else {
-            throw new Error('Gate not found.');
-        }
-    } catch (error) {
-        console.error('Error during Gate deletion in the database:', error);
-        throw new Error('Error during Gate deletion in the database.');
+        console.error('Error fetching gates:', error);
+        throw new Error('Error fetching gates.');
     }
 }
 

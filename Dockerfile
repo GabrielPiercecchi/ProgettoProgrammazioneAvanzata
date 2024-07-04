@@ -1,4 +1,4 @@
-FROM node:slim
+FROM node:14
 
 # Imposta la directory di lavoro
 WORKDIR /app
@@ -12,7 +12,8 @@ RUN npm install
 #RUN npm run build  # Compila i file TypeScript in JavaScript
 
 # Installa TypeScript, ts-node e nodemon
-RUN npm install -g typescript ts-node nodemon
+#RUN npm install -g typescript ts-node nodemon
+RUN npm install -g typescript ts-node nodemon sequelize-cli sequelize-auto-migrations
 
 # Compila i file TypeScript in JavaScript
 RUN tsc
