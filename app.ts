@@ -219,10 +219,10 @@ app.post('/vehicles', async (req, res) => {
 
 app.put('/vehicles/:type', async (req, res) => {
   const { type } = req.params;
-  const { newType, newLimit } = req.body;
+  const { newLimit} = req.body;
 
   try {
-    const updatedVehicle = await vehiclesController.updateVehicle(type, newType, newLimit);
+    const updatedVehicle = await vehiclesController.updateVehicle(type, newLimit);
     res.status(201).json(updatedVehicle);
   } catch (error) {
     if (error instanceof Error) {

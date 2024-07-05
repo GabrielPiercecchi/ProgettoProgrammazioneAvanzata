@@ -13,23 +13,15 @@ export async function createVehicle(type: string, limit: number): Promise<any> {
 }
 
 // UPDATE
-export async function updateVehicle(type: string, newType: string, newLimit: number): Promise<any> {
+export async function updateVehicle(type: string, newLimit: number): Promise<any> {
     let result: any;
-    console.log(type);
-    console.log(newType);
-    console.log(newLimit);
+
     try {
         result = await Vehicle.findByPk(type);
-        console.log(result);
+
+        // pk can't be modified
         if (result) {
-            if(result.type !== newType){
-                result.type = newType;
-                console.log(result);
-            }
-            if(result.limit !== newLimit){
-                result.limit = newLimit;
-                console.log(result);
-            }
+            result.limit = newLimit;
             await result.save();
             return result;
         } else {
