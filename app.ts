@@ -1,19 +1,15 @@
 import express from 'express';
-import bodyParser from 'body-parser';
-import { DBIsConnected } from './database/database';
-
-
 import * as gatesModel from './models/gates';
 import * as vehiclesModel from './models/vehicles';
 import * as transitsModel from './models/transits';
 import * as operatorsModel from './models/operators';
-
-
-import * as transitsModel from './models/transits';
 import * as sectionsModel from './models/sections';
-import * as vehiclesModel from './models/vehicles';
 import * as gatesController from './controllers/gatesController';
+import * as sectionsController from './controllers/sectionsController';
 import * as vehiclesController from './controllers/vehiclesController';
+import * as transitsController from './controllers/transitsController';
+
+
 
 
 const app = express();
