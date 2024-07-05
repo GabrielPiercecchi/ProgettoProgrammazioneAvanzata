@@ -26,14 +26,23 @@ app.get('/test', (req, res) => {
 
 // Operator routes 
 
-// Define a GET ALL operator route
-app.get('/operator', (req, res) => {
-  operatorsModel.getAllOp();
+// Route getAllOp
+app.get('/operators', async (req, res) => {
+  try {
+    const operators = await operatorsModel.getAllOp();
+    res.status(200).json(operators);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
 });
 
 // Gates routes
 
-// Route createGate
+// Route createGates
 app.post('/gates', async (req, res) => {
   const { location, username, password } = req.body;
 
@@ -49,7 +58,7 @@ app.post('/gates', async (req, res) => {
   }
 });
 
-// Route view allgates
+// Route getAllGates
 app.get('/gates', async (req, res) => {
   try {
     const gates = await gatesModel.getAllGates();
@@ -62,6 +71,28 @@ app.get('/gates', async (req, res) => {
     }
   }
 });
+
+// Route getGates
+app.get('/gates/:username', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const gate = await gatesModel.getGates(username);
+    if (gate) {
+      res.status(200).json(gate);
+    } else {
+      res.status(404).json({ error: 'Gate not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route deleteGates
 
 // Gates routes
 

@@ -43,14 +43,17 @@ export const Gate = sequelize.define('gates', {
 
 // Verify if the Gate is in the database
 //GET
-export async function checkIfGateExists(username: string): Promise<any> {
-    let result:any;
+export async function getGates(username: string): Promise<any> {
+    let result: any;
     try {
-        result = await Gate.findByPk(username, {raw: true});
+        result = await Gate.findOne({
+            where: { username },
+            raw: true
+        });
 
         return result;
     } catch (error) {
-        console.error('Error during Gate search in the database.:', error);
+        console.error('Error during Gate search in the database:', error);
         throw new Error('Error during Gate search in the database.');
     }
 }
