@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:slim
 
 # Imposta la directory di lavoro
 WORKDIR /usr/src/app
