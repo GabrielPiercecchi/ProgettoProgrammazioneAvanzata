@@ -4,11 +4,14 @@ import { DBIsConnected } from './database/database';
 
 
 import * as gatesModel from './models/gates';
-import * as operatorsModel from './models/operators';
-import * as transitsModel from './models/transits';
 import * as vehiclesModel from './models/vehicles';
+import * as transitsModel from './models/transits';
+import * as operatorsModel from './models/operators';
+
+
 import * as gatesController from './controllers/gatesController';
 import * as vehiclesController from './controllers/vehiclesController';
+import * as transitsController from './controllers/transitsController';
 
 
 const app = express();
@@ -219,7 +222,7 @@ app.post('/vehicles', async (req, res) => {
 
 app.put('/vehicles/:type', async (req, res) => {
   const { type } = req.params;
-  const { newLimit} = req.body;
+  const { newLimit } = req.body;
 
   try {
     const updatedVehicle = await vehiclesController.updateVehicle(type, newLimit);
@@ -252,6 +255,63 @@ app.delete('/vehicles/:type', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
+
+// Transits routes
+
+// Get all transits
+
+app.get('/transits', async (req, res) => {
+  try {
+    const transits = await transitsModel.getAllTransits();
+    res.status(200).json(transits);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Get a specific transit
+
+app.get('/transits/:plate/:transit_date', async (req, res) => {
+  const { plate, transit_date } = req.params;
+  const parsedTransitDate = new Date(transit_date);
+
+  try {
+    const transit = await transitsModel.getTransit(plate, parsedTransitDate);
+    if (transit) {
+      res.status(200).json(transit);
+    } else {
+      res.status(404).json({ error: 'Transit not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+//   const { plate, transit_date } = req.params;
+
+//   try {
+//     const transit = await transitsModel.getTransit(plate, transit_date);
+//     if (transit) {
+//       res.status(200).json(transit);
+//     } else {
+//       res.status(404).json({ error: 'Transit not found' });
+//     }
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       res.status(500).json({ error: error.message });
+//     } else {
+//       res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+//     }
+//   }
+// });
+
 
 // Sync db and start server
 // async function startServer() {

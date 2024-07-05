@@ -62,6 +62,40 @@ export const Transit = sequelize.define('transits', {
     // }
 });
 
+// Method to get all transits
+export async function getAllTransits(): Promise<any[]> {
+    try {
+        const transits = await Transit.findAll();
+        const gates = await Gate.findAll();
+        console.log('Transits:');
+        console.log(transits);
+        return transits;
+    } catch (error) {
+        console.error('Error retrieving transits:', error);
+        throw error;
+    }
+}
+
+// Method to get a transit by plate and transit_date
+export async function getTransit(plate: string, transit_date: Date): Promise<any> {
+    try {
+        const transit = await Transit.findOne({
+            where: {
+                plate,
+                transit_date
+            }
+        });
+        return transit;
+    } catch (error) {
+        console.error('Error retrieving transit:', error);
+        throw error;
+    }
+}
+
+
+
+
+
 // async function syncDatabase() {
 //     try {
 //         await Transit.sync(); // { force: true } ricrea la tabella, cancellando la precedente se esiste
