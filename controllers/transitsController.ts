@@ -11,4 +11,4 @@ export const createTransit = async (plate: String, transit_date: Date, speed: Nu
         console.error('Error during Transit creation in the database:', error);
         throw new Error('Error during Transit creation in the database.');
     }
-}
+}  
