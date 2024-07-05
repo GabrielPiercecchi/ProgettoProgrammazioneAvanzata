@@ -6,9 +6,9 @@ module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.bulkInsert('operators', [
             {
-                id_operator: '1', //we should change it with a numeric token
-                username: 'Operator_1',
-                password: 'Operator',
+                id_operator: process.env.DEFAULT_ID_OPERATOR,
+                username: process.env.EFAULT_USERNAME_OPERATOR,
+                password: process.env.DEFAULT_PASSWORD_OPERATOR,
             },
         ], {});
     },

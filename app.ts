@@ -92,6 +92,47 @@ app.get('/gates/:username', async (req, res) => {
   }
 });
 
+//Route updateGates
+app.put('/gates/:location', async (req, res) => {
+  const { location } = req.params;
+  const { newUsername, newPassword } = req.body;
+
+  try {
+    const updatedGate = await gatesController.updateGate(location, newUsername, newPassword);
+    if (updatedGate) {
+      res.status(200).json(updatedGate);
+    } else {
+      res.status(404).json({ error: 'Gate not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route deleteGates
+app.delete('/gates/:username', async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const gate = await gatesController.deleteGate(username);
+    if (gate) {
+      res.status(200).json(gate);
+    } else {
+      res.status(404).json({ error: 'Gate not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
 // Route deleteGates
 
 // Gates routes

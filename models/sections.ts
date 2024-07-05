@@ -92,7 +92,7 @@ export const Section = sequelize.define('sections', {
 
 // Verify if the Section is in the database
 //GET
-async function checkIfSectionExists(initialGate: string, finalGate: string): Promise<any> {
+async function getSection(initialGate: string, finalGate: string): Promise<any> {
     let result:any;
     try {
         // Use `findOne` with `where` for searching the Section with `initialGate` e `finalGate`
@@ -107,6 +107,18 @@ async function checkIfSectionExists(initialGate: string, finalGate: string): Pro
     } catch (error) {
         console.error('Error during Section search in the database.:', error);
         throw new Error('Error during Section search in the database.');
+    }
+}
+
+//GET ALL
+async function getAllSection(): Promise<any> {
+    let result:any;
+    try {
+        result = await Section.findAll();
+        return result;
+    } catch (error) {
+        console.error('Error fetching Section:', error);
+        throw new Error('Error fetching Section.');
     }
 }
 
