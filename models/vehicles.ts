@@ -24,9 +24,17 @@ export const Vehicle = sequelize.define('vehicles', {
 
 // Get a specific Vehicle
 export async function getVehicles(type: string): Promise<any> {
-    let vehicle:any;
+    let vehicle: any;
     try {
-        vehicle = await Vehicle.findByPk(type, {raw: true});
+        // Converti il parametro type in minuscolo per la ricerca
+        const typeLowerCase = type.toLowerCase();
+        vehicle = await Vehicle.findOne({
+            where: sequelize.where(
+                sequelize.fn('lower', sequelize.col('type')), 
+                typeLowerCase
+            ),
+            raw: true
+        });
         console.log('Vehicle:');
         console.log(vehicle);
         return vehicle;

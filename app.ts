@@ -155,7 +155,56 @@ app.get('/vehicles/:type', async (req, res) => {
   }
 });
 
+// Create a new vehicle
 
+app.post('/vehicles', async (req, res) => {
+  const { type, limit } = req.body;
+
+  try {
+    const newVehicle = await vehiclesController.createVehicle(type, limit);
+    res.status(201).json(newVehicle);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Update a vehicle
+
+app.post('/vehicles', async (req, res) => {
+  const { type, limit } = req.body;
+
+  try {
+    const updatedVehicle = await vehiclesController.updateVehicle(type, limit);
+    res.status(201).json(updatedVehicle);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Delete a vehicle
+
+app.delete('/vehicles/:type', async (req, res) => {
+  const { type } = req.params;
+
+  try {
+    const deletedVehicle = await vehiclesController.deleteVehicle(type);
+    res.status(200).json(deletedVehicle);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
