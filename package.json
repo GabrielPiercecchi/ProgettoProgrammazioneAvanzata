@@ -7,8 +7,7 @@
     "express-validator": "^7.1.0",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
-    "sequelize": "^6.37.3",
-    "nodemon": "^2.0.15"
+    "sequelize": "^6.37.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -17,7 +16,6 @@
     "@types/node": "^16.11.15",
     "nodemon": "^2.0.15",
     "ts-node": "^10.9.2",
-    "body-parser": "^1.20.2",
     "typescript": "^5.5.2"
   }
 }
