@@ -3,15 +3,20 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('transits', {
+            id: {
+                type: Sequelize.INTEGER,
+                autoIncrement: true,
+                primaryKey: true
+            },
             plate: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                primaryKey: true
+                //primaryKey: true
             },
             transit_date: {
                 type: Sequelize.DATE,
                 allowNull: false,
-                primaryKey: true
+                //primaryKey: true
             },
             speed: {
                 type: Sequelize.INTEGER,
@@ -47,6 +52,12 @@ module.exports = {
                 defaultValue: false,
                 allowNull: false
             }
+        });
+        // Adding the unique constraint
+        await queryInterface.addConstraint('transits', {
+            fields: ['plate', 'transit_date'],
+            type: 'unique',
+            name: 'unique_plate_transit_date_transits'
         });
     },
 

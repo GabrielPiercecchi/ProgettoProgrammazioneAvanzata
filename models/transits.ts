@@ -7,15 +7,20 @@ import { type } from "os";
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
 export const Transit = sequelize.define('transits', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
     plate: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true
+        //primaryKey: true
     },
     transit_date: {
         type: DataTypes.DATE,
         allowNull: false,
-        primaryKey: true
+        //primaryKey: true
     },
     speed: {
         type: DataTypes.INTEGER,
@@ -52,6 +57,12 @@ export const Transit = sequelize.define('transits', {
 }, {
     modelName: 'transits',
     timestamps: false,
+    indexes: [
+        {
+            unique: true,
+            fields: ['plate', 'transit_date']
+        }
+    ],
     // hooks: {
     //     beforeCreate: async (transit, options) => {
     //         const vehicle = await Vehicle.findOne({ where: { type: transit.vehicles_types } });
@@ -62,14 +73,12 @@ export const Transit = sequelize.define('transits', {
     // }
 });
 
-// Method to get all transits
+// GET ALL
 export async function getAllTransits(): Promise<any[]> {
+    let result: any;
     try {
-        const transits = await Transit.findAll();
-        const gates = await Gate.findAll();
-        console.log('Transits:');
-        console.log();
-        return transits;
+        result = await Transit.findAll();
+        return result;
     } catch (error) {
         console.error('Error retrieving transits:', error);
         throw error;
@@ -77,19 +86,15 @@ export async function getAllTransits(): Promise<any[]> {
 }
 
 // Method to get a transit by plate and transit_date
-export async function getTransit(plate: string, transit_date: Date): Promise<any> {
+export async function getTransit(transitId: number): Promise<any> {
+    let result:any;
     try {
-        // i dont need to check lower case because the plate is always uppercase
-        const transit = await Transit.findOne({ 
-            where: {
-                plate,
-                transit_date
-            }
-        });
-        return transit;
+        // Use `findOne` with `where` for searching the Section with `initialGate` e `finalGate`
+        result = await Transit.findByPk(transitId, { raw: true });
+        return result;
     } catch (error) {
-        console.error('Error retrieving transit:', error);
-        throw error;
+        console.error('Error during Section search in the database.:', error);
+        throw new Error('Error during Section search in the database.');
     }
 }
 

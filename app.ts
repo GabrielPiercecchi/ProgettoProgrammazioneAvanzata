@@ -367,16 +367,18 @@ app.get('/transits', async (req, res) => {
 
 // Get a specific transit
 
-app.get('/transits/:plate/:transit_date', async (req, res) => {
-  const { plate, transit_date } = req.params;
-  const parsedTransitDate = new Date(transit_date);
+app.get('/transits/:id', async (req, res) => {
+  const { id } = req.params;
 
   try {
-    const transit = await transitsModel.getTransit(plate, parsedTransitDate);
+    // Convert id from string to number
+    const transitId = parseInt(id, 10); // Use parseInt with base 10
+
+    const transit = await transitsModel.getTransit(transitId);
     if (transit) {
       res.status(200).json(transit);
     } else {
-      res.status(404).json({ error: 'Transit not found' });
+      res.status(404).json({ error: 'Section not found' });
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -386,7 +388,6 @@ app.get('/transits/:plate/:transit_date', async (req, res) => {
     }
   }
 });
-
 // Create a new transit
 app.post('/transits', async (req, res) => {
   const { plate, transit_date, speed, weather, vehicles_types, gate, used } = req.body;
