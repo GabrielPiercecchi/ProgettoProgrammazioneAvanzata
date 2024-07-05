@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 const SALT_ROUNDS = 10;
 
 //Connection to DataBase
-const sequelize: Sequelize = DBIsConnected.getInstance();
+const sequelize: Sequelize = DBIsConnected.getInstance(); // we dont need it i think @FRANCESCO
 
 // CREATE Section
 export async function createSection(initialGate: string, finalGate: string): Promise<any> {

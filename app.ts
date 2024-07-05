@@ -389,6 +389,7 @@ app.get('/transits/:id', async (req, res) => {
   }
 });
 // Create a new transit
+
 app.post('/transits', async (req, res) => {
   const { plate, transit_date, speed, weather, vehicles_types, gate, used } = req.body;
 
@@ -403,6 +404,33 @@ app.post('/transits', async (req, res) => {
       used
     );
     res.status(201).json(newTransit);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Update a transit
+
+// Route updateSection
+app.put('/transits/:id', async (req, res) => {
+  const { id } = req.params;
+  const { newPlate, newTransit_date, newSpeed, newWeather, newVehicles_types, newGate, newUsed} = req.body;
+
+  try {
+    // Convert id from string to number
+    const transitId = parseInt(id, 10); // Use parseInt with base 10
+    const newDate = new Date(newTransit_date);
+
+    const updatedTransit = await transitsController.updateTransit(transitId, newPlate, newDate, newSpeed, newWeather, newVehicles_types, newGate, newUsed);
+    if (updatedTransit) {
+      res.status(200).json(updatedTransit);
+    } else {
+      res.status(404).json({ error: 'Section not found' });
+    }
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
