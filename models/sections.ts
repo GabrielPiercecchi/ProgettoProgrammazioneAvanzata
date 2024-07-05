@@ -13,10 +13,14 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
  * Define the model 'Section' to interface with the "sections" table
  */
 export const Section = sequelize.define('sections', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
     initialGate: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true, // Part of the composite primary key
         references: {
             model: Gate,
             key: 'location'
@@ -25,7 +29,6 @@ export const Section = sequelize.define('sections', {
     finalGate: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true, // Part of the composite primary key
         references: {
             model: Gate,
             key: 'location'
@@ -38,61 +41,67 @@ export const Section = sequelize.define('sections', {
 }, {
     modelName: 'sections',
     timestamps: false,
-    hooks: {
-        beforeCreate: async (section, options) => {
-            // Fetch initialGate and finalGate coordinates from the database
-            const initialGate = await Gate.findByPk((section as any).initialGate);
-            const finalGate = await Gate.findByPk((section as any).finalGate);
-
-            if (initialGate && finalGate) {
-                const initialGateCoords = initialGate.get('location'); // Assume location holds GPS coordinates
-                const finalGateCoords = finalGate.get('location'); // Assume location holds GPS coordinates
-                
-                // Assicurati che initialGateCoords e finalGateCoords siano di tipo string
-                if (typeof initialGateCoords === 'string' && typeof finalGateCoords === 'string') {
-                    // Parse coordinates
-                    const coord1 = parseCoordinateString(initialGateCoords);
-                    const coord2 = parseCoordinateString(finalGateCoords);
-
-                    // Calculate distance using haversine formula
-                    (section as any).distance = haversineDistance(coord1, coord2);
-                } else {
-                    console.error('initialGateCoords o finalGateCoords are not Type String');
-                }
-            } else {
-                throw new Error('Initial Gate or Final Gate not found.');
-            }
-        },
-        beforeUpdate: async (section, options) => {
-            // Fetch initialGate and finalGate coordinates from the database
-            const initialGate = await Gate.findByPk((section as any).initialGate);
-            const finalGate = await Gate.findByPk((section as any).finalGate);
-
-            if (initialGate && finalGate) {
-                const initialGateCoords = initialGate.get('location'); // Assume location holds GPS coordinates
-                const finalGateCoords = finalGate.get('location'); // Assume location holds GPS coordinates
-                
-                // Assicurati che initialGateCoords e finalGateCoords siano di tipo string
-                if (typeof initialGateCoords === 'string' && typeof finalGateCoords === 'string') {
-                    // Parse coordinates
-                    const coord1 = parseCoordinateString(initialGateCoords);
-                    const coord2 = parseCoordinateString(finalGateCoords);
-
-                    // Calculate distance using haversine formula
-                    (section as any).distance = haversineDistance(coord1, coord2);
-                } else {
-                    console.error('initialGateCoords o finalGateCoords are not Type String');
-                }
-            } else {
-                throw new Error('Initial Gate or Final Gate not found.');
-            }
+    indexes: [
+        {
+            unique: true,
+            fields: ['initialGate', 'finalGate']
         }
-    }
+    ],
+    // hooks: {
+    //     beforeCreate: async (section, options) => {
+    //         // Fetch initialGate and finalGate coordinates from the database
+    //         const initialGate = await Gate.findByPk((section as any).initialGate);
+    //         const finalGate = await Gate.findByPk((section as any).finalGate);
+
+    //         if (initialGate && finalGate) {
+    //             const initialGateCoords = initialGate.get('location'); // Assume location holds GPS coordinates
+    //             const finalGateCoords = finalGate.get('location'); // Assume location holds GPS coordinates
+                
+    //             // Assicurati che initialGateCoords e finalGateCoords siano di tipo string
+    //             if (typeof initialGateCoords === 'string' && typeof finalGateCoords === 'string') {
+    //                 // Parse coordinates
+    //                 const coord1 = parseCoordinateString(initialGateCoords);
+    //                 const coord2 = parseCoordinateString(finalGateCoords);
+
+    //                 // Calculate distance using haversine formula
+    //                 (section as any).distance = haversineDistance(coord1, coord2);
+    //             } else {
+    //                 console.error('initialGateCoords o finalGateCoords are not Type String');
+    //             }
+    //         } else {
+    //             throw new Error('Initial Gate or Final Gate not found.');
+    //         }
+    //     },
+    //     beforeUpdate: async (section, options) => {
+    //         // Fetch initialGate and finalGate coordinates from the database
+    //         const initialGate = await Gate.findByPk((section as any).initialGate);
+    //         const finalGate = await Gate.findByPk((section as any).finalGate);
+
+    //         if (initialGate && finalGate) {
+    //             const initialGateCoords = initialGate.get('location'); // Assume location holds GPS coordinates
+    //             const finalGateCoords = finalGate.get('location'); // Assume location holds GPS coordinates
+                
+    //             // Assicurati che initialGateCoords e finalGateCoords siano di tipo string
+    //             if (typeof initialGateCoords === 'string' && typeof finalGateCoords === 'string') {
+    //                 // Parse coordinates
+    //                 const coord1 = parseCoordinateString(initialGateCoords);
+    //                 const coord2 = parseCoordinateString(finalGateCoords);
+
+    //                 // Calculate distance using haversine formula
+    //                 (section as any).distance = haversineDistance(coord1, coord2);
+    //             } else {
+    //                 console.error('initialGateCoords o finalGateCoords are not Type String');
+    //             }
+    //         } else {
+    //             throw new Error('Initial Gate or Final Gate not found.');
+    //         }
+    //     }
+    // }
 });
 
 // Verify if the Section is in the database
 //GET
-async function getSection(initialGate: string, finalGate: string): Promise<any> {
+export async function getSections(initialGate: string, finalGate: string): Promise<any> {
     let result:any;
     try {
         // Use `findOne` with `where` for searching the Section with `initialGate` e `finalGate`
@@ -111,7 +120,7 @@ async function getSection(initialGate: string, finalGate: string): Promise<any> 
 }
 
 //GET ALL
-async function getAllSection(): Promise<any> {
+export async function getAllSections(): Promise<any> {
     let result:any;
     try {
         result = await Section.findAll();
@@ -123,53 +132,53 @@ async function getAllSection(): Promise<any> {
 }
 
 // UPDATE
-async function updateSection(sectionId: { initialGate: string, finalGate: string }, newInitialGate: string, newFinalGate: string): Promise<any> {
-    let result: any;
-    try {
-        // Trova la sezione basandosi sulla chiave primaria composta da initialGate e finalGate
-        result = await Section.findOne({
-            where: {
-                initialGate: sectionId.initialGate,
-                finalGate: sectionId.finalGate
-            }
-        });
-        if (result) {
-            // Aggiorna i campi initialGate e finalGate con i nuovi valori
-            result.initialGate = newInitialGate;
-            result.finalGate = newFinalGate;
-            await result.save();
-            return result;
-        } else {
-            throw new Error('Section not found.');
-        }
-    } catch (error) {
-        console.error('Error during Section update in the database:', error);
-        throw new Error('Error during Section update in the database.');
-    }
-}
+// async function updateSection(sectionId: { initialGate: string, finalGate: string }, newInitialGate: string, newFinalGate: string): Promise<any> {
+//     let result: any;
+//     try {
+//         // Trova la sezione basandosi sulla chiave primaria composta da initialGate e finalGate
+//         result = await Section.findOne({
+//             where: {
+//                 initialGate: sectionId.initialGate,
+//                 finalGate: sectionId.finalGate
+//             }
+//         });
+//         if (result) {
+//             // Aggiorna i campi initialGate e finalGate con i nuovi valori
+//             result.initialGate = newInitialGate;
+//             result.finalGate = newFinalGate;
+//             await result.save();
+//             return result;
+//         } else {
+//             throw new Error('Section not found.');
+//         }
+//     } catch (error) {
+//         console.error('Error during Section update in the database:', error);
+//         throw new Error('Error during Section update in the database.');
+//     }
+// }
 
-// DELETE
-async function deleteSection(sectionId: { initialGate: string, finalGate: string }): Promise<any> {
-    let result: any;
-    try {
-        // Trova la sezione basandosi sulla chiave primaria composta da initialGate e finalGate
-        result = await Section.findOne({
-            where: {
-                initialGate: sectionId.initialGate,
-                finalGate: sectionId.finalGate
-            }
-        });
-        if (result) {
-            await result.destroy();
-            return `Section with ID ${sectionId} was deleted successfully.`;
-        } else {
-            throw new Error('Section not found.');
-        }
-    } catch (error) {
-        console.error('Error during Section deletion in the database:', error);
-        throw new Error('Error during Section deletion in the database.');
-    }
-}
+// // DELETE
+// async function deleteSection(sectionId: { initialGate: string, finalGate: string }): Promise<any> {
+//     let result: any;
+//     try {
+//         // Trova la sezione basandosi sulla chiave primaria composta da initialGate e finalGate
+//         result = await Section.findOne({
+//             where: {
+//                 initialGate: sectionId.initialGate,
+//                 finalGate: sectionId.finalGate
+//             }
+//         });
+//         if (result) {
+//             await result.destroy();
+//             return `Section with ID ${sectionId} was deleted successfully.`;
+//         } else {
+//             throw new Error('Section not found.');
+//         }
+//     } catch (error) {
+//         console.error('Error during Section deletion in the database:', error);
+//         throw new Error('Error during Section deletion in the database.');
+//     }
+// }
 
 /**
  * Verifies if the request is made by an operator.

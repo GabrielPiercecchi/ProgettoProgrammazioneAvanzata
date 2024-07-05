@@ -6,9 +6,11 @@ import { DBIsConnected } from './database/database';
 import * as gatesModel from './models/gates';
 import * as operatorsModel from './models/operators';
 import * as transitsModel from './models/transits';
+import * as sectionsModel from './models/sections';
 import * as vehiclesModel from './models/vehicles';
 import * as gatesController from './controllers/gatesController';
 import * as vehiclesController from './controllers/vehiclesController';
+import * as sectionsController from './controllers/sectionsController'; // Import sections controller
 
 
 const app = express();
@@ -133,9 +135,97 @@ app.delete('/gates/:username', async (req, res) => {
   }
 });
 
-// Route deleteGates
+// Section routes
 
-// Gates routes
+// Route createSection
+app.post('/sections', async (req, res) => {
+  const { initialGate, finalGate } = req.body;
+
+  try {
+    const newSection = await sectionsController.createSection(initialGate, finalGate);
+    res.status(201).json(newSection);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route getAllSections
+app.get('/sections', async (req, res) => {
+  try {
+    const sections = await sectionsModel.getAllSections();
+    res.status(200).json(sections);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route getSection
+app.get('/sections/:initialGate/:finalGate', async (req, res) => {
+  const { initialGate, finalGate } = req.params;
+
+  try {
+    const section = await sectionsModel.getSections(initialGate, finalGate);
+    if (section) {
+      res.status(200).json(section);
+    } else {
+      res.status(404).json({ error: 'Section not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route updateSection
+app.put('/sections/:initialGate/:finalGate', async (req, res) => {
+  const { initialGate, finalGate } = req.params;
+  const { newInitialGate, newFinalGate } = req.body;
+
+  try {
+    const updatedSection = await sectionsController.updateSection(initialGate, finalGate , newInitialGate, newFinalGate);
+    if (updatedSection) {
+      res.status(200).json(updatedSection);
+    } else {
+      res.status(404).json({ error: 'Section not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route deleteSection
+app.delete('/sections/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Convert id from string to number
+    const sectionId = parseInt(id, 10); // Use parseInt with base 10
+
+    const result = await sectionsController.deleteSection(sectionId);
+    res.status(200).json(result);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
 
 // // Route createTransit
 // app.post('/transits', async (req, res) => {

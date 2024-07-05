@@ -3,10 +3,14 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('sections', {
+            id: {
+                type: Sequelize.INTEGER,
+                autoIncrement: true,
+                primaryKey: true
+            },
             initialGate: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'gates',
                     key: 'location'
@@ -17,7 +21,6 @@ module.exports = {
             finalGate: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                primaryKey: true,
                 references: {
                     model: 'gates',
                     key: 'location'
@@ -29,6 +32,13 @@ module.exports = {
                 type: Sequelize.FLOAT,
                 allowNull: false
             }
+        });
+
+        // Adding the unique constraint
+        await queryInterface.addConstraint('sections', {
+            fields: ['initialGate', 'finalGate'],
+            type: 'unique',
+            name: 'unique_initial_final_gate'
         });
     },
 
