@@ -124,6 +124,22 @@ app.get('/vehicles/:type', async (req, res) => {
   }
 });
 
+// Create a new vehicle
+
+app.post('/vehicles', async (req, res) => {
+  const { type, limit } = req.body;
+
+  try {
+    const newVehicle = await vehiclesController.createVehicle(type, limit);
+    res.status(201).json(newVehicle);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
