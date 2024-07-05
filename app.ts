@@ -92,6 +92,7 @@ app.get('/gates', async (req, res) => {
 // Vehicles routes
 
 // Get all vehicles
+
 app.get('/vehicles', async (req, res) => {
   try {
     const vehicles = await vehiclesModel.getAllVehicles();
@@ -106,10 +107,11 @@ app.get('/vehicles', async (req, res) => {
 });
 
 // Get vehicles by type
+
 app.get('/vehicles/:type', async (req, res) => {
   const { type } = req.params;
   try {
-    const vehicle = await vehiclesModel.getVehicles(type as string);
+    const vehicle = await vehiclesModel.getVehicles(type);
     if (vehicle) {
       res.status(200).json(vehicle);
     } else {
@@ -143,11 +145,12 @@ app.post('/vehicles', async (req, res) => {
 
 // Update a vehicle
 
-app.post('/vehicles', async (req, res) => {
-  const { type, limit } = req.body;
+app.put('/vehicles/:type', async (req, res) => {
+  const { type } = req.params;
+  const { newType, newLimit } = req.body;
 
   try {
-    const updatedVehicle = await vehiclesController.updateVehicle(type, limit);
+    const updatedVehicle = await vehiclesController.updateVehicle(type, newType, newLimit);
     res.status(201).json(updatedVehicle);
   } catch (error) {
     if (error instanceof Error) {
