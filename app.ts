@@ -1,11 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { createGate } from './controllers/gatesController';
-import { checkIfGateExists, getAllGates, Gate } from './models/gates';
-import { getAllOp } from './models/operators';
 import { DBIsConnected } from './database/database';
-import { Transit } from './models/transits';
-import { Vehicle } from './models/vehicles';
+
+
+import * as gatesModel from './models/gates';
+import * as operatorsModel from './models/operators';
+import * as transitsModel from './models/transits';
+import * as vehiclesModel from './models/vehicles';
+import * as gatesController from './controllers/gatesController';
+import * as vehiclesController from './controllers/vehiclesController';
+
 
 const app = express();
 const port = process.env.SERVICE_PORT || 3000;
@@ -20,9 +24,11 @@ app.get('/test', (req, res) => {
   res.send('This is a test route!');
 });
 
+// Operator routes 
+
 // Define a GET ALL operator route
 app.get('/operator', (req, res) => {
-  getAllOp();
+  operatorsModel.getAllOp();
 });
 
 // Gates routes
@@ -32,7 +38,7 @@ app.post('/gates', async (req, res) => {
   const { location, username, password } = req.body;
 
   try {
-    const newGate = await createGate(location, username, password);
+    const newGate = await gatesController.createGate(location, username, password);
     res.status(201).json(newGate);
   } catch (error) {
     if (error instanceof Error) {
@@ -46,7 +52,7 @@ app.post('/gates', async (req, res) => {
 // Route view allgates
 app.get('/gates', async (req, res) => {
   try {
-    const gates = await getAllGates();
+    const gates = await gatesModel.getAllGates();
     res.status(200).json(gates);
   } catch (error) {
     if (error instanceof Error) {
@@ -57,25 +63,39 @@ app.get('/gates', async (req, res) => {
   }
 });
 
-
-
 // Gates routes
 
-// Route createTransit
-app.post('/transits', async (req, res) => {
-  const { plate, transit_date, speed, weather, vehicles_types, gate, used } = req.body;
+// // Route createTransit
+// app.post('/transits', async (req, res) => {
+//   const { plate, transit_date, speed, weather, vehicles_types, gate, used } = req.body;
 
+//   try {
+//     const newTransit = await .create({
+//       plate,
+//       transit_date,
+//       speed,
+//       weather,
+//       vehicles_types,
+//       gate,
+//       used
+//     });
+//     res.status(201).json(newTransit);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       res.status(500).json({ error: error.message });
+//     } else {
+//       res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+//     }
+//   }
+// });
+
+// Vehicles routes
+
+// Get all vehicles
+app.get('/vehicles', async (req, res) => {
   try {
-    const newTransit = await Transit.create({
-      plate,
-      transit_date,
-      speed,
-      weather,
-      vehicles_types,
-      gate,
-      used
-    });
-    res.status(201).json(newTransit);
+    const vehicles = await vehiclesModel.getAllVehicles();
+    res.status(200).json(vehicles);
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
@@ -84,6 +104,26 @@ app.post('/transits', async (req, res) => {
     }
   }
 });
+
+// Get vehicles by type
+app.get('/vehicles/:type', async (req, res) => {
+  const { type } = req.params;
+  try {
+    const vehicle = await vehiclesModel.getVehicles(type as string);
+    if (vehicle) {
+      res.status(200).json(vehicle);
+    } else {
+      res.status(404).json({ error: 'Vehicle not found.' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
