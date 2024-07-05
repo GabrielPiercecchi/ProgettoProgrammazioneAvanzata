@@ -68,7 +68,7 @@ export async function getAllTransits(): Promise<any[]> {
         const transits = await Transit.findAll();
         const gates = await Gate.findAll();
         console.log('Transits:');
-        console.log(transits);
+        console.log();
         return transits;
     } catch (error) {
         console.error('Error retrieving transits:', error);
@@ -79,7 +79,8 @@ export async function getAllTransits(): Promise<any[]> {
 // Method to get a transit by plate and transit_date
 export async function getTransit(plate: string, transit_date: Date): Promise<any> {
     try {
-        const transit = await Transit.findOne({
+        // i dont need to check lower case because the plate is always uppercase
+        const transit = await Transit.findOne({ 
             where: {
                 plate,
                 transit_date

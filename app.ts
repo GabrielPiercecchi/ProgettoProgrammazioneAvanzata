@@ -294,7 +294,30 @@ app.get('/transits/:plate/:transit_date', async (req, res) => {
     }
   }
 });
-//   const { plate, transit_date } = req.params;
+
+// Create a new transit
+app.post('/transits', async (req, res) => {
+  const { plate, transit_date, speed, weather, vehicles_types, gate, used } = req.body;
+
+  try {
+    const newTransit = await transitsController.createTransit(
+      plate,
+      transit_date,
+      speed,
+      weather,
+      vehicles_types,
+      gate,
+      used
+    );
+    res.status(201).json(newTransit);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
 
 //   try {
 //     const transit = await transitsModel.getTransit(plate, transit_date);

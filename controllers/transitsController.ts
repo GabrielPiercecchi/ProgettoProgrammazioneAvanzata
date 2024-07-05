@@ -1,30 +1,14 @@
-import { Request, Response } from 'express';
 import { Transit } from '../models/transits';
-import { DBIsConnected } from "../database/database";
-import { DataTypes, Sequelize, Model } from 'sequelize';
 
-const sequelize: Sequelize = DBIsConnected.getInstance();
-
-export const createTransit = async (req: Request, res: Response): Promise<void> => {
-
-    console.log(req.body);
+// CREATE
+export const createTransit = async (plate: String, transit_date: Date, speed: Number, weather: String, vehicles_types: String, gate: String, used: Boolean ): Promise<void> => {
+    let result: any;
     try {
-        //const transit_input = req.body;
-        const newTransit = await Transit.create({
-            plate: req.body.plate,
-            transit_date: req.body.transit_date,
-            speed: req.body.speed,
-            weather: req.body.weather,
-            vehicles_types: req.body.vehicles_types,
-            gate: req.body.gate,
-            used: req.body.used
-        });
-        //await newTransit.save();
-        res.status(201).json({ message: 'Transit created successfully', data: newTransit });
+        result = await Transit.create({ plate, transit_date, speed, weather, vehicles_types, gate });
+        return result;
+        
     } catch (error) {
-        const err = error as Error;
-        // Gestisci l'errore e invia una risposta di errore
-        res.status(500).json({ message: 'Error creating transit', error: err.message });
-        //console.log(req.body);
+        console.error('Error during Transit creation in the database:', error);
+        throw new Error('Error during Transit creation in the database.');
     }
 }
