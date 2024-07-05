@@ -6,9 +6,9 @@ const { parseCoordinateString, convertToDecimalDegrees, haversineDistance } = re
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // Coordinate initialGate
-    const initialGate = '40°33′03.2″N 14°14′33.36″E';
+    const initialGate = 'LAT43.6158299LON13.518915';
     // Coordinate finalGate
-    const finalGate = '40°33′02.0″N 14°14′34.0″E';
+    const finalGate = 'LAT44.494887LON11.3426163';
 
     // Parse the coordinates
     const initialCoordinates = parseCoordinateString(initialGate);

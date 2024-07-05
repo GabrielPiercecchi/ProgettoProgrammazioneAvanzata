@@ -1,39 +1,24 @@
 interface Coordinates {
-    degrees: number;
-    minutes: number;
-    seconds: number;
-    direction: 'N' | 'S' | 'E' | 'W';
+    latitude: number;
+    longitude: number;
 }
 
 export function parseCoordinateString(coordinateString: string): Coordinates {
-    const regex = /(\d+)°\s+(\d+)'(?:\s+([\d.]+)")?\s+([NSEW])\s+(\d+)°\s+(\d+)'(?:\s+([\d.]+)")?\s+([NSEW])/;
+    const regex = /LAT(-?\d+\.\d+)LON(-?\d+\.\d+)/;
     const match = coordinateString.match(regex);
     if (!match) {
         throw new Error('Invalid coordinate format');
     }
 
     return {
-        degrees: parseInt(match[1], 10),
-        minutes: parseInt(match[2], 10),
-        seconds: parseFloat(match[3] || '0'),
-        direction: match[4] as 'N' | 'S' | 'E' | 'W'
+        latitude: parseFloat(match[1]),
+        longitude: parseFloat(match[2]),
     };
 }
 
-export function convertToDecimalDegrees(coordinate: Coordinates): number {
-    const { degrees, minutes, seconds, direction } = coordinate;
-    let decimalDegrees = degrees + minutes / 60 + seconds / 3600;
-    if (direction === 'S' || direction === 'W') {
-        decimalDegrees = -decimalDegrees;
-    }
-    return decimalDegrees;
-}
-
 export function haversineDistance(coord1: Coordinates, coord2: Coordinates): number {
-    const lat1 = convertToDecimalDegrees(coord1);
-    const lon1 = convertToDecimalDegrees(coord2);
-    const lat2 = convertToDecimalDegrees(coord1);
-    const lon2 = convertToDecimalDegrees(coord2);
+    const { latitude: lat1, longitude: lon1 } = coord1;
+    const { latitude: lat2, longitude: lon2 } = coord2;
 
     const R = 6371; // Raggio della Terra in chilometri
     const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -45,5 +30,18 @@ export function haversineDistance(coord1: Coordinates, coord2: Coordinates): num
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    return R * c; // Distanza in chilometri
+    const distance = R * c; // Distanza in chilometri
+    return parseFloat(distance.toFixed(2)); // Ritorna la distanza come numero con due cifre decimali
 }
+
+
+/*
+// Esempio di utilizzo
+const coordString1 = 'LAT43.6158299LON13.518915';
+const coordString2 = 'LAT44.494887LON11.3426163';
+
+const coord1 = parseCoordinateString(coordString1);
+const coord2 = parseCoordinateString(coordString2);
+
+console.log(`Distanza: ${haversineDistance(coord1, coord2)} km`);
+*/

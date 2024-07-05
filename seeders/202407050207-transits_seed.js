@@ -11,7 +11,7 @@ module.exports = {
                 speed: 50,
                 weather: 'good weather',
                 vehicles_types: 'Car', // Sostituisci con il tipo di veicolo corretto
-                gate: '40°33′03.2″N 14°14′33.36″E', // Capri_1
+                gate: 'LAT43.6158299LON13.518915', // Capri_1
                 used: false
             },
             {
@@ -20,7 +20,7 @@ module.exports = {
                 speed: 60,
                 weather: 'bad weather',
                 vehicles_types: 'Truck', // Sostituisci con il tipo di veicolo corretto
-                gate: '40°33′02.0″N 14°14′34.0″E', // Capri_2
+                gate: 'LAT44.494887LON11.3426163', // Capri_2
                 used: false
             }
         ]);
