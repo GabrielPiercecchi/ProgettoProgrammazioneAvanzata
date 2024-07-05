@@ -1,7 +1,7 @@
 'use strict';
 
 //const { Sequelize } = require("sequelize");
-const { parseCoordinateString, convertToDecimalDegrees, haversineDistance } = require('../others/distanceCalculator');
+const { parseCoordinateString, convertToDecimalDegrees, haversineDistance } = require('../other/distanceCalculator');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

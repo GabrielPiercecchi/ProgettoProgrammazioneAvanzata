@@ -6,7 +6,7 @@ interface Coordinates {
 }
 
 export function parseCoordinateString(coordinateString: string): Coordinates {
-    const regex = /(\d+)°\s+(\d+)'(?:\s+([\d.]+)")?\s+([NSEW])/;
+    const regex = /(\d+)°\s+(\d+)'(?:\s+([\d.]+)")?\s+([NSEW])\s+(\d+)°\s+(\d+)'(?:\s+([\d.]+)")?\s+([NSEW])/;
     const match = coordinateString.match(regex);
     if (!match) {
         throw new Error('Invalid coordinate format');
