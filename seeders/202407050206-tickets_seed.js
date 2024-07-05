@@ -10,8 +10,8 @@ module.exports = {
         weather: 'good weather',
         plate: 'ABC123',
         ticket_date: new Date(),
-        initial_gate: '40°33′03.2″N 14°14′33.36″E', // Capri_1
-        final_gate: '40°33′02.0″N 14°14′34.0″E',   //Capri_2
+        initial_gate: 'LAT43.6158299LON13.518915', // Capri_1
+        final_gate: 'LAT44.494887LON11.3426163',   //Capri_2
         medium_speed: 50.5,
         delta_limit: 5.0
       },

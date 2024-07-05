@@ -11,11 +11,14 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
 // CREATE
 export async function createGate(location: string, username: string, password: string): Promise<any> {
     try {
+        // Hash della password
+        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+        
         // Creare il nuovo gate
         const newGate = await Gate.create({
             location,
             username,
-            password: await bcrypt.hash(password, SALT_ROUNDS)  // Hash della password
+            password: hashedPassword
         });
         return newGate;
     } catch (error) {
@@ -36,7 +39,7 @@ export async function updateGate(location: string, newUsername: string, newPassw
         result = await Gate.findByPk(location);
         if (result) {
             result.username = newUsername;
-            result.password = await bcrypt.hash(newPassword, SALT_ROUNDS);
+            result.password = await bcrypt.hash(newPassword, SALT_ROUNDS); // Hash della nuova password
             await result.save();
             return result;
         } else {

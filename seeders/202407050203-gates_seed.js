@@ -6,12 +6,12 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('gates', [
       {
-        location: '40°33′03.2″N 14°14′33.36″E', //we should change it in another format
+        location: 'LAT43.6158299LON13.518915', //we should change it in another format
         username: 'Capri_1',
         password: 'Capri',
       },
       {
-        location: '40°33′02.0″N 14°14′34.0″E',
+        location: 'LAT44.494887LON11.3426163',
         username: 'Capri_2',
         password: 'Capri',
       }
