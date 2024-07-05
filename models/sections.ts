@@ -101,17 +101,11 @@ export const Section = sequelize.define('sections', {
 
 // Verify if the Section is in the database
 //GET
-export async function getSections(initialGate: string, finalGate: string): Promise<any> {
+export async function getSections(sectionId: number): Promise<any> {
     let result:any;
     try {
         // Use `findOne` with `where` for searching the Section with `initialGate` e `finalGate`
-        result = await Section.findOne({
-            where: {
-                initialGate: initialGate,
-                finalGate: finalGate
-            },
-            raw: true
-        });
+        result = await Section.findByPk(sectionId, { raw: true });
         return result;
     } catch (error) {
         console.error('Error during Section search in the database.:', error);

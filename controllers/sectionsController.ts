@@ -52,16 +52,10 @@ export async function createSection(initialGate: string, finalGate: string): Pro
  * @param newFinalGate New value for finalGate
  * @returns Updated Section object
  */
-export async function updateSection(initialGate: string, finalGate: string, newInitialGate: string, newFinalGate: string): Promise<any> {
+export async function updateSection(sectionId: number, newInitialGate: string, newFinalGate: string): Promise<any> {
     let result: any;
     try {
-        // Trova la sezione basandosi sulla chiave primaria composta da initialGate e finalGate
-        result = await Section.findOne({
-            where: {
-                initialGate: initialGate,
-                finalGate: finalGate
-            }
-        });
+        result = await Section.findByPk(sectionId);
         if (result) {
             // Aggiorna i campi initialGate e finalGate con i nuovi valori
             result.initialGate = newInitialGate;

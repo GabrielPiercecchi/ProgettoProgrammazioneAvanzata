@@ -168,11 +168,14 @@ app.get('/sections', async (req, res) => {
 });
 
 // Route getSection
-app.get('/sections/:initialGate/:finalGate', async (req, res) => {
-  const { initialGate, finalGate } = req.params;
+app.get('/sections/:id', async (req, res) => {
+  const { id } = req.params;
 
   try {
-    const section = await sectionsModel.getSections(initialGate, finalGate);
+    // Convert id from string to number
+    const sectionId = parseInt(id, 10); // Use parseInt with base 10
+
+    const section = await sectionsModel.getSections(sectionId);
     if (section) {
       res.status(200).json(section);
     } else {
@@ -188,12 +191,15 @@ app.get('/sections/:initialGate/:finalGate', async (req, res) => {
 });
 
 // Route updateSection
-app.put('/sections/:initialGate/:finalGate', async (req, res) => {
-  const { initialGate, finalGate } = req.params;
+app.put('/sections/:id', async (req, res) => {
+  const { id } = req.params;
   const { newInitialGate, newFinalGate } = req.body;
 
   try {
-    const updatedSection = await sectionsController.updateSection(initialGate, finalGate , newInitialGate, newFinalGate);
+    // Convert id from string to number
+    const sectionId = parseInt(id, 10); // Use parseInt with base 10
+
+    const updatedSection = await sectionsController.updateSection(sectionId, newInitialGate, newFinalGate);
     if (updatedSection) {
       res.status(200).json(updatedSection);
     } else {
