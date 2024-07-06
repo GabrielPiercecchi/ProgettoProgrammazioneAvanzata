@@ -1,5 +1,6 @@
-import {DBIsConnected} from "../database/database";
-import {DataTypes, Sequelize} from 'sequelize';
+import { DBIsConnected } from "../database/database";
+import { DataTypes, Sequelize } from 'sequelize';
+import { Op } from 'sequelize';
 import { Gate } from '../models/gates';
 import bcrypt from 'bcrypt';
 
@@ -13,7 +14,7 @@ export async function createGate(location: string, username: string, password: s
     try {
         // Hash della password
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-        
+
         // Creare il nuovo gate
         const newGate = await Gate.create({
             location,
@@ -60,8 +61,19 @@ export async function updateGate(location: string, newUsername: string, newPassw
 export async function deleteGate(username: string): Promise<any> {
     let result: any;
     try {
-        result = await Gate.destroy({ where: { username } });
+        // Trova il gate con username case-insensitive
+        result = await Gate.findOne({
+            where: {
+                [Op.or]: [
+                    { username: username.toLowerCase() },
+                    { username: username.charAt(0).toUpperCase() + username.slice(1).toLowerCase() }
+                ]
+            }
+        });
+        
         if (result) {
+            // Cancella il gate
+            await result.destroy();
             return `Gate with username ${username} was deleted successfully.`;
         } else {
             throw new Error('Gate not found.');
