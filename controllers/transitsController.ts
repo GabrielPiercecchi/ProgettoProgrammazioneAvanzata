@@ -9,8 +9,13 @@ export const createTransit = async (plate: string, speed: number, weather: strin
         return result;
         
     } catch (error) {
-        console.error('Error during Transit creation in the database:', error);
-        throw new Error('Error during Transit creation in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Transit creation in the database:', error.message);
+            throw new Error(`Error during Transit creation in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Transit creation in the database:', error);
+            throw new Error('Unknown error during Transit creation in the database.');
+        }
     }
 } 
 
@@ -36,8 +41,13 @@ export async function updateTransit( transitId: number, newPlate: string, newSpe
             throw new Error('Transit not found.');
         }
     } catch (error) {
-        console.error('Error during Transit update in the database:', error);
-        throw new Error('Error during Transit update in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Transit update in the database:', error.message);
+            throw new Error(`Error during Transit update in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Transit update in the database:', error);
+            throw new Error('Unknown error during Transit update in the database.');
+        }
     }
 }
 
@@ -53,7 +63,12 @@ export async function deleteTransit( transitId: number ): Promise<any> {
             throw new Error('Transit not found.');
         }
     } catch (error) {
-        console.error('Error during Transit deletion in the database:', error);
-        throw new Error('Error during Transit deletion in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Transit deletion in the database:', error.message);
+            throw new Error(`Error during Transit deletion in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Transit deletion in the database:', error);
+            throw new Error('Unknown error during Transit deletion in the database.');
+        }
     }
 }

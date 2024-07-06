@@ -259,7 +259,7 @@ app.get('/vehicles', async (req, res) => {
 
 // Get vehicles by type
 
-app.get('/vehicles/:type', async (req, res) => {
+app.get('/vehicles/:type', vehiclesMiddleware.sanitizeGetVehicleInputs, async (req, res) => {
   const { type } = req.params;
   try {
     const vehicle = await vehiclesModel.getVehicles(type);
@@ -314,7 +314,7 @@ app.put('/vehicles/:type', vehiclesMiddleware.sanitizeUpdateVehicleInputs,async 
 
 // Delete a vehicle
 
-app.delete('/vehicles/:type', async (req, res) => {
+app.delete('/vehicles/:type', vehiclesMiddleware.sanitizeDeleteVehicleInputs, async (req, res) => {
   const { type } = req.params;
 
   try {

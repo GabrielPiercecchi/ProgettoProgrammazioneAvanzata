@@ -70,8 +70,13 @@ export async function updateSection(sectionId: number, newInitialGate: string, n
             throw new Error('Section not found.');
         }
     } catch (error) {
-        console.error('Error during Section update in the database:', error);
-        throw new Error('Error during Section update in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Section update in the database:', error.message);
+            throw new Error(`Error during Section update in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Section update in the database:', error);
+            throw new Error('Unknown error during Section update in the database.');
+        }
     }
 }
 
@@ -92,8 +97,13 @@ export async function deleteSection(sectionId: number): Promise<string> {
             throw new Error('Section not found.');
         }
     } catch (error) {
-        console.error('Error during Section deletion in the database:', error);
-        throw new Error('Error during Section deletion in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Section deletion in the database:', error.message);
+            throw new Error(`Error during Section deletion in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Section deletion in the database:', error);
+            throw new Error('Unknown error during Section deletion in the database.');
+        }
     }
 }
 

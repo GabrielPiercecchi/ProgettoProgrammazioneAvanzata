@@ -62,14 +62,6 @@ export const Transit = sequelize.define('transits', {
             fields: ['plate', 'transit_date']
         }
     ],
-    // hooks: {
-    //     beforeCreate: async (transit, options) => {
-    //         const vehicle = await Vehicle.findOne({ where: { type: transit.vehicles_types } });
-    //         if (!vehicle) {
-    //             throw new Error(`Vehicle type ${transit.vehicles_types} does not exist`);
-    //         }
-    //     }
-    // }
 });
 
 // GET ALL
@@ -79,8 +71,13 @@ export async function getAllTransits(): Promise<any[]> {
         result = await Transit.findAll();
         return result;
     } catch (error) {
-        console.error('Error retrieving transits:', error);
-        throw error;
+        if (error instanceof Error) {
+            console.error('Error during Transits fetch in the database:', error.message);
+            throw new Error(`Error during Transits fetch in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error Transits Gate fetch in the database:', error);
+            throw new Error('Unknown error Transits Gate fetch in the database.');
+        }
     }
 }
 
@@ -92,8 +89,13 @@ export async function getTransit(transitId: number): Promise<any> {
         result = await Transit.findByPk(transitId, { raw: true });
         return result;
     } catch (error) {
-        console.error('Error during Transit search in the database.:', error);
-        throw new Error('Error during Transit search in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Transit fetch in the database:', error.message);
+            throw new Error(`Error during Transit fetch in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Transit fetch in the database:', error);
+            throw new Error('Unknown error during Transit fetch in the database.');
+        }
     }
 }
 

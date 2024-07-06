@@ -7,8 +7,13 @@ export async function createVehicle(type: string, limit: number): Promise<any> {
         result = await Vehicle.create({ type, limit });
         return result;
     } catch (error) {
-        console.error('Error during Vehicle creation in the database:', error);
-        throw new Error('Error during Vehicle creation in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Vehicle creation in the database:', error.message);
+            throw new Error(`Error during Vehicle creation in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Vehicle creation in the database:', error);
+            throw new Error('Unknown error during Vehicle creation in the database.');
+        }
     }
 }
 
@@ -28,8 +33,13 @@ export async function updateVehicle(type: string, newLimit: number): Promise<any
             throw new Error('Vehicle not found.');
         }
     } catch (error) {
-        console.error('Error during Vehicle update in the database:', error);
-        throw new Error('Error during Vehicle update in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Vehicle update in the database:', error.message);
+            throw new Error(`Error during Vehicle update in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Vehicle update in the database:', error);
+            throw new Error('Unknown error during Vehicle update in the database.');
+        }
     }
 }
 
@@ -44,7 +54,12 @@ export async function deleteVehicle(type: string): Promise<any> {
             throw new Error('Vehicle not found.');
         }
     } catch (error) {
-        console.error('Error during Vehicle deletion in the database:', error);
-        throw new Error('Error during Vehicle deletion in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Vehicle deletion in the database:', error.message);
+            throw new Error(`Error during Vehicle deletion in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Vehicle deletion in the database:', error);
+            throw new Error('Unknown error during Vehicle deletion in the database.');
+        }
     }
 }

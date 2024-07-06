@@ -47,56 +47,6 @@ export const Section = sequelize.define('sections', {
             fields: ['initialGate', 'finalGate']
         }
     ],
-    // hooks: {
-    //     beforeCreate: async (section, options) => {
-    //         // Fetch initialGate and finalGate coordinates from the database
-    //         const initialGate = await Gate.findByPk((section as any).initialGate);
-    //         const finalGate = await Gate.findByPk((section as any).finalGate);
-
-    //         if (initialGate && finalGate) {
-    //             const initialGateCoords = initialGate.get('location'); // Assume location holds GPS coordinates
-    //             const finalGateCoords = finalGate.get('location'); // Assume location holds GPS coordinates
-                
-    //             // Assicurati che initialGateCoords e finalGateCoords siano di tipo string
-    //             if (typeof initialGateCoords === 'string' && typeof finalGateCoords === 'string') {
-    //                 // Parse coordinates
-    //                 const coord1 = parseCoordinateString(initialGateCoords);
-    //                 const coord2 = parseCoordinateString(finalGateCoords);
-
-    //                 // Calculate distance using haversine formula
-    //                 (section as any).distance = haversineDistance(coord1, coord2);
-    //             } else {
-    //                 console.error('initialGateCoords o finalGateCoords are not Type String');
-    //             }
-    //         } else {
-    //             throw new Error('Initial Gate or Final Gate not found.');
-    //         }
-    //     },
-    //     beforeUpdate: async (section, options) => {
-    //         // Fetch initialGate and finalGate coordinates from the database
-    //         const initialGate = await Gate.findByPk((section as any).initialGate);
-    //         const finalGate = await Gate.findByPk((section as any).finalGate);
-
-    //         if (initialGate && finalGate) {
-    //             const initialGateCoords = initialGate.get('location'); // Assume location holds GPS coordinates
-    //             const finalGateCoords = finalGate.get('location'); // Assume location holds GPS coordinates
-                
-    //             // Assicurati che initialGateCoords e finalGateCoords siano di tipo string
-    //             if (typeof initialGateCoords === 'string' && typeof finalGateCoords === 'string') {
-    //                 // Parse coordinates
-    //                 const coord1 = parseCoordinateString(initialGateCoords);
-    //                 const coord2 = parseCoordinateString(finalGateCoords);
-
-    //                 // Calculate distance using haversine formula
-    //                 (section as any).distance = haversineDistance(coord1, coord2);
-    //             } else {
-    //                 console.error('initialGateCoords o finalGateCoords are not Type String');
-    //             }
-    //         } else {
-    //             throw new Error('Initial Gate or Final Gate not found.');
-    //         }
-    //     }
-    // }
 });
 
 // Verify if the Section is in the database
@@ -108,8 +58,13 @@ export async function getSections(sectionId: number): Promise<any> {
         result = await Section.findByPk(sectionId, { raw: true });
         return result;
     } catch (error) {
-        console.error('Error during Section search in the database.:', error);
-        throw new Error('Error during Section search in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Sections fetch in the database:', error.message);
+            throw new Error(`Error during Sections fetch in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Sections fetch in the database:', error);
+            throw new Error('Unknown error during Sections fetch in the database.');
+        }
     }
 }
 
@@ -120,8 +75,13 @@ export async function getAllSections(): Promise<any> {
         result = await Section.findAll();
         return result;
     } catch (error) {
-        console.error('Error fetching Section:', error);
-        throw new Error('Error fetching Section.');
+        if (error instanceof Error) {
+            console.error('Error during Sections fetch in the database:', error.message);
+            throw new Error(`Error during Sections fetch in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error Sections Gate fetch in the database:', error);
+            throw new Error('Unknown error Sections Gate fetch in the database.');
+        }
     }
 }
 

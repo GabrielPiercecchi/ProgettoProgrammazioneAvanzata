@@ -27,18 +27,6 @@ export const Gate = sequelize.define('gates', {
 {
     modelName: 'gates',
     timestamps: false,
-    // hooks: {
-    //     beforeCreate: async (gate, options) => {
-    //         if ((gate as any).changed('password')) {
-    //             (gate as any).password = await bcrypt.hash((gate as any).password, SALT_ROUNDS);
-    //         }
-    //     },
-    //     beforeUpdate: async (gate, options) => {
-    //         if ((gate as any).changed('password')) {
-    //             (gate as any).password = await bcrypt.hash((gate as any).password, SALT_ROUNDS);
-    //         }
-    //     }
-    // }
 });
 
 // Verify if the Gate is in the database
@@ -53,8 +41,13 @@ export async function getGates(username: string): Promise<any> {
 
         return result;
     } catch (error) {
-        console.error('Error during Gate search in the database:', error);
-        throw new Error('Error during Gate search in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Gate creation in the database:', error.message);
+            throw new Error(`Error during Gate creation in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Gate creation in the database:', error);
+            throw new Error('Unknown error during Gate creation in the database.');
+        }
     }
 }
 
@@ -66,8 +59,13 @@ export async function getAllGates(): Promise<any> {
         console.log(gates);
         return gates;
     } catch (error) {
-        console.error('Error fetching gates:', error);
-        throw new Error('Error fetching gates.');
+        if (error instanceof Error) {
+            console.error('Error during Gate fetch in the database:', error.message);
+            throw new Error(`Error during Gate fetch in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Gate fetch in the database:', error);
+            throw new Error('Unknown error during Gate fetch in the database.');
+        }
     }
 }
 
@@ -88,14 +86,3 @@ export async function TokenChargeVal(chargedata: any): Promise<boolean | string>
         throw new Error('Error in TokenChargeVal function');
     }
 }
-
-// async function syncDatabase() {
-//     try {
-//       await Gate.sync(); // { force: true } ricrea la tabella, cancellando la precedente se esiste
-//       console.log('Database synchronized');
-//     } catch (error) {
-//       console.error('Error synchronizing the database:', error);
-//     }
-//   }
-  
-//   syncDatabase();
