@@ -30,7 +30,7 @@ export function sanitizeCreateSectionInputs(req: Request, res: Response, next: N
 
     // Validazione della location
     if (!validateLocation(initialGate) || !validateLocation(finalGate)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.6158299LON13.518915' });
+        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -48,7 +48,7 @@ export function sanitizeUpdateSectionInputs(req: Request, res: Response, next: N
 
     // Validazione della location
     if (!validateLocation(newFinalGate) || !validateLocation(newInitialGate)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.6158299LON13.518915' });
+        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller

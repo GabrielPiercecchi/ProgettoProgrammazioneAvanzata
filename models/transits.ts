@@ -98,18 +98,3 @@ export async function getTransit(transitId: number): Promise<any> {
         }
     }
 }
-
-
-
-
-
-// async function syncDatabase() {
-//     try {
-//         await Transit.sync(); // { force: true } ricrea la tabella, cancellando la precedente se esiste
-//         console.log('Database synchronized');
-//     } catch (error) {
-//         console.error('Error synchronizing the database:', error);
-//     }
-// }
-
-// syncDatabase();

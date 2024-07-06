@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { validateSpeedLimit } from './vehiclesMiddleware';
 import { validateLocation } from './gatesMiddleware';
 import { validateId } from './sectionsMiddleware';
 
@@ -20,12 +21,6 @@ function validateWeather(weather: string): boolean {
 function validateVehicleType(vehicleType: any): boolean {
     return typeof vehicleType === 'string';
 }
-
-// Funzione di validazione per il limite di velocità
-export function validateSpeed(speed: number): boolean {
-    return Number.isInteger(speed);;
-}
-
 // Middleware for sanitizing the parameters for CREATE
 
 export function sanitizeCreateTransitInput(req: Request, res: Response, next: NextFunction) {
@@ -37,7 +32,7 @@ export function sanitizeCreateTransitInput(req: Request, res: Response, next: Ne
     }
 
     // Validation of the speed
-    if(!validateSpeed(speed)){
+    if(!validateSpeedLimit(speed)){
         return res.status(400).json({ error: 'Invalid speed. Speed must be an integer between 30 and 150.' });
     }
 
@@ -62,8 +57,6 @@ export function sanitizeCreateTransitInput(req: Request, res: Response, next: Ne
 
 };
 
-// Middleware for sanitizing the parameters for UPDATE
-
 export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     //console.log(typeof(id));
@@ -81,7 +74,7 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
     }
 
     // Validation of the speed
-    if(!validateSpeed(newSpeed)){
+    if(!validateSpeedLimit(newSpeed)){
         return res.status(400).json({ error: 'Invalid speed. Speed must be an integer between 30 and 150.' });
     }
 
@@ -105,23 +98,7 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
     next();
 }
 
-// Middleware for sanitizing the parameters for DELETE
-
 export function sanitizeDeleteTransitInput(req: Request, res: Response, next: NextFunction) {
-    const { id } = req.params;
-    //console.log(typeof(id));
-    // Validation of id
-    //console.log(typeof(transitId));
-    if(!validateId(Number(id))){
-        //console.log(typeof(transitId));
-        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
-    }
-    // If all validations pass, it moves on
-    next();
-}
-
-// Middleware for sanitizing the parameters for GET
-export function sanitizeGetTransitInput(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     //console.log(typeof(id));
     // Validation of id
