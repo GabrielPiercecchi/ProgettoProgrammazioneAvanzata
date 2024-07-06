@@ -348,7 +348,7 @@ app.get('/transits', async (req, res) => {
 
 // Get a specific transit
 
-app.get('/transits/:id', async (req, res) => {
+app.get('/transits/:id', transitsMiddleware.sanitizeGetTransitInput, async (req, res) => {
   const { id } = req.params;
 
   try {
