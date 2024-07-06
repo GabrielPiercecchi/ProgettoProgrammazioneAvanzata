@@ -8,6 +8,8 @@ import * as gatesController from './controllers/gatesController';
 import * as sectionsController from './controllers/sectionsController';
 import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
+import * as gatesMiddleware from './middlewares/gatesMiddleware';
+import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
 
 
 
@@ -19,6 +21,11 @@ const port = process.env.SERVICE_PORT;
 app.use(express.json());
 
 let serverStarted = false;
+
+// Open the server
+app.listen(process.env.SERVICE_PORT, () => {
+  console.log('Server is running on port 3000');
+});
 
 // Define a test route
 app.get('/test', (req, res) => {
@@ -44,7 +51,7 @@ app.get('/operators', async (req, res) => {
 // Gates routes
 
 // Route createGates
-app.post('/gates', async (req, res) => {
+app.post('/gates', gatesMiddleware.sanitizeCreateGateInputs, async (req, res) => {
   const { location, username, password } = req.body;
 
   try {
@@ -94,7 +101,7 @@ app.get('/gates/:username', async (req, res) => {
 });
 
 //Route updateGates
-app.put('/gates/:location', async (req, res) => {
+app.put('/gates/:location', gatesMiddleware.sanitizeUpdateGateInputs, async (req, res) => {
   const { location } = req.params;
   const { newUsername, newPassword } = req.body;
 
@@ -271,7 +278,7 @@ app.get('/vehicles/:type', async (req, res) => {
 
 // Create a new vehicle
 
-app.post('/vehicles', async (req, res) => {
+app.post('/vehicles', vehiclesMiddleware.sanitizeCreateVehicleInputs,async (req, res) => {
   const { type, limit } = req.body;
 
   try {
@@ -288,7 +295,7 @@ app.post('/vehicles', async (req, res) => {
 
 // Update a vehicle
 
-app.put('/vehicles/:type', async (req, res) => {
+app.put('/vehicles/:type', vehiclesMiddleware.sanitizeUpdateVehicleInputs,async (req, res) => {
   const { type } = req.params;
   const { newLimit } = req.body;
 
@@ -319,9 +326,6 @@ app.delete('/vehicles/:type', async (req, res) => {
       res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
     }
   }
-});
-app.listen(process.env.SERVICE_PORT, () => {
-  console.log('Server is running on port 3000');
 });
 
 // Transits routes
