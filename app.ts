@@ -10,6 +10,7 @@ import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
 import * as gatesMiddleware from './middlewares/gatesMiddleware';
 import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
+import * as trasnsitsMiddleware from './middlewares/transitsMiddleware';
 
 
 
@@ -358,7 +359,7 @@ app.get('/transits/:id', async (req, res) => {
     if (transit) {
       res.status(200).json(transit);
     } else {
-      res.status(404).json({ error: 'Section not found' });
+      res.status(404).json({ error: 'Transit not found' });
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -370,7 +371,7 @@ app.get('/transits/:id', async (req, res) => {
 });
 // Create a new transit
 
-app.post('/transits', async (req, res) => {
+app.post('/transits',trasnsitsMiddleware.sanitizeCreateTransitInput, async (req, res) => {
   const { plate, speed, weather, vehicles_types, gate } = req.body;
 
   try {

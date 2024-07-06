@@ -2,7 +2,6 @@ import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, Model } from 'sequelize';
 import { Vehicle } from './vehicles'; // Import the Vehicle model
 import { Gate } from './gates'; // Import the Gates model
-import { type } from "os";
 
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
@@ -93,8 +92,8 @@ export async function getTransit(transitId: number): Promise<any> {
         result = await Transit.findByPk(transitId, { raw: true });
         return result;
     } catch (error) {
-        console.error('Error during Section search in the database.:', error);
-        throw new Error('Error during Section search in the database.');
+        console.error('Error during Transit search in the database.:', error);
+        throw new Error('Error during Transit search in the database.');
     }
 }
 

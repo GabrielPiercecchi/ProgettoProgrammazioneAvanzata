@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 // Funzione di validazione per il limite di velocità
-function validateSpeedLimit(limit: number): boolean {
+export function validateSpeedLimit(limit: number): boolean {
     return Number.isInteger(limit) && limit >= 30 && limit <= 150;
 }
 
