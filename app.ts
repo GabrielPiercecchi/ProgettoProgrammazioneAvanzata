@@ -13,7 +13,7 @@ import * as transitsController from './controllers/transitsController';
 
 
 const app = express();
-const port = process.env.SERVICE_PORT || 3000;
+const port = process.env.SERVICE_PORT;
 
 // Middleware per il parsing del corpo delle richieste in formato JSON
 app.use(express.json());
@@ -232,30 +232,6 @@ app.delete('/sections/:id', async (req, res) => {
   }
 });
 
-// // Route createTransit
-// app.post('/transits', async (req, res) => {
-//   const { plate, transit_date, speed, weather, vehicles_types, gate, used } = req.body;
-
-//   try {
-//     const newTransit = await .create({
-//       plate,
-//       transit_date,
-//       speed,
-//       weather,
-//       vehicles_types,
-//       gate,
-//       used
-//     });
-//     res.status(201).json(newTransit);
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       res.status(500).json({ error: error.message });
-//     } else {
-//       res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-//     }
-//   }
-// });
-
 // Vehicles routes
 
 // Get all vehicles
@@ -344,7 +320,7 @@ app.delete('/vehicles/:type', async (req, res) => {
     }
   }
 });
-app.listen(3000, () => {
+app.listen(process.env.SERVICE_PORT, () => {
   console.log('Server is running on port 3000');
 });
 
@@ -391,17 +367,15 @@ app.get('/transits/:id', async (req, res) => {
 // Create a new transit
 
 app.post('/transits', async (req, res) => {
-  const { plate, transit_date, speed, weather, vehicles_types, gate, used } = req.body;
+  const { plate, speed, weather, vehicles_types, gate } = req.body;
 
   try {
     const newTransit = await transitsController.createTransit(
       plate,
-      transit_date,
       speed,
       weather,
       vehicles_types,
       gate,
-      used
     );
     res.status(201).json(newTransit);
   } catch (error) {
@@ -418,14 +392,16 @@ app.post('/transits', async (req, res) => {
 // Route updateSection
 app.put('/transits/:id', async (req, res) => {
   const { id } = req.params;
-  const { newPlate, newTransit_date, newSpeed, newWeather, newVehicles_types, newGate, newUsed} = req.body;
-
+  const { newPlate, newSpeed, newWeather, newVehicles_types, newGate } = req.body;
+  console.log(req.body);
+  console.log(id);
+  console.log(req.body.newPlate, req.body.newSpeed, req.body.newWeather, req.body.newVehicles_types, req.body.newGate );
   try {
     // Convert id from string to number
     const transitId = parseInt(id, 10); // Use parseInt with base 10
-    const newDate = new Date(newTransit_date);
+    //const newDate = new Date(newTransit_date);
 
-    const updatedTransit = await transitsController.updateTransit(transitId, newPlate, newDate, newSpeed, newWeather, newVehicles_types, newGate, newUsed);
+    const updatedTransit = await transitsController.updateTransit(transitId, newPlate, newSpeed, newWeather, newVehicles_types, newGate);
     if (updatedTransit) {
       res.status(200).json(updatedTransit);
     } else {
@@ -440,21 +416,23 @@ app.put('/transits/:id', async (req, res) => {
   }
 });
 
-//   try {
-//     const transit = await transitsModel.getTransit(plate, transit_date);
-//     if (transit) {
-//       res.status(200).json(transit);
-//     } else {
-//       res.status(404).json({ error: 'Transit not found' });
-//     }
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       res.status(500).json({ error: error.message });
-//     } else {
-//       res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-//     }
-//   }
-// });
+// Delete a transit
+
+app.delete('/transits/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const transitId = parseInt(id, 10)
+    const deletedTransit = await transitsController.deleteTransit(transitId);
+    res.status(200).json(deletedTransit);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
 
 
 // Sync db and start server
