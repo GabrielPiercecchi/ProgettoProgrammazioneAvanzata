@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 // Funzione di validazione per la location
-function validateLocation(location: string): boolean {
+export function validateLocation(location: string): boolean {
     const regex = /^LAT-?\d{2}\.\d{6}LON-?\d{2}\.\d{6}$/;
     return regex.test(location);
 }
