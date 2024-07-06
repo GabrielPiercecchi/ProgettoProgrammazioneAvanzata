@@ -7,7 +7,7 @@ function validateLocation(location: string): boolean {
 }
 
 // Funzione di validazione per id
-function validateId(id: number): boolean {
+export function validateId(id: number): boolean {
     return Number.isInteger(id);
 }
 

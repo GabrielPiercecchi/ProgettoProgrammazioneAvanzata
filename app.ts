@@ -369,6 +369,7 @@ app.get('/transits/:id', async (req, res) => {
     }
   }
 });
+
 // Create a new transit
 
 app.post('/transits',transitsMiddleware.sanitizeCreateTransitInput, async (req, res) => {
@@ -394,18 +395,16 @@ app.post('/transits',transitsMiddleware.sanitizeCreateTransitInput, async (req, 
 
 // Update a transit
 
-// Route updateSection
-app.put('/transits/:id', async (req, res) => {
+app.put('/transits/:id',transitsMiddleware.sanitizeUpdateTransitInputs, async (req, res) => {
   const { id } = req.params;
+  console.log(typeof(id));
   const { newPlate, newSpeed, newWeather, newVehicles_types, newGate } = req.body;
-  console.log(req.body);
-  console.log(id);
-  console.log(req.body.newPlate, req.body.newSpeed, req.body.newWeather, req.body.newVehicles_types, req.body.newGate );
+ 
   try {
     // Convert id from string to number
     const transitId = parseInt(id, 10); // Use parseInt with base 10
     //const newDate = new Date(newTransit_date);
-
+    console.log(typeof(transitId));
     const updatedTransit = await transitsController.updateTransit(transitId, newPlate, newSpeed, newWeather, newVehicles_types, newGate);
     if (updatedTransit) {
       res.status(200).json(updatedTransit);
@@ -423,7 +422,7 @@ app.put('/transits/:id', async (req, res) => {
 
 // Delete a transit
 
-app.delete('/transits/:id', async (req, res) => {
+app.delete('/transits/:id',transitsMiddleware.sanitizeDeleteTransitInput, async (req, res) => {
   const { id } = req.params;
 
   try {

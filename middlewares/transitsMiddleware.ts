@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateSpeedLimit } from './vehiclesMiddleware';
 import { validateLocation } from './gatesMiddleware';
+import { validateId } from './sectionsMiddleware';
 
 
 enum Weather {
@@ -57,35 +58,55 @@ export function sanitizeCreateTransitInput(req: Request, res: Response, next: Ne
 };
 
 export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: NextFunction) {
-    const { transitId } = req.params;
-    const { plate, speed, weather, vehicles_types, gate } = req.body;
+    const { id } = req.params;
+    //console.log(typeof(id));
+    const { newPlate, newSpeed, newWeather, newVehicles_types, newGate } = req.body;
 
+    // Validation of id
+    //console.log(typeof(transitId));
+    if(!validateId(Number(id))){
+        //console.log(typeof(transitId));
+        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+    }
     // Validation of the plate
-    if(!validatePlate(plate)){
+    if(!validatePlate(newPlate)){
         return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA' });
     }
 
     // Validation of the speed
-    if(!validateSpeedLimit(speed)){
+    if(!validateSpeedLimit(newSpeed)){
         return res.status(400).json({ error: 'Invalid speed. Speed must be an integer between 30 and 150.' });
     }
 
     // Validation of the weather
-    if(!validateWeather(weather)){
+    if(!validateWeather(newWeather)){
         return res.status(400).json({ error: 'Invalid weather. Weather must be good weather or bad weather.' });
     }
 
     // Validation of the vehicles_types
-    if(!validateVehicleType(vehicles_types)){
+    if(!validateVehicleType(newVehicles_types)){
         return res.status(400).json({ error: 'Invalid vehicle type. Vehicle type must be a string.' });
     }
 
     // Validation of the gate
-    if(!validateLocation(gate)){
-        console.log(gate);
+    if(!validateLocation(newGate)){
+        //console.log(gate);
         return res.status(400).json({ error: 'Invalid gate format. Expected format: LAT43.615899LON13.518915' });
     }
 
+    // If all validations pass, it moves on
+    next();
+}
+
+export function sanitizeDeleteTransitInput(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    //console.log(typeof(id));
+    // Validation of id
+    //console.log(typeof(transitId));
+    if(!validateId(Number(id))){
+        //console.log(typeof(transitId));
+        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+    }
     // If all validations pass, it moves on
     next();
 }
