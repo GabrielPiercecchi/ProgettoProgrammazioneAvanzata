@@ -12,6 +12,32 @@ function validateUsername(username: string): boolean {
     return regex.test(username) && isNaN(Number(username));
 }
 
+// Middleware per la sanitizzazione dei parametri per GET
+export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.params;
+
+    // Validazione della location
+    if (!validateUsername(username)) {
+        return res.status(400).json({ error: 'Invalid username. Id must be an string.' });
+    }
+
+    // Se tutte le validazioni passano, passa al middleware successivo o al controller
+    next();
+}
+
+// Middleware per la sanitizzazione dei parametri per DELETE
+export function sanitizeDeleteGateInputs(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.params;
+
+    // Validazione della location
+    if (!validateUsername(username)) {
+        return res.status(400).json({ error: 'Invalid username. Id must be an string.' });
+    }
+
+    // Se tutte le validazioni passano, passa al middleware successivo o al controller
+    next();
+}
+
 // Middleware per la sanitizzazione dei parametri per CREATE
 export function sanitizeCreateGateInputs(req: Request, res: Response, next: NextFunction) {
     const { location, username, password } = req.body;

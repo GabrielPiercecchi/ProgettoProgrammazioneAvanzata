@@ -10,7 +10,7 @@ import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
 import * as gatesMiddleware from './middlewares/gatesMiddleware';
 import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
-
+import * as sectionsMiddleware from './middlewares/sectionsMiddleware';
 
 
 
@@ -81,7 +81,7 @@ app.get('/gates', async (req, res) => {
 });
 
 // Route getGates
-app.get('/gates/:username', async (req, res) => {
+app.get('/gates/:username', gatesMiddleware.sanitizeGetGateInputs, async (req, res) => {
   const { username } = req.params;
 
   try {
@@ -122,7 +122,7 @@ app.put('/gates/:location', gatesMiddleware.sanitizeUpdateGateInputs, async (req
 });
 
 // Route deleteGates
-app.delete('/gates/:username', async (req, res) => {
+app.delete('/gates/:username', gatesMiddleware.sanitizeDeleteGateInputs, async (req, res) => {
   const { username } = req.params;
 
   try {
@@ -144,7 +144,7 @@ app.delete('/gates/:username', async (req, res) => {
 // Section routes
 
 // Route createSection
-app.post('/sections', async (req, res) => {
+app.post('/sections', sectionsMiddleware.sanitizeCreateSectionInputs,async (req, res) => {
   const { initialGate, finalGate } = req.body;
 
   try {
@@ -174,7 +174,7 @@ app.get('/sections', async (req, res) => {
 });
 
 // Route getSection
-app.get('/sections/:id', async (req, res) => {
+app.get('/sections/:id', sectionsMiddleware.sanitizeGetSectionInputs, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -197,7 +197,7 @@ app.get('/sections/:id', async (req, res) => {
 });
 
 // Route updateSection
-app.put('/sections/:id', async (req, res) => {
+app.put('/sections/:id', sectionsMiddleware.sanitizeUpdateSectionInputs, async (req, res) => {
   const { id } = req.params;
   const { newInitialGate, newFinalGate } = req.body;
 
@@ -221,7 +221,7 @@ app.put('/sections/:id', async (req, res) => {
 });
 
 // Route deleteSection
-app.delete('/sections/:id', async (req, res) => {
+app.delete('/sections/:id', sectionsMiddleware.sanitizeDeleteSectionInputs, async (req, res) => {
   const { id } = req.params;
 
   try {

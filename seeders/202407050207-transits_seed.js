@@ -6,21 +6,21 @@ module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.bulkInsert('transits', [
             {
-                plate: 'ABC123',
+                plate: 'AB123CD',
                 transit_date: new Date(),
-                speed: 50,
+                speed: 160,
                 weather: 'good weather',
                 vehicles_types: 'Car', // Sostituisci con il tipo di veicolo corretto
-                gate: 'LAT43.6158299LON13.518915', // Capri_1
+                gate: 'LAT43.615829LON13.518915', // Capri1
                 used: false
             },
             {
-                plate: 'XYZ789',
+                plate: 'XY987ZT',
                 transit_date: new Date(),
                 speed: 60,
                 weather: 'bad weather',
                 vehicles_types: 'Truck', // Sostituisci con il tipo di veicolo corretto
-                gate: 'LAT44.494887LON11.3426163', // Capri_2
+                gate: 'LAT44.494887LON11.342616', // Capri2
                 used: false
             }
         ]);

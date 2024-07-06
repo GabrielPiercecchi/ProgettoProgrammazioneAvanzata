@@ -6,9 +6,9 @@ const { Section } = require('../models/sections'); // Assuming your model is loc
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     // Coordinate initialGate
-    const initialGate = 'LAT43.6158299LON13.518915';
+    const initialGate = 'LAT43.615829LON13.518915';
     // Coordinate finalGate
-    const finalGate = 'LAT44.494887LON11.3426163';
+    const finalGate = 'LAT44.494887LON11.342616';
 
     try {
       // Parse the coordinates
@@ -34,11 +34,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    // Since Sequelize is managing migrations, down function is usually unnecessary for seeds
-    // If needed, you would typically delete the inserted record(s) here
-    // For example:
-    // await Section.destroy({ where: { initialGate: 'LAT43.6158299LON13.518915', finalGate: 'LAT44.494887LON11.3426163' } });
-    
     console.log('Down function not implemented for seed.');
   }
 };
