@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { validateNotNullorEmpty } from './vehiclesMiddleware';
 
 // Funzione di validazione per la location
 export function validateLocation(location: string): boolean {
@@ -29,6 +30,10 @@ export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFun
 export function sanitizeDeleteGateInputs(req: Request, res: Response, next: NextFunction) {
     const { username } = req.params;
 
+    if(!validateNotNullorEmpty(username)) { 
+        return res.status(400).json({ error: 'Username cannot be null or undefined.' });
+    }
+
     // Validazione della location
     if (!validateUsername(username)) {
         return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
@@ -41,6 +46,10 @@ export function sanitizeDeleteGateInputs(req: Request, res: Response, next: Next
 // Middleware per la sanitizzazione dei parametri per CREATE
 export function sanitizeCreateGateInputs(req: Request, res: Response, next: NextFunction) {
     const { location, username, password } = req.body;
+
+    if (!validateNotNullorEmpty(location) || !validateNotNullorEmpty(username) || !validateNotNullorEmpty(password)) {
+        return res.status(400).json({ error: 'Location, username and password cannot be null or undefined.' });
+    }
 
     // Validazione della location
     if (!validateLocation(location)) {
@@ -66,6 +75,10 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
     const { location } = req.params;
     const { newUsername, newPassword } = req.body;
 
+    if(!validateNotNullorEmpty(newUsername) && !validateNotNullorEmpty(newPassword)) {
+        return res.status(400).json({ error: 'New username and new password cannot be null or undefined.' });
+    }
+    
     // Validazione della location
     if (!validateLocation(location)) {
         return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.6158299LON13.518915' });

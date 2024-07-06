@@ -11,6 +11,10 @@ function validateType(type: string): boolean {
     return regex.test(type) && isNaN(Number(type));
 }
 
+// Params cant be null
+export function validateNotNullorEmpty(value: any): boolean {
+    return value !== null && value !== undefined && value !== '';}
+
 // Middleware per la sanitizzazione dei parametri per GET
 export function sanitizeGetVehicleInputs(req: Request, res: Response, next: NextFunction) {
     const { type } = req.params;
@@ -27,6 +31,10 @@ export function sanitizeGetVehicleInputs(req: Request, res: Response, next: Next
 // Middleware per la sanitizzazione dei parametri per CREATE
 export function sanitizeCreateVehicleInputs(req: Request, res: Response, next: NextFunction) {
     const { type, limit } = req.body;
+
+    if (!validateNotNullorEmpty(type) || !validateNotNullorEmpty(limit)) {
+        return res.status(400).json({ error: 'Type and limit cannot be null or undefined.' });
+    }
 
     // Validazione del tipo
     if (!validateType(type)) {
@@ -45,6 +53,10 @@ export function sanitizeCreateVehicleInputs(req: Request, res: Response, next: N
 // Middleware per la sanitizzazione dei parametri per UPDATE
 export function sanitizeUpdateVehicleInputs(req: Request, res: Response, next: NextFunction) {
     const { newLimit } = req.body;
+
+    if (!validateNotNullorEmpty(newLimit)) {
+        return res.status(400).json({ error: 'New limit cannot be null or undefined.' });
+    }
 
     // Validazione del nuovo limite di velocità
     if (!validateSpeedLimit(newLimit)) {
