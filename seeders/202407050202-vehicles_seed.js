@@ -8,17 +8,16 @@ module.exports = {
         await queryInterface.bulkInsert('vehicles', [
             {
                 type: 'Car',
-                limit: 5
+                limit: 150
             },
             {
                 type: 'Truck',
-                limit: 10
+                limit: 90
             },
             {
                 type: 'Motorcycle',
-                limit: 2
+                limit: 120
             }
-            // Aggiungi altri oggetti se necessario
         ], {});
     },
 
