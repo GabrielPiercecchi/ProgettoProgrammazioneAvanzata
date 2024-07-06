@@ -34,8 +34,13 @@ export const Gate = sequelize.define('gates', {
 export async function getGates(username: string): Promise<any> {
     let result: any;
     try {
+        // Converti il parametro type in minuscolo per la ricerca
+        const usernameLowerCase = username.toLowerCase();
         result = await Gate.findOne({
-            where: { username },
+            where: sequelize.where(
+                sequelize.fn('lower', sequelize.col('username')), 
+                usernameLowerCase
+            ),
             raw: true
         });
 
@@ -55,8 +60,6 @@ export async function getGates(username: string): Promise<any> {
 export async function getAllGates(): Promise<any> {
     try {
         const gates = await Gate.findAll();
-        console.log('Gates:');
-        console.log(gates);
         return gates;
     } catch (error) {
         if (error instanceof Error) {
