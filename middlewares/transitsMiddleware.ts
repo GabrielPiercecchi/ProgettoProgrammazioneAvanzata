@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateLocation } from './gatesMiddleware';
 import { validateId } from './sectionsMiddleware';
-
+import { validateNotNullorEmpty } from './vehiclesMiddleware';
 
 enum Weather {
     GoodWeather = 'good weather',
@@ -31,6 +31,9 @@ export function validateSpeed(speed: number): boolean {
 export function sanitizeCreateTransitInput(req: Request, res: Response, next: NextFunction) {
     const { plate, speed, weather, vehicles_types, gate } = req.body;
 
+    if(!validateNotNullorEmpty(plate) || !validateNotNullorEmpty(speed) || !validateNotNullorEmpty(weather) || !validateNotNullorEmpty(vehicles_types) || !validateNotNullorEmpty(gate)){
+        return res.status(400).json({ error: 'Plate, speed, weather, vehicles_types and gate cannot be null or undefined' });
+    }
     // Validation of the plate
     if(!validatePlate(plate)){
         return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA' });
@@ -74,6 +77,10 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
     if(!validateId(Number(id))){
         //console.log(typeof(transitId));
         return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+    }
+
+    if(!validateNotNullorEmpty(newPlate) || !validateNotNullorEmpty(newSpeed) || !validateNotNullorEmpty(newWeather) || !validateNotNullorEmpty(newVehicles_types) || !validateNotNullorEmpty(newGate)){
+        return res.status(400).json({ error: 'Plate, speed, weather, vehicles_types and gate cannot be null or undefined' });
     }
     // Validation of the plate
     if(!validatePlate(newPlate)){
