@@ -22,6 +22,11 @@ app.use(express.json());
 
 let serverStarted = false;
 
+// Open the server
+app.listen(process.env.SERVICE_PORT, () => {
+  console.log('Server is running on port 3000');
+});
+
 // Define a test route
 app.get('/test', (req, res) => {
   res.send('This is a test route!');
@@ -345,9 +350,6 @@ app.delete('/vehicles/:type', async (req, res) => {
       res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
     }
   }
-});
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
 });
 
 // Transits routes
