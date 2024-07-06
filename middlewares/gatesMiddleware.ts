@@ -18,7 +18,7 @@ export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFun
 
     // Validazione della location
     if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid username. Id must be an string.' });
+        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -31,7 +31,7 @@ export function sanitizeDeleteGateInputs(req: Request, res: Response, next: Next
 
     // Validazione della location
     if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid username. Id must be an string.' });
+        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -49,7 +49,7 @@ export function sanitizeCreateGateInputs(req: Request, res: Response, next: Next
 
     // Validazione dell'username
     if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and cannot be numeric only.' });
+        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
     }
 
     // Validazione della password
@@ -73,7 +73,7 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
 
     // Validazione del nuovo username
     if (newUsername && !validateUsername(newUsername)) {
-        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and cannot be numeric only.' });
+        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
     }
 
     // Validazione della nuova password

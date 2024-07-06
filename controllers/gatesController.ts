@@ -46,8 +46,13 @@ export async function updateGate(location: string, newUsername: string, newPassw
             throw new Error('Gate not found.');
         }
     } catch (error) {
-        console.error('Error during Gate update in the database:', error);
-        throw new Error('Error during Gate update in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Gate updating in the database:', error.message);
+            throw new Error(`Error during Gate updating in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Gate updating in the database:', error);
+            throw new Error('Unknown error during Gate updating in the database.');
+        }
     }
 }
 
@@ -62,7 +67,12 @@ export async function deleteGate(username: string): Promise<any> {
             throw new Error('Gate not found.');
         }
     } catch (error) {
-        console.error('Error during Gate deletion in the database:', error);
-        throw new Error('Error during Gate deletion in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Gate deletion in the database:', error.message);
+            throw new Error(`Error during Gate deletion in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Gate deletion in the database:', error);
+            throw new Error('Unknown error during Gate deletion in the database.');
+        }
     }
 }

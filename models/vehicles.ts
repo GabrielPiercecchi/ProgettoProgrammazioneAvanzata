@@ -39,8 +39,13 @@ export async function getVehicles(type: string): Promise<any> {
         console.log(vehicle);
         return vehicle;
     } catch (error) {
-        console.error('Error during Vehicle search in the database.:', error);
-        throw new Error('Error during Vehicles search in the database.');
+        if (error instanceof Error) {
+            console.error('Error during Vehicles fetch in the database:', error.message);
+            throw new Error(`Error during Vehicles fetch in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Vehicles fetch in the database:', error);
+            throw new Error('Unknown error during Vehicles fetch in the database.');
+        }
     }
 };
 
@@ -52,45 +57,15 @@ export async function getAllVehicles(): Promise<any> {
         console.log(vehicles);
         return vehicles;
     } catch (error) {
-        console.error('Error fetching vehicles:', error);
-        throw new Error('Error fetching vehicles.');
+        if (error instanceof Error) {
+            console.error('Error during Vehicles fetch in the database:', error.message);
+            throw new Error(`Error during Vehicles fetch in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Vehicles fetch in the database:', error);
+            throw new Error('Unknown error during Vehicles fetch in the database.');
+        }
     }
 };
-
-
-// // UPDATE
-// async function updateVehicle(type: string, newLimit: number): Promise<any> {
-//     let result:any;
-//     try {
-//         result = await Vehicle.findByPk(type);
-//         if (result) {
-//             result.limit = newLimit;
-//             await result.save();
-//             return result;
-//         } else {
-//             throw new Error('Vehicle not found.');
-//         }
-//     } catch (error) {
-//         console.error('Error during Vehicle update in the database:', error);
-//         throw new Error('Error during Vehicle update in the database.');
-//     }
-// }
-
-// // DELETE
-// async function deleteVehicle(type: string): Promise<any> {
-//     let result:any;
-//     try {
-//         result = await Vehicle.destroy({ where: { type: type } });
-//         if (result) {
-//             return `Vehicle with type ${type} was deleted successfully.`;
-//         } else {
-//             throw new Error('Vehicle not found.');
-//         }
-//     } catch (error) {
-//         console.error('Error during Vehicle deletion in the database:', error);
-//         throw new Error('Error during Vehicle deletion in the database.');
-//     }
-// }
 
 /**
  * Verifies if the request is made by an operator.
