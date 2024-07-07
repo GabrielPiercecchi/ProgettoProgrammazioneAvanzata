@@ -9,10 +9,12 @@ import * as gatesController from './controllers/gatesController';
 import * as sectionsController from './controllers/sectionsController';
 import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
+import * as ticketsController from './controllers/ticketsController';
 import * as gatesMiddleware from './middlewares/gatesMiddleware';
 import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
 import * as sectionsMiddleware from './middlewares/sectionsMiddleware';
 import * as transitsMiddleware from './middlewares/transitsMiddleware';
+import * as ticketsMiddleware from './middlewares/ticketsMiddleware';
 
 
 
@@ -371,6 +373,20 @@ app.get('/transits/:id', transitsMiddleware.sanitizeGetTransitInput, async (req,
   }
 });
 
+// Route to get all transits with plate "notFound"
+app.get('/notFoundTransits', async (req, res) => {
+  try {
+      const tickets = await transitsModel.getAllNotFoundTickets();
+      res.status(200).json(tickets);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
 // Create a new transit
 
 app.post('/transits',transitsMiddleware.sanitizeCreateTransitInput, async (req, res) => {
@@ -423,7 +439,7 @@ app.put('/transits/:id',transitsMiddleware.sanitizeUpdateTransitInputs, async (r
 
 // Delete a transit
 
-app.delete('/transits/:id',transitsMiddleware.sanitizeDeleteTransitInput, async (req, res) => {
+app.delete('/transits/:id', transitsMiddleware.sanitizeDeleteTransitInput, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -457,15 +473,54 @@ app.get('/tickets', async (req, res) => {
 });
 
 // Get tickets by plates and time
-app.get('/tickets/:plate', async (req, res) => {
-  const { plate } = req.params;
+app.post('/tickets', ticketsMiddleware.sanitizeGetTicketsInputs, async (req, res) => {
+  const { plates, startDate, endDate } = req.body;
+
+  // Converte plates in un array
+  const platesArray = plates ? plates.split(', ') : [];
 
   try {
-    const tickets = await ticketsModel.getTicket(plate);
-    if (tickets) {
+    const tickets = await ticketsModel.getTicketsByPlatesAndTime(platesArray, startDate, endDate);
+    if (tickets.length > 0) {
       res.status(200).json(tickets);
     } else {
       res.status(404).json({ error: 'Tickets not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Get section with most tickets
+app.get('/mostTicketsSection', async (req, res) => {
+  try {
+    const section = await ticketsController.getSectionWithMostTickets();
+    if (section) {
+      res.status(200).json(section);
+    } else {
+      res.status(404).json({ error: 'Section not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Get section with highest and lowest speed
+app.get('/speedSection', async (req, res) => {
+  try {
+    const section = await ticketsController.getSectionWithHighestAndLowestSpeed();
+    if (section) {
+      res.status(200).json(section);
+    } else {
+      res.status(404).json({ error: 'Section not found' });
     }
   } catch (error) {
     if (error instanceof Error) {

@@ -1,6 +1,7 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, Model } from 'sequelize';
 import { Gate } from './gates'; // Import the Gate model
+import { Op } from 'sequelize'; // Import the Sequelize operator
 
 import dotenv from 'dotenv';
 
@@ -70,10 +71,28 @@ export async function getAllTickets(): Promise<any> {
     }
 }
 
-// GET TICKET BY PLATE
-export async function getTicket(plate: string): Promise<any> {
+// GET TICKET BY PLATE AND TIME
+export async function getTicketsByPlatesAndTime(plates: string[], startDate: string, endDate: string): Promise<any> {
     try {
-        const result = await Ticket.findAll({ where: { plate } });
+        const whereClause: any = {
+            plate: { [Op.in]: plates }
+        };
+
+        if (startDate && endDate) {
+            whereClause.ticket_date = {
+                [Op.between]: [new Date(startDate), new Date(endDate)]
+            };
+        } else if (startDate) {
+            whereClause.ticket_date = {
+                [Op.gte]: new Date(startDate)
+            };
+        } else if (endDate) {
+            whereClause.ticket_date = {
+                [Op.lte]: new Date(endDate)
+            };
+        }
+
+        const result = await Ticket.findAll({ where: whereClause });
         return result;
     } catch (error) {
         if (error instanceof Error) {

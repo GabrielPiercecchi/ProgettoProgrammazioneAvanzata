@@ -1,5 +1,6 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, Model } from 'sequelize';
+import { User } from './users';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
 
@@ -16,18 +17,21 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
  * Define the model 'Operator'
  */
 export const Operator = sequelize.define('operators', {
-    id_operator: { 
+    role: { 
         type: DataTypes.STRING, 
-        defaultValue: process.env.DEFAULT_ID_OPERATOR, 
-        primaryKey: true },
+        primaryKey: true,
+        defaultValue: 'operator',
+        references: {
+            model: User,
+            key: 'role'
+        }
+    },
     username: { 
         type: DataTypes.STRING,
-        defaultValue: process.env.DEFAULT_USERNAME_OPERATOR, 
         allowNull: false, 
         unique: true }, //TODO:regex
     password: { 
         type: DataTypes.STRING, 
-        defaultValue: process.env.DEFAULT_PASSWORD_OPERATOR, 
         allowNull: false }, //TODO:regex
 },
     {

@@ -81,6 +81,28 @@ export async function getAllTransits(): Promise<any[]> {
     }
 }
 
+// GET ALL TRANSITS WITH PLATE 'notFound'
+export async function getAllNotFoundTickets(): Promise<any[]> {
+    try {
+        const tickets = await Transit.findAll({ where: { plate: 'notFound' } });
+
+        if (tickets.length === 0) {
+            throw new Error('No Transits found with plate "notFound"');
+        }
+
+        return tickets;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error during Transits fetching in the database:', error.message);
+            throw new Error(`Error during Transits fetching in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Transits fetching in the database:', error);
+            throw new Error('Unknown error during Transits fetching in the database.');
+        }
+    }
+}
+
+
 // Method to get a transit by plate and transit_date
 export async function getTransit(transitId: number): Promise<any> {
     let result:any;
