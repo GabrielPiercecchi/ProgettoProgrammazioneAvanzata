@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateSpeedLimit } from './vehiclesMiddleware';
 import { validateLocation } from './gatesMiddleware';
 import { validateId } from './sectionsMiddleware';
 
@@ -12,6 +11,10 @@ enum Weather {
 function validatePlate(plate: string): boolean {
     const regex = /^[A-Z]{2}\d{3}[A-Z]{2}$/;
     return regex.test(plate);
+}
+
+function validateSpeedLimit(speed: number): boolean {
+    return typeof speed === 'number';
 }
 
 function validateWeather(weather: string): boolean {
@@ -98,7 +101,24 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
     next();
 }
 
+// Middleware for sanitizing the parameters for DELETE
+
 export function sanitizeDeleteTransitInput(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+    //console.log(typeof(id));
+    // Validation of id
+    //console.log(typeof(transitId));
+    if(!validateId(Number(id))){
+        //console.log(typeof(transitId));
+        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+    }
+    // If all validations pass, it moves on
+    next();
+}
+
+// Middleware for sanitizing the parameters for GET
+
+export function sanitizeGetTransitInput(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     //console.log(typeof(id));
     // Validation of id

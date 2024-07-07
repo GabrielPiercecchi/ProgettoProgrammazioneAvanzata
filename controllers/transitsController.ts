@@ -1,13 +1,16 @@
 import { Transit } from '../models/transits';
+import * as ticketController from './ticketsController';
 
 // CREATE 
-export const createTransit = async (plate: string, speed: number, weather: string, vehicles_types: string, gate: string ): Promise<void> => {
+export const createTransit = async (plate: string, speed: number, weather: string, vehicles_types: string, gate: string): Promise<void> => {
     let result: any;
     try {
         const transit_date = new Date();
         result = await Transit.create({ plate, transit_date, speed, weather, vehicles_types, gate });
+        // we should call the function to check and handle tickets
+        ticketController.checkAndHandleTickets();
         return result;
-        
+
     } catch (error) {
         if (error instanceof Error) {
             console.error('Error during Transit creation in the database:', error.message);
@@ -17,11 +20,11 @@ export const createTransit = async (plate: string, speed: number, weather: strin
             throw new Error('Unknown error during Transit creation in the database.');
         }
     }
-} 
+}
 
 // Update 
 
-export async function updateTransit( transitId: number, newPlate: string, newSpeed: number, newWeather: string, newVehicles_types: string, newGate: string ): Promise<any> {
+export async function updateTransit(transitId: number, newPlate: string, newSpeed: number, newWeather: string, newVehicles_types: string, newGate: string): Promise<any> {
     let result: any;
     try {
         result = await Transit.findByPk(transitId);
@@ -36,6 +39,8 @@ export async function updateTransit( transitId: number, newPlate: string, newSpe
             //result.used = newUsed;
 
             await result.save();
+            // we should call the function to check and handle tickets
+            ticketController.checkAndHandleTickets();
             return result;
         } else {
             throw new Error('Transit not found.');
@@ -53,7 +58,7 @@ export async function updateTransit( transitId: number, newPlate: string, newSpe
 
 // Delete 
 
-export async function deleteTransit( transitId: number ): Promise<any> {
+export async function deleteTransit(transitId: number): Promise<any> {
     try {
         const result = await Transit.findByPk(transitId);
         if (result) {

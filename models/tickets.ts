@@ -9,9 +9,9 @@ dotenv.config();
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
 /**
- * model 'Operator'
+ * model 'Ticket'
  *
- * Define the model 'Operator'
+ * Define the model 'Ticket' with its attributes
  */
 export const Ticket = sequelize.define('tickets', {
     id_ticket: { 
@@ -53,3 +53,35 @@ export const Ticket = sequelize.define('tickets', {
         modelName: 'tickets',
         timestamps: false, //TODO: hooks
     });
+
+// GET ALL TICKETS
+export async function getAllTickets(): Promise<any> {
+    try {
+        const result = await Ticket.findAll();
+        return result;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error during Tickets fetching in the database:', error.message);
+            throw new Error(`Error during Tickets fetching in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Tickets fetching in the database:', error);
+            throw new Error('Unknown error during Tickets fetching in the database.');
+        }
+    }
+}
+
+// GET TICKET BY PLATE
+export async function getTicket(plate: string): Promise<any> {
+    try {
+        const result = await Ticket.findAll({ where: { plate } });
+        return result;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error during Tickets fetching in the database:', error.message);
+            throw new Error(`Error during Tickets fetching in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Tickets fetching in the database:', error);
+            throw new Error('Unknown error during Tickets fetching in the database.');
+        }
+    }
+}
