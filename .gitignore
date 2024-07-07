@@ -131,3 +131,6 @@ dist
 
 # others
 TIPS.txt
+
+#private key
+private_key.pem
