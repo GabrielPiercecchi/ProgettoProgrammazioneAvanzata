@@ -33,7 +33,7 @@ export function sanitizeCreateTransitInput(req: Request, res: Response, next: Ne
         return res.status(400).json({ error: 'Plate, speed, weather, vehicles_types and gate cannot be null or undefined' });
     }
     // Validation of the plate
-    if(!validatePlate(plate)){
+    if(!validatePlate(plate) && !(plate === "notFound")){
         return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA' });
     }
 
@@ -79,7 +79,7 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
         return res.status(400).json({ error: 'Plate, speed, weather, vehicles_types and gate cannot be null or undefined' });
     }
     // Validation of the plate
-    if(!validatePlate(newPlate)){
+    if(!validatePlate(newPlate) && !(newPlate === "notFound")){
         return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA' });
     }
 

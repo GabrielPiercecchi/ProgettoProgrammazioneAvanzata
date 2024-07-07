@@ -4,6 +4,7 @@ import { Vehicle } from '../models/vehicles';
 import { Ticket } from '../models/tickets';
 import { Gate } from '../models/gates';
 import { v4 as uuidv4 } from 'uuid';
+import { Op } from 'sequelize'; // Importa l'operatore Sequelize
 
 // Funzione per controllare e gestire i ticket
 export async function checkAndHandleTickets(): Promise<void> {
@@ -22,10 +23,11 @@ export async function checkAndHandleTickets(): Promise<void> {
         if (transitCount >= 2) {
             console.log("Ci sono almeno 2 transiti.");
 
-            // Step 1: Trova tutti i transiti con used = false
+            // Step 1: Trova tutti i transiti con used = false e plate diverso da "notFound"
             transits = await Transit.findAll({
                 where: {
-                    used: false
+                    used: false,
+                    plate: { [Op.ne]: 'notFound' }
                 }
             });
             console.log(`Transiti con used = false trovati: ${transits.length}`);

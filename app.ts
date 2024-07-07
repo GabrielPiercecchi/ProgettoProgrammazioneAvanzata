@@ -456,7 +456,7 @@ app.get('/tickets', async (req, res) => {
   }
 });
 
-// Get tickets by plate
+// Get tickets by plates and time
 app.get('/tickets/:plate', async (req, res) => {
   const { plate } = req.params;
 
