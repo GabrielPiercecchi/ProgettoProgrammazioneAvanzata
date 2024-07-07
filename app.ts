@@ -9,6 +9,7 @@ import * as gatesController from './controllers/gatesController';
 import * as sectionsController from './controllers/sectionsController';
 import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
+import * as ticketsController from './controllers/ticketsController';
 import * as gatesMiddleware from './middlewares/gatesMiddleware';
 import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
 import * as sectionsMiddleware from './middlewares/sectionsMiddleware';
@@ -484,6 +485,42 @@ app.post('/tickets', ticketsMiddleware.sanitizeGetTicketsInputs, async (req, res
       res.status(200).json(tickets);
     } else {
       res.status(404).json({ error: 'Tickets not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Get section with most tickets
+app.get('/mostTicketsSection', async (req, res) => {
+  try {
+    const section = await ticketsController.getSectionWithMostTickets();
+    if (section) {
+      res.status(200).json(section);
+    } else {
+      res.status(404).json({ error: 'Section not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Get section with highest and lowest speed
+app.get('/speedSection', async (req, res) => {
+  try {
+    const section = await ticketsController.getSectionWithHighestAndLowestSpeed();
+    if (section) {
+      res.status(200).json(section);
+    } else {
+      res.status(404).json({ error: 'Section not found' });
     }
   } catch (error) {
     if (error instanceof Error) {

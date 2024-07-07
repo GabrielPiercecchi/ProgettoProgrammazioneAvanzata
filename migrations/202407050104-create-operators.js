@@ -3,7 +3,7 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('operators', {
-            id_operator: {
+            role: {
                 type: Sequelize.ENUM('operator', 'gate', 'driver'),
                 defaultValue: 'operator',
                 primaryKey: true,

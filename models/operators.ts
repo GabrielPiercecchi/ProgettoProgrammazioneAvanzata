@@ -17,7 +17,7 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
  * Define the model 'Operator'
  */
 export const Operator = sequelize.define('operators', {
-    id_operator: { 
+    role: { 
         type: DataTypes.STRING, 
         primaryKey: true,
         defaultValue: 'operator',
