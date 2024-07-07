@@ -53,7 +53,7 @@ export function sanitizeCreateGateInputs(req: Request, res: Response, next: Next
 
     // Validazione della location
     if (!validateLocation(location)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.6158299LON13.518915' });
+        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
     }
 
     // Validazione dell'username
@@ -81,7 +81,7 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
     
     // Validazione della location
     if (!validateLocation(location)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.6158299LON13.518915' });
+        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
     }
 
     // Validazione del nuovo username

@@ -1,5 +1,6 @@
 import express from 'express';
 import * as gatesModel from './models/gates';
+import * as ticketsModel from './models/tickets';
 import * as vehiclesModel from './models/vehicles';
 import * as transitsModel from './models/transits';
 import * as operatorsModel from './models/operators';
@@ -439,26 +440,38 @@ app.delete('/transits/:id',transitsMiddleware.sanitizeDeleteTransitInput, async 
 });
 
 
-// Sync db and start server
-// async function startServer() {
-//   try {
-//     await DBIsConnected.getInstance().authenticate();
-//     console.log('Connection to the database has been established successfully.');
+// Ticket routes
 
-//     // await Gate.sync(); // Sync modedel Gate with the db
-//     // await Transit.sync(); // Sync model Transit with the db
-//     // await Vehicle.sync(); // Sync model Vehicle with the db
-//     console.log('Database synchronized');
+// Get all tickets
+app.get('/tickets', async (req, res) => {
+  try {
+    const tickets = await ticketsModel.getAllTickets();
+    res.status(200).json(tickets);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
 
-//     if (!serverStarted) {
-//       app.listen(port, () => {
-//         console.log(`Server is running at http://localhost:${port}`);
-//         serverStarted = true;
-//       });
-//     }
-//   } catch (error) {
-//     console.error('Unable to connect to the database:', error);
-//   }
-// }
+// Get tickets by plates and time
+app.get('/tickets/:plate', async (req, res) => {
+  const { plate } = req.params;
 
-// startServer();
+  try {
+    const tickets = await ticketsModel.getTicket(plate);
+    if (tickets) {
+      res.status(200).json(tickets);
+    } else {
+      res.status(404).json({ error: 'Tickets not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
