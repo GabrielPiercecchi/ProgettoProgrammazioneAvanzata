@@ -6,6 +6,9 @@ module.exports = {
             role: {
                 type: Sequelize.ENUM('operator', 'gate', 'driver'),
                 defaultValue: 'operator',
+            },
+            username: {
+                type: Sequelize.STRING,
                 primaryKey: true,
             },
         });

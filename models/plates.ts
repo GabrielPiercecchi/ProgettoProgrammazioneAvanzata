@@ -6,35 +6,28 @@ import { User } from './users';
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
 /**
- * model 'Driver'
+ * model 'Plate'
  *
- * Define the model 'Driver' to interface with the "vehicles" table
+ * Define the model 'Plate' to interface with the "Plate" table
  */
-export const Driver = sequelize.define('drivers', {
-    username: {
-        type: DataTypes.STRING,
-        primaryKey: true,
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+export const Plate = sequelize.define('plates', {
     plate: {
         type: DataTypes.STRING,
-        unique: true,
+        primaryKey: true,
         allowNull: false
     },
-    role: {
+    username: {
         type: DataTypes.STRING,
-        defaultValue: 'driver',
         allowNull: false,
         references: {
             model: User,
-            key: 'role'
-        }
-    }
+            key: 'username'
+        },
+        onUpdate: 'CASCADE', // Ensure username updates are cascaded to Gates table
+        onDelete: 'CASCADE' // Ensure username deletions are cascaded to Gates table
+    },
 },
     {
-        modelName: 'gates',
+        modelName: 'plates',
         timestamps: false,
     });
