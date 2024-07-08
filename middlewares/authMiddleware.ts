@@ -1,5 +1,6 @@
 import e, { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { Driver } from '../models/drivers';
 
 export const authentication = (req: Request, res: Response, next: NextFunction) => {
     try{
@@ -53,4 +54,41 @@ export function checkDriver(req: Request, res: Response, next: NextFunction){
         res.status(401).send({message: 'Unauthorized'});
     }
 }
+
+export function checkOperatororGates(req: Request, res: Response, next: NextFunction){
+    if(req.body.user.role === 'operator' || req.body.user.role === 'gate'){
+        next();
+    } else{
+        res.header('content-type', 'application/json');
+        res.status(401).send({message: 'Unauthorized'});
+    }
+}
+
+export function checkOperatorDriver(req: Request, res: Response, next: NextFunction){
+    if(req.body.user.role === 'operator')  {
+        next();
+    }
+    if(req.body.user.role === 'driver'){
+        let drivers: any;
+        try {
+            drivers = Driver.findOne({ where: { username: req.body.user.username, password: req.body.user.password } });
+            if(drivers.length === 0){
+                res.header('content-type', 'application/json');
+                res.status(401).send({message: 'Unauthorized'});
+            }
+            if(drivers = )
+            next();
+        }
+        catch(error){
+            res.header('content-type', 'application/json');
+            res.status(401).send({message: 'Unauthorized'});
+        }
+    }
+     else{
+        res.header('content-type', 'application/json');
+        res.status(401).send({message: 'Unauthorized'});
+    }
+}
+
+
 

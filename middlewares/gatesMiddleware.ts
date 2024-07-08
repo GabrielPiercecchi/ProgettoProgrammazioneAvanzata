@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateNotNullorEmpty } from './vehiclesMiddleware';
+import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
 
 // Funzione di validazione per la location
 export function validateLocation(location: string): boolean {
@@ -16,23 +16,6 @@ function validateUsername(username: string): boolean {
 // Middleware per la sanitizzazione dei parametri per GET
 export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFunction) {
     const { username } = req.params;
-
-    // Validazione della location
-    if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
-    }
-
-    // Se tutte le validazioni passano, passa al middleware successivo o al controller
-    next();
-}
-
-// Middleware per la sanitizzazione dei parametri per DELETE
-export function sanitizeDeleteGateInputs(req: Request, res: Response, next: NextFunction) {
-    const { username } = req.params;
-
-    if(!validateNotNullorEmpty(username)) { 
-        return res.status(400).json({ error: 'Username cannot be null or undefined.' });
-    }
 
     // Validazione della location
     if (!validateUsername(username)) {
@@ -92,6 +75,23 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
     // Validazione della nuova password
     if (newPassword && newPassword.length < 6) {
         return res.status(400).json({ error: 'Password must be at least 6 characters long.' });
+    }
+
+    // Se tutte le validazioni passano, passa al middleware successivo o al controller
+    next();
+}
+
+// Middleware per la sanitizzazione dei parametri per DELETE
+export function sanitizeDeleteGateInputs(req: Request, res: Response, next: NextFunction) {
+    const { username } = req.params;
+
+    if(!validateNotNullorEmpty(username)) { 
+        return res.status(400).json({ error: 'Username cannot be null or undefined.' });
+    }
+
+    // Validazione della location
+    if (!validateUsername(username)) {
+        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller

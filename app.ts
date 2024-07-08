@@ -70,7 +70,7 @@ app.post('/gates', gatesMiddleware.sanitizeCreateGateInputs, async (req, res) =>
   }
 });
 
-// Route getAllGates
+// Route getAllGates, @Francesco gli passiamo direttamente auth middleware
 app.get('/gates', async (req, res) => {
   try {
     const gates = await gatesModel.getAllGates();
@@ -351,7 +351,7 @@ app.get('/transits', async (req, res) => {
 
 // Get a specific transit
 
-app.get('/transits/:id', transitsMiddleware.sanitizeGetTransitInput, async (req, res) => {
+app.get('/transits/:id', transitsMiddleware.sanitizeGetTransitInputs, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -389,7 +389,7 @@ app.get('/notFoundTransits', async (req, res) => {
 
 // Create a new transit
 
-app.post('/transits',transitsMiddleware.sanitizeCreateTransitInput, async (req, res) => {
+app.post('/transits',transitsMiddleware.sanitizeCreateTransitInputs, async (req, res) => {
   const { plate, speed, weather, vehicles_types, gate } = req.body;
 
   try {
@@ -439,7 +439,7 @@ app.put('/transits/:id',transitsMiddleware.sanitizeUpdateTransitInputs, async (r
 
 // Delete a transit
 
-app.delete('/transits/:id', transitsMiddleware.sanitizeDeleteTransitInput, async (req, res) => {
+app.delete('/transits/:id', transitsMiddleware.sanitizeDeleteTransitInputs, async (req, res) => {
   const { id } = req.params;
 
   try {

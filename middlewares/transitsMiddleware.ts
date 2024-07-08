@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateLocation } from './gatesMiddleware';
-import { validateId } from './sectionsMiddleware';
-import { validateNotNullorEmpty } from './vehiclesMiddleware';
+import { validateLocation } from './gatesMiddleware'; // we choose to import it cause its the same
+import { validateId } from './sectionsMiddleware'; // we choose to import it cause its the same
+import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
 
 enum Weather {
     GoodWeather = 'good weather',
@@ -26,7 +26,7 @@ function validateVehicleType(vehicleType: any): boolean {
 }
 // Middleware for sanitizing the parameters for CREATE
 
-export function sanitizeCreateTransitInput(req: Request, res: Response, next: NextFunction) {
+export function sanitizeCreateTransitInputs(req: Request, res: Response, next: NextFunction) {
     const { plate, speed, weather, vehicles_types, gate } = req.body;
 
     if(!validateNotNullorEmpty(plate) || !validateNotNullorEmpty(speed) || !validateNotNullorEmpty(weather) || !validateNotNullorEmpty(vehicles_types) || !validateNotNullorEmpty(gate)){
@@ -110,7 +110,7 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
 
 // Middleware for sanitizing the parameters for DELETE
 
-export function sanitizeDeleteTransitInput(req: Request, res: Response, next: NextFunction) {
+export function sanitizeDeleteTransitInputs(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     //console.log(typeof(id));
     // Validation of id
@@ -125,7 +125,7 @@ export function sanitizeDeleteTransitInput(req: Request, res: Response, next: Ne
 
 // Middleware for sanitizing the parameters for GET
 
-export function sanitizeGetTransitInput(req: Request, res: Response, next: NextFunction) {
+export function sanitizeGetTransitInputs(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
     //console.log(typeof(id));
     // Validation of id
