@@ -11,9 +11,7 @@ import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
 import * as ticketsController from './controllers/ticketsController';
 import * as usersController from './controllers/usersController';
-//import * as gatesMiddleware from './middlewares/gatesMiddleware';
 import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
-import * as sectionsMiddleware from './middlewares/sectionsMiddleware';
 import * as transitsMiddleware from './middlewares/transitsMiddleware';
 import * as ticketsMiddleware from './middlewares/ticketsMiddleware';
 import * as usersMiddleware from './middlewares/usersMiddleware';
@@ -165,99 +163,35 @@ app.delete('/gates/:location', pipe.deleteGate, async (req: any, res: any) => {
 // Section routes
 
 // Route createSection
-app.post('/sections', sectionsMiddleware.sanitizeCreateSectionInputs, async (req, res) => {
+app.post('/sections', pipe.createSection, async (req: any, res: any) => {
   const { initialGate, finalGate } = req.body;
-
-  try {
-    const newSection = await sectionsController.createSection(initialGate, finalGate);
-    res.status(201).json(newSection);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  sectionsController.returnCreateSection(req, res, initialGate, finalGate);
 });
 
 // Route getAllSections
-app.get('/sections', async (req, res) => {
-  try {
-    const sections = await sectionsModel.getAllSections();
-    res.status(200).json(sections);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+app.get('/sections', pipe.getAllSections, async (req: any, res: any) => {
+
+  sectionsController.returAllSections(req, res);
+  
 });
 
 // Route getSection
-app.get('/sections/:id', sectionsMiddleware.sanitizeGetSectionInputs, async (req, res) => {
+app.get('/sections/:id', pipe.getSection, async (req: any, res: any) => {
   const { id } = req.params;
-
-  try {
-    // Convert id from string to number
-    const sectionId = parseInt(id, 10); // Use parseInt with base 10
-
-    const section = await sectionsModel.getSections(sectionId);
-    if (section) {
-      res.status(200).json(section);
-    } else {
-      res.status(404).json({ error: 'Section not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  sectionsController.returnSection(req, res, id);
 });
 
 // Route updateSection
-app.put('/sections/:id', sectionsMiddleware.sanitizeUpdateSectionInputs, async (req, res) => {
+app.put('/sections/:id', pipe.updateSection, async (req: any, res: any) => {
   const { id } = req.params;
   const { newInitialGate, newFinalGate } = req.body;
-
-  try {
-    // Convert id from string to number
-    const sectionId = parseInt(id, 10); // Use parseInt with base 10
-
-    const updatedSection = await sectionsController.updateSection(sectionId, newInitialGate, newFinalGate);
-    if (updatedSection) {
-      res.status(200).json(updatedSection);
-    } else {
-      res.status(404).json({ error: 'Section not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  sectionsController.returnUpdateSection(req, res, id, newInitialGate, newFinalGate);
 });
 
 // Route deleteSection
-app.delete('/sections/:id', sectionsMiddleware.sanitizeDeleteSectionInputs, async (req, res) => {
+app.delete('/sections/:id', pipe.deleteSection, async (req: any, res: any) => {
   const { id } = req.params;
-
-  try {
-    // Convert id from string to number
-    const sectionId = parseInt(id, 10); // Use parseInt with base 10
-
-    const result = await sectionsController.deleteSection(sectionId);
-    res.status(200).json(result);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  sectionsController.returnDeleteSection(req, res, id);
 });
 
 // Vehicles routes

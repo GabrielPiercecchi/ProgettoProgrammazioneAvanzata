@@ -37,6 +37,10 @@ export const deleteGate = [
     gatesMiddleware.sanitizeDeleteGateInputs,
 ]
 
+export const getAllSections = [
+    authMiddleware.authentication,
+    authMiddleware.checkOperator,
+]
 export const getSection = [
     authMiddleware.authentication,
     authMiddleware.checkOperator,
