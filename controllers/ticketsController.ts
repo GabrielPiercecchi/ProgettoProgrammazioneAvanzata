@@ -1,7 +1,7 @@
 import { Transit } from '../models/transits'; // Supponiamo che Transit sia il modello per la tabella transits
 import { Section } from '../models/sections'; // Supponiamo che Section sia il modello per la tabella sections
 import { Vehicle } from '../models/vehicles';
-import { Ticket } from '../models/tickets';
+import { Ticket, getMinMaxSpeed, getFrequentGates } from '../models/tickets';
 import { Gate } from '../models/gates';
 import { v4 as uuidv4 } from 'uuid';
 import { Op, Sequelize } from 'sequelize'; // Importa l'operatore Sequelize
@@ -122,7 +122,37 @@ export async function checkAndHandleTickets(): Promise<void> {
             throw new Error(`Error during Tickets fetching in the database: ${error.message}`);
         } else {
             console.error('Unknown error during Tickets fetching in the database:', error);
-            throw new Error('Unknown error during Gate updating in the database.');
+            throw new Error('Unknown error during Tickets updating in the database.');
+        }
+    }
+}
+
+// Funzione per gestire le stats dei ticket
+export const handleGatePairsMethod = async (method: String) => {
+
+    try {
+        let data;
+
+        if(method === null || method === undefined) {
+            throw new Error('Method not specified.');
+        }
+
+        if (method && method === 'getFrequentGates') {
+            data = await getFrequentGates();
+        } else if (method && method === 'getMinMaxSpeed') {
+            const { maxSpeedGatePairs, minSpeedGatePairs } = await getMinMaxSpeed();
+            data = { maxSpeedGatePairs, minSpeedGatePairs };
+        } else {
+            throw new Error('Invalid method specified: must be either "getFrequentGates" or "getMinMaxSpeed".');
+        }
+        return data;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error during Tickets Stats fetching in the database:', error.message);
+            throw new Error(`Error during Tickets Stats fetching in the database: ${error.message}`);
+        } else {
+            console.error('Unknown error during Tickets Stats fetching in the database:', error);
+            throw new Error('Unknown error during Tickets Stats updating in the database.');
         }
     }
 }
