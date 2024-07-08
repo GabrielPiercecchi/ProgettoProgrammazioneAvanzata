@@ -31,7 +31,7 @@ export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFun
 export function sanitizeDeleteGateInputs(req: Request, res: Response, next: NextFunction) {
     const { location } = req.params;
 
-    if(!validateNotNullorEmpty(location)) { 
+    if (!validateNotNullorEmpty(location)) {
         return res.status(400).json({ error: 'Username cannot be null or undefined.' });
     }
 
@@ -71,10 +71,10 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
     const { location } = req.params;
     const { newUsername } = req.body;
 
-    if(!validateNotNullorEmpty(newUsername)) {
+    if (!validateNotNullorEmpty(newUsername)) {
         return res.status(400).json({ error: 'New username cannot be null or undefined.' });
     }
-    
+
     // Validazione della location
     if (!validateLocation(location)) {
         return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });

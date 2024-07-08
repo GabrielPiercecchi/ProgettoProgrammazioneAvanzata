@@ -27,9 +27,9 @@ export function sanitizeGetSectionInputs(req: Request, res: Response, next: Next
 
 // Middleware per la sanitizzazione dei parametri per CREATE
 export function sanitizeCreateSectionInputs(req: Request, res: Response, next: NextFunction) {
-    const {initialGate, finalGate } = req.body;
+    const { initialGate, finalGate } = req.body;
 
-    if(!validateNotNullorEmpty(initialGate) || !validateNotNullorEmpty(finalGate)){
+    if (!validateNotNullorEmpty(initialGate) || !validateNotNullorEmpty(finalGate)) {
         return res.status(400).json({ error: 'Initial Gate or Final Gate cannot be null or undefiened' });
     }
     // Validazione della location
@@ -44,13 +44,13 @@ export function sanitizeCreateSectionInputs(req: Request, res: Response, next: N
 // Middleware per la sanitizzazione dei parametri per UPDATE
 export function sanitizeUpdateSectionInputs(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
-    const { newInitialGate, newFinalGate } = req.body; 
-    
+    const { newInitialGate, newFinalGate } = req.body;
+
     if (!validateId(Number(id))) {
         return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
     }
 
-    if(!validateNotNullorEmpty(newInitialGate) || !validateNotNullorEmpty(newFinalGate)){
+    if (!validateNotNullorEmpty(newInitialGate) || !validateNotNullorEmpty(newFinalGate)) {
         return res.status(400).json({ error: 'Initial Gate or Final Gate cannot be null or undefiened' });
     }
 

@@ -127,30 +127,3 @@ export async function checkAndHandleTickets(): Promise<void> {
     }
 }
 
-// Funzione per ottenere la section con velocità media più alta e più bassa
-export async function getSectionWithHighestAndLowestSpeed(): Promise<any> {
-    try {
-        const result: any[] = await Ticket.findAll({
-            attributes: ['initial_gate', [Sequelize.fn('AVG', Sequelize.col('medium_speed')), 'avg_speed']],
-            group: ['initial_gate'],
-            order: [[Sequelize.literal('avg_speed'), 'DESC']],
-            limit: 1,
-            include: [{ model: Section, as: 'section' }]
-        });
-
-        const highestSpeed = result.length > 0 ? result[0] : null;
-
-        result.sort((a, b) => a.avg_speed - b.avg_speed);
-        const lowestSpeed = result.length > 0 ? result[0] : null;
-
-        return { highestSpeed, lowestSpeed };
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error('Error during Tickets fetching in the database:', error.message);
-            throw new Error(`Error during Tickets fetching in the database: ${error.message}`);
-        } else {
-            console.error('Unknown error during Tickets fetching in the database:', error);
-            throw new Error('Unknown error during Gate updating in the database.');
-        }
-    }
-}

@@ -2,7 +2,7 @@ import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, Model } from 'sequelize';
 import { Gate } from './gates'; // Import the Gate model
 import { Op } from 'sequelize'; // Import the Sequelize operator
-import {  fn, col, literal } from 'sequelize';
+import { fn, col, literal } from 'sequelize';
 import PDFDocument from 'pdfkit';
 
 import dotenv from 'dotenv';
@@ -159,6 +159,61 @@ export async function getFrequentGates(): Promise<any> {
         const frequentGatePairs = gatePairs.filter(pair => pair.get('count') === maxCount);
 
         return frequentGatePairs;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error fetching frequent gate pairs from the database:', error.message);
+            throw new Error(`Error fetching frequent gate pairs from the database: ${error.message}`);
+        } else {
+            console.error('Unknown error fetching frequent gate pairs from the database:', error);
+            throw new Error('Unknown error fetching frequent gate pairs from the database.');
+        }
+    }
+}
+
+// Funzione per ottenere la section con velocità media più alta e più bassa
+export async function getMinMaxSpeed() {
+    let gatePairs: any;
+    let maxSpeedGatePairs: any;
+    let minSpeedGatePairs: any;
+    let initialGate: any;
+    let finalGate: any;
+    let mostFrequentPair: any;
+    try {
+        // Trova le coppie di initialGate e finalGate più frequenti ordinate per count
+        const gatePairs = await Ticket.findAll({
+            attributes: ['initial_gate', 'final_gate', [fn('COUNT', '*'), 'count']],
+            group: ['initial_gate', 'final_gate'],
+            order: [[literal('count'), 'DESC']],
+        });
+
+        // Estrai l'initial_gate e final_gate della coppia più frequente
+        mostFrequentPair = gatePairs[0];
+        initialGate = mostFrequentPair.initial_gate;
+        finalGate = mostFrequentPair.final_gate;
+
+        // Trova il massimo valore di medium_speed per la coppia più frequente
+        const maxSpeedGatePairs = await Ticket.findAll({
+            attributes: ['initial_gate', 'final_gate', 'medium_speed'],
+            where: {
+                initial_gate: initialGate,
+                final_gate: finalGate,
+            },
+            order: [['medium_speed', 'DESC']],
+            limit: 1,
+        });
+
+        // Trova il minimo valore di medium_speed per la coppia più frequente
+        const minSpeedGatePairs = await Ticket.findAll({
+            attributes: ['initial_gate', 'final_gate', 'medium_speed'],
+            where: {
+                initial_gate: initialGate,
+                final_gate: finalGate,
+            },
+            order: [['medium_speed', 'ASC']],
+            limit: 1,
+        });
+
+        return { maxSpeedGatePairs, minSpeedGatePairs };
     } catch (error) {
         if (error instanceof Error) {
             console.error('Error fetching frequent gate pairs from the database:', error.message);

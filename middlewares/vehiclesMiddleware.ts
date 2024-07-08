@@ -13,7 +13,8 @@ function validateType(type: string): boolean {
 
 // Params cant be null
 export function validateNotNullorEmpty(value: any): boolean {
-    return value !== null && value !== undefined && value !== '';}
+    return value !== null && value !== undefined && value !== '';
+}
 
 // Middleware per la sanitizzazione dei parametri per GET
 export function sanitizeGetVehicleInputs(req: Request, res: Response, next: NextFunction) {

@@ -89,6 +89,7 @@ app.get('/users/:username', usersMiddleware.sanitizeGetGateUserInputs, async (re
 app.put('/users/:username', usersMiddleware.sanitizeUpdateGateUserInputs, async (req, res) => {
   const { username } = req.params;
   const { newUsername } = req.body;
+
   let user: any;
   try {
     user = await usersController.updateGateUser(username, newUsername);
@@ -591,11 +592,12 @@ app.get('/frequentGates', async (req, res) => {
 // Get section with highest and lowest speed
 app.get('/speedSection', async (req, res) => {
   try {
-    const section = await ticketsController.getSectionWithHighestAndLowestSpeed();
-    if (section) {
-      res.status(200).json(section);
+    const { maxSpeedGatePairs, minSpeedGatePairs } = await ticketsModel.getMinMaxSpeed();
+
+    if (maxSpeedGatePairs.length > 0 && minSpeedGatePairs.length > 0) {
+      res.status(200).json({ maxSpeedGatePairs, minSpeedGatePairs });
     } else {
-      res.status(404).json({ error: 'Section not found' });
+      res.status(404).json({ error: 'No frequent gate pairs found' });
     }
   } catch (error) {
     if (error instanceof Error) {

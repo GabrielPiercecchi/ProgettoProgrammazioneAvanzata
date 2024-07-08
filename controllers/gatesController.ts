@@ -11,11 +11,9 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
 export async function createGate(location: string, username: string): Promise<any> {
     try {
 
-        // Creare il nuovo utente con ruolo gate
-        const newUser = await User.create({
-            username,
-            role: 'gate',
-        });
+        if (await User.findByPk(username) == null) {
+            throw new Error('User does not exists in Users. You have to create it first');
+        }
         // Creare il nuovo gate
         const newGate = await Gate.create({
             location,
@@ -41,11 +39,11 @@ export async function updateGate(location: string, newUsername: string): Promise
         result = await Gate.findByPk(location);
         user = await User.findByPk(newUsername, { raw: true });
         console.log(user);
-        if(!user){ 
+        if (!user) {
             throw new Error('User does not exists in Users. You have to create it first');
         }
         if (result) {
-            result.username = newUsername;// Hash della nuova password
+            result.username = newUsername;
             await result.save();
             return result;
         } else {

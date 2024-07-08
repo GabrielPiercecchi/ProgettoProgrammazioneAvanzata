@@ -42,7 +42,7 @@ export function sanitizeCreateGateUserInputs(req: Request, res: Response, next: 
 export function sanitizeDeleteGateUserInputs(req: Request, res: Response, next: NextFunction) {
     const { username } = req.params;
 
-    if(!validateNotNullorEmpty(username)) { 
+    if (!validateNotNullorEmpty(username)) {
         return res.status(400).json({ error: 'Username cannot be null or undefined.' });
     }
 
