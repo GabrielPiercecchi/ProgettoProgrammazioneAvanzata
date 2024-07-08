@@ -463,7 +463,7 @@ app.get('/notFoundTransits', async (req, res) => {
 
 // Create a new transit
 
-app.post('/transits', transitsMiddleware.sanitizeCreateTransitInput, async (req, res) => {
+app.post('/transits', transitsMiddleware.sanitizeCreateTransitInputs, async (req, res) => {
   const { plate, speed, weather, vehicles_types, gate } = req.body;
 
   try {
