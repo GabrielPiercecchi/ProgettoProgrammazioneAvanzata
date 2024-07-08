@@ -15,7 +15,6 @@ module.exports = {
                     key: 'username'
                 },
                 onUpdate: 'CASCADE',
-                onDelete: 'CASCADE'
             },
         });
     },

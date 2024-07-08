@@ -24,7 +24,7 @@ export const Section = sequelize.define('sections', {
         references: {
             model: Gate,
             key: 'location'
-        }
+        },
     },
     finalGate: {
         type: DataTypes.STRING,
@@ -32,7 +32,7 @@ export const Section = sequelize.define('sections', {
         references: {
             model: Gate,
             key: 'location'
-        }
+        },
     },
     distance: {
         type: DataTypes.FLOAT,
@@ -52,7 +52,7 @@ export const Section = sequelize.define('sections', {
 // Verify if the Section is in the database
 //GET
 export async function getSections(sectionId: number): Promise<any> {
-    let result:any;
+    let result: any;
     try {
         // Use `findOne` with `where` for searching the Section with `initialGate` e `finalGate`
         result = await Section.findByPk(sectionId, { raw: true });
@@ -70,7 +70,7 @@ export async function getSections(sectionId: number): Promise<any> {
 
 //GET ALL
 export async function getAllSections(): Promise<any> {
-    let result:any;
+    let result: any;
     try {
         result = await Section.findAll();
         return result;

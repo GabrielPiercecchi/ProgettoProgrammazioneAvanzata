@@ -15,8 +15,6 @@ module.exports = {
                     model: 'gates',
                     key: 'location'
                 },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE'
             },
             finalGate: {
                 type: Sequelize.STRING,
@@ -25,8 +23,6 @@ module.exports = {
                     model: 'gates',
                     key: 'location'
                 },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE'
             },
             distance: {
                 type: Sequelize.FLOAT,

@@ -72,7 +72,7 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
     const { newUsername } = req.body;
 
     if(!validateNotNullorEmpty(newUsername)) {
-        return res.status(400).json({ error: 'New username and new password cannot be null or undefined.' });
+        return res.status(400).json({ error: 'New username cannot be null or undefined.' });
     }
     
     // Validazione della location

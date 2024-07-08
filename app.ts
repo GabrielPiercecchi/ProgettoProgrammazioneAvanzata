@@ -4,16 +4,19 @@ import * as ticketsModel from './models/tickets';
 import * as vehiclesModel from './models/vehicles';
 import * as transitsModel from './models/transits';
 import * as sectionsModel from './models/sections';
+import * as usersModel from './models/users';
 import * as gatesController from './controllers/gatesController';
 import * as sectionsController from './controllers/sectionsController';
 import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
 import * as ticketsController from './controllers/ticketsController';
+import * as usersController from './controllers/usersController';
 import * as gatesMiddleware from './middlewares/gatesMiddleware';
 import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
 import * as sectionsMiddleware from './middlewares/sectionsMiddleware';
 import * as transitsMiddleware from './middlewares/transitsMiddleware';
 import * as ticketsMiddleware from './middlewares/ticketsMiddleware';
+import * as usersMiddleware from './middlewares/usersMiddleware';
 
 
 
@@ -30,9 +33,97 @@ app.listen(process.env.SERVICE_PORT, () => {
   console.log('Server is running on port 3000');
 });
 
-// Define a test route
-app.get('/test', (req, res) => {
-  res.send('This is a test route!');
+// Users routes
+
+// Route createUser
+app.post('/users', usersMiddleware.sanitizeCreateGateUserInputs, async (req, res) => {
+  const { username } = req.body;
+  try {
+    const newGateUser = await usersController.createGateUser(username);
+    res.status(201).json(newGateUser);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route getAllUsers
+app.get('/users', async (req, res) => {
+  let users: any;
+  try {
+    users = await usersModel.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route getUser
+app.get('/users/:username', usersMiddleware.sanitizeGetGateUserInputs, async (req, res) => {
+  const { username } = req.params;
+  let user: any;
+  try {
+    user = await usersModel.getUsers(username);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred." });
+    }
+  }
+});
+
+// Route updateUser
+app.put('/users/:username', usersMiddleware.sanitizeUpdateGateUserInputs, async (req, res) => {
+  const { username } = req.params;
+  const { newUsername } = req.body;
+  let user: any;
+  try {
+    user = await usersController.updateGateUser(username, newUsername);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred." });
+    }
+  }
+});
+
+// Route deleteUser
+app.delete('/users/:username', usersMiddleware.sanitizeDeleteGateUserInputs, async (req, res) => {
+  const { username } = req.params;
+  let user: any;
+  try {
+    user = await usersController.deleteGateUser(username);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred." });
+    }
+  }
 });
 
 // Gates routes
@@ -486,14 +577,14 @@ app.post('/tickets', ticketsMiddleware.sanitizeGetTicketsInputs, async (req, res
 
 app.get('/frequentGates', async (req, res) => {
   try {
-      const frequentGates = await ticketsModel.getFrequentGates();
-      res.status(200).json(frequentGates);
+    const frequentGates = await ticketsModel.getFrequentGates();
+    res.status(200).json(frequentGates);
   } catch (error) {
-      if (error instanceof Error) {
-          res.status(500).json({ error: error.message });
-      } else {
-          res.status(500).json({ error: "An unknown error occurred." });
-      }
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred." });
+    }
   }
 });
 

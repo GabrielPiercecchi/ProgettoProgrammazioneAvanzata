@@ -23,7 +23,6 @@ export const Gate = sequelize.define('gates', {
             key: 'username'
         },
         onUpdate: 'CASCADE', // Ensure username updates are cascaded to Gates table
-        onDelete: 'CASCADE' // Ensure username deletions are cascaded to Gates table
     },
 },
     {

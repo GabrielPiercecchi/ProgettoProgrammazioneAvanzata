@@ -34,8 +34,6 @@ module.exports = {
                     model: 'vehicles',
                     key: 'type'
                 },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE'
             },
             gate: {
                 type: Sequelize.STRING,
@@ -44,8 +42,6 @@ module.exports = {
                     model: 'gates',
                     key: 'location'
                 },
-                onUpdate: 'CASCADE',
-                onDelete: 'CASCADE'
             },
             used: {
                 type: Sequelize.BOOLEAN,
