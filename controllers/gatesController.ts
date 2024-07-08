@@ -1,7 +1,6 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize } from 'sequelize';
-import { Op } from 'sequelize';
-import { Gate } from '../models/gates';
+import { Gate, getAllGates } from '../models/gates';
 import { User } from "../models/users";
 
 //Connection to DataBase
@@ -83,4 +82,18 @@ export async function deleteGate(location: string): Promise<any> {
             throw new Error('Unknown error during Gate deletion in the database.');
         }
     }
+}
+
+export async function returnAllGates(req: any, res: any): Promise<any> {
+    try {
+        const gates = await getAllGates();
+        res.status(200).json(gates);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+
 }

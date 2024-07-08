@@ -54,6 +54,7 @@ export async function getGates(location: string): Promise<any> {
 export async function getAllGates(): Promise<any> {
     try {
         const gates = await Gate.findAll();
+        console.log(gates)
         return gates;
     } catch (error) {
         if (error instanceof Error) {

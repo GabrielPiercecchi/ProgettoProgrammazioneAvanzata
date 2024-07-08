@@ -5,9 +5,10 @@ import { where } from 'sequelize';
 
 export const authentication = (req: Request, res: Response, next: NextFunction) => {
     try{
-        const { auth } = req.headers;
-        if(!auth){
-            
+        const { authorization } = req.headers;
+        console.log(req.headers)
+        if(!authorization){
+            console.log(authorization)
             res.header('content-type', 'application/json');
             return res.status(401).send({message: 'Unauthorized 1'});
         }
@@ -36,17 +37,20 @@ export function checkOperator(req: Request, res: Response, next: NextFunction) {
     let result: any;
 
     result = User.findByPk(user.username);
+    console.log(result)
     if(!result){
+        console.log(result)
         res.header('content-type', 'application/json');
         return res.status(401).send({message: 'User not found'});
     }
     if(user.role === 'operator'){
+        console.log(user.role)
         next();
     } else {
         res.header('content-type', 'application/json');
         return res.status(401).send({message: 'Unauthorized'});
 
-}
+    }
 }
 
 export function checkGate(req: Request, res: Response, next: NextFunction){

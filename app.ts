@@ -145,19 +145,11 @@ app.post('/gates', pipe.createGate, async (req: any, res: any) => {
   }
 });
 
-// Route getAllGates, @Francesco gli passiamo direttamente auth middleware
+// Route getAllGates
 app.get('/gates', pipe.getAllgates, async (req: any, res: any) => {
+
+  gatesController.returnAllGates(req, res);
   
-  try {
-    const gates = await gatesModel.getAllGates();
-    res.status(200).json(gates);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
 });
 
 // Route getGates
