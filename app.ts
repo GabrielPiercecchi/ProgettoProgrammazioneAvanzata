@@ -199,7 +199,7 @@ app.delete('/sections/:id', pipe.deleteSection, async (req: any, res: any) => {
 // Get all vehicles
 
 app.get('/vehicles', pipe.getAll, async (req: any, res: any) => {
-  vehiclesController.returngetAllVehicles(req, res);
+  vehiclesController.returnAllVehicles(req, res);
 });
 
 // Get vehicles by type
@@ -235,45 +235,19 @@ app.delete('/vehicles/:type', pipe.deleteVehicle, async (req: any, res: any) => 
 
 // Get all transits
 
-app.get('/transits', async (req, res) => {
-  try {
-    const transits = await transitsModel.getAllTransits();
-    res.status(200).json(transits);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+app.get('/transits', pipe.getAll, async (req: any, res: any) => {
+  transitsController.returnAllTransits(req, res);
 });
 
 // Get a specific transit
 
-app.get('/transits/:id', transitsMiddleware.sanitizeGetTransitInputs, async (req, res) => {
+app.get('/transits/:id', pipe.getTransit, async (req: any, res: any) => {
   const { id } = req.params;
-
-  try {
-    // Convert id from string to number
-    const transitId = parseInt(id, 10); // Use parseInt with base 10
-
-    const transit = await transitsModel.getTransit(transitId);
-    if (transit) {
-      res.status(200).json(transit);
-    } else {
-      res.status(404).json({ error: 'Transit not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  transitsController.returnTransit(req, res, id);
 });
 
-// Route to get all transits with plate "notFound"
-app.get('/notFoundTransits', async (req, res) => {
+// Route to get all transits with plate "notFound" TODO check if the pipe works 
+app.get('/notFoundTransits',async (req, res) => {
   try {
     const tickets = await transitsModel.getAllNotFoundTickets();
     res.status(200).json(tickets);

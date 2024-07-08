@@ -97,7 +97,7 @@ export async function deleteVehicle(type: string): Promise<any> {
     }
 }
 
-export async function returngetAllVehicles (req: any, res: any): Promise<any> {
+export async function returnAllVehicles (req: any, res: any): Promise<any> {
     try {
         const vehicles = await getAllVehicles();
         res.status(200).json(vehicles);
