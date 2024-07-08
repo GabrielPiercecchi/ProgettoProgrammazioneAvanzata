@@ -19,9 +19,14 @@ function validatePlatesFormat(plates: string): boolean {
     return regex.test(plates);
 }
 
+// Funzione di validazione per il formato
+function validateFormat(format: string): boolean {
+    return format === 'json' || format === 'pdf';
+}
+
 // Middleware per la sanitizzazione dei parametri per GET
 export function sanitizeGetTicketsInputs(req: Request, res: Response, next: NextFunction) {
-    const { plates, startDate, endDate } = req.body;
+    const { plates, startDate, endDate, format } = req.body;
 
     // Validazione della formattazione delle targhe
     if (plates && !validatePlatesFormat(plates)) {
@@ -48,6 +53,11 @@ export function sanitizeGetTicketsInputs(req: Request, res: Response, next: Next
     // Validazione della data di fine
     if (endDate && !validateDate(endDate)) {
         return res.status(400).json({ error: `Invalid end date format: ${endDate}. Expected format: YYYY-MM-DDTHH:MM:SS.` });
+    }
+
+    // Validazione del formato
+    if (!format || !validateFormat(format)) {
+        return res.status(400).json({ error: 'Invalid format. Format must be either "json" or "pdf".' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller

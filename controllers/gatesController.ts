@@ -2,24 +2,24 @@ import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize } from 'sequelize';
 import { Op } from 'sequelize';
 import { Gate } from '../models/gates';
-import bcrypt from 'bcrypt';
-
-const SALT_ROUNDS = 10;
+import { User } from "../models/users";
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
 // CREATE
-export async function createGate(location: string, username: string, password: string): Promise<any> {
+export async function createGate(location: string, username: string): Promise<any> {
     try {
-        // Hash della password
-        const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
+        // Creare il nuovo utente con ruolo gate
+        const newUser = await User.create({
+            username,
+            role: 'gate',
+        });
         // Creare il nuovo gate
         const newGate = await Gate.create({
             location,
             username,
-            password: hashedPassword
         });
         return newGate;
     } catch (error) {
@@ -34,13 +34,18 @@ export async function createGate(location: string, username: string, password: s
 }
 
 // UPDATE
-export async function updateGate(location: string, newUsername: string, newPassword: string): Promise<any> {
+export async function updateGate(location: string, newUsername: string): Promise<any> {
     let result: any;
+    let user: any;
     try {
         result = await Gate.findByPk(location);
+        user = await User.findByPk(newUsername, { raw: true });
+        console.log(user);
+        if(!user){ 
+            throw new Error('User does not exists in Users. You have to create it first');
+        }
         if (result) {
-            result.username = newUsername;
-            result.password = await bcrypt.hash(newPassword, SALT_ROUNDS); // Hash della nuova password
+            result.username = newUsername;// Hash della nuova password
             await result.save();
             return result;
         } else {
@@ -58,23 +63,14 @@ export async function updateGate(location: string, newUsername: string, newPassw
 }
 
 // DELETE
-export async function deleteGate(username: string): Promise<any> {
+export async function deleteGate(location: string): Promise<any> {
     let result: any;
     try {
-        // Trova il gate con username case-insensitive
-        result = await Gate.findOne({
-            where: {
-                [Op.or]: [
-                    { username: username.toLowerCase() },
-                    { username: username.charAt(0).toUpperCase() + username.slice(1).toLowerCase() }
-                ]
-            }
-        });
-        
+        result = await Gate.findByPk(location);
         if (result) {
             // Cancella il gate
             await result.destroy();
-            return `Gate with username ${username} was deleted successfully.`;
+            return `Gate with location ${location} was deleted successfully.`;
         } else {
             throw new Error('Gate not found.');
         }

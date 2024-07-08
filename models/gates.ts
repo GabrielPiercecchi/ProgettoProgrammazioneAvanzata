@@ -1,9 +1,6 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize } from 'sequelize';
-import bcrypt from 'bcrypt';
 import { User } from './users'; 
-
-const SALT_ROUNDS = 10;
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -20,21 +17,12 @@ export const Gate = sequelize.define('gates', {
     },
     username: {
         type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    role: {
-        type: DataTypes.STRING,
-        defaultValue: 'gate',
         allowNull: false,
         references: {
             model: User,
-            key: 'role'
-        }
+            key: 'username'
+        },
+        onUpdate: 'CASCADE', // Ensure username updates are cascaded to Gates table
     },
 },
     {
@@ -44,18 +32,11 @@ export const Gate = sequelize.define('gates', {
 
 // Verify if the Gate is in the database
 //GET
-export async function getGates(username: string): Promise<any> {
+export async function getGates(location: string): Promise<any> {
     let result: any;
     try {
         // Converti il parametro type in minuscolo per la ricerca
-        const usernameLowerCase = username.toLowerCase();
-        result = await Gate.findOne({
-            where: sequelize.where(
-                sequelize.fn('lower', sequelize.col('username')),
-                usernameLowerCase
-            ),
-            raw: true
-        });
+        result = await Gate.findByPk(location, { raw: true });
 
         return result;
     } catch (error) {

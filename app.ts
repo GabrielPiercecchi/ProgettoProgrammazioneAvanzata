@@ -3,18 +3,20 @@ import * as gatesModel from './models/gates';
 import * as ticketsModel from './models/tickets';
 import * as vehiclesModel from './models/vehicles';
 import * as transitsModel from './models/transits';
-import * as operatorsModel from './models/operators';
 import * as sectionsModel from './models/sections';
+import * as usersModel from './models/users';
 import * as gatesController from './controllers/gatesController';
 import * as sectionsController from './controllers/sectionsController';
 import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
 import * as ticketsController from './controllers/ticketsController';
+import * as usersController from './controllers/usersController';
 import * as gatesMiddleware from './middlewares/gatesMiddleware';
 import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
 import * as sectionsMiddleware from './middlewares/sectionsMiddleware';
 import * as transitsMiddleware from './middlewares/transitsMiddleware';
 import * as ticketsMiddleware from './middlewares/ticketsMiddleware';
+import * as usersMiddleware from './middlewares/usersMiddleware';
 
 
 
@@ -31,18 +33,14 @@ app.listen(process.env.SERVICE_PORT, () => {
   console.log('Server is running on port 3000');
 });
 
-// Define a test route
-app.get('/test', (req, res) => {
-  res.send('This is a test route!');
-});
+// Users routes
 
-// Operator routes 
-
-// Route getAllOp
-app.get('/operators', async (req, res) => {
+// Route createUser
+app.post('/users', usersMiddleware.sanitizeCreateGateUserInputs, async (req, res) => {
+  const { username } = req.body;
   try {
-    const operators = await operatorsModel.getAllOp();
-    res.status(200).json(operators);
+    const newGateUser = await usersController.createGateUser(username);
+    res.status(201).json(newGateUser);
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
@@ -52,14 +50,90 @@ app.get('/operators', async (req, res) => {
   }
 });
 
+// Route getAllUsers
+app.get('/users', async (req, res) => {
+  let users: any;
+  try {
+    users = await usersModel.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+    }
+  }
+});
+
+// Route getUser
+app.get('/users/:username', usersMiddleware.sanitizeGetGateUserInputs, async (req, res) => {
+  const { username } = req.params;
+  let user: any;
+  try {
+    user = await usersModel.getUsers(username);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred." });
+    }
+  }
+});
+
+// Route updateUser
+app.put('/users/:username', usersMiddleware.sanitizeUpdateGateUserInputs, async (req, res) => {
+  const { username } = req.params;
+  const { newUsername } = req.body;
+  let user: any;
+  try {
+    user = await usersController.updateGateUser(username, newUsername);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred." });
+    }
+  }
+});
+
+// Route deleteUser
+app.delete('/users/:username', usersMiddleware.sanitizeDeleteGateUserInputs, async (req, res) => {
+  const { username } = req.params;
+  let user: any;
+  try {
+    user = await usersController.deleteGateUser(username);
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unknown error occurred." });
+    }
+  }
+});
+
 // Gates routes
 
 // Route createGates
 app.post('/gates', gatesMiddleware.sanitizeCreateGateInputs, async (req, res) => {
-  const { location, username, password } = req.body;
+  const { location, username } = req.body;
 
   try {
-    const newGate = await gatesController.createGate(location, username, password);
+    const newGate = await gatesController.createGate(location, username);
     res.status(201).json(newGate);
   } catch (error) {
     if (error instanceof Error) {
@@ -85,11 +159,11 @@ app.get('/gates', async (req, res) => {
 });
 
 // Route getGates
-app.get('/gates/:username', gatesMiddleware.sanitizeGetGateInputs, async (req, res) => {
-  const { username } = req.params;
+app.get('/gates/:location', gatesMiddleware.sanitizeGetGateInputs, async (req, res) => {
+  const { location } = req.params;
 
   try {
-    const gate = await gatesModel.getGates(username);
+    const gate = await gatesModel.getGates(location);
     if (gate) {
       res.status(200).json(gate);
     } else {
@@ -107,10 +181,10 @@ app.get('/gates/:username', gatesMiddleware.sanitizeGetGateInputs, async (req, r
 //Route updateGates
 app.put('/gates/:location', gatesMiddleware.sanitizeUpdateGateInputs, async (req, res) => {
   const { location } = req.params;
-  const { newUsername, newPassword } = req.body;
+  const { newUsername } = req.body;
 
   try {
-    const updatedGate = await gatesController.updateGate(location, newUsername, newPassword);
+    const updatedGate = await gatesController.updateGate(location, newUsername);
     if (updatedGate) {
       res.status(200).json(updatedGate);
     } else {
@@ -126,11 +200,11 @@ app.put('/gates/:location', gatesMiddleware.sanitizeUpdateGateInputs, async (req
 });
 
 // Route deleteGates
-app.delete('/gates/:username', gatesMiddleware.sanitizeDeleteGateInputs, async (req, res) => {
-  const { username } = req.params;
+app.delete('/gates/:location', gatesMiddleware.sanitizeDeleteGateInputs, async (req, res) => {
+  const { location } = req.params;
 
   try {
-    const gate = await gatesController.deleteGate(username);
+    const gate = await gatesController.deleteGate(location);
     if (gate) {
       res.status(200).json(gate);
     } else {
@@ -148,7 +222,7 @@ app.delete('/gates/:username', gatesMiddleware.sanitizeDeleteGateInputs, async (
 // Section routes
 
 // Route createSection
-app.post('/sections', sectionsMiddleware.sanitizeCreateSectionInputs,async (req, res) => {
+app.post('/sections', sectionsMiddleware.sanitizeCreateSectionInputs, async (req, res) => {
   const { initialGate, finalGate } = req.body;
 
   try {
@@ -282,7 +356,7 @@ app.get('/vehicles/:type', vehiclesMiddleware.sanitizeGetVehicleInputs, async (r
 
 // Create a new vehicle
 
-app.post('/vehicles', vehiclesMiddleware.sanitizeCreateVehicleInputs,async (req, res) => {
+app.post('/vehicles', vehiclesMiddleware.sanitizeCreateVehicleInputs, async (req, res) => {
   const { type, limit } = req.body;
 
   try {
@@ -299,7 +373,7 @@ app.post('/vehicles', vehiclesMiddleware.sanitizeCreateVehicleInputs,async (req,
 
 // Update a vehicle
 
-app.put('/vehicles/:type', vehiclesMiddleware.sanitizeUpdateVehicleInputs,async (req, res) => {
+app.put('/vehicles/:type', vehiclesMiddleware.sanitizeUpdateVehicleInputs, async (req, res) => {
   const { type } = req.params;
   const { newLimit } = req.body;
 
@@ -376,8 +450,8 @@ app.get('/transits/:id', transitsMiddleware.sanitizeGetTransitInputs, async (req
 // Route to get all transits with plate "notFound"
 app.get('/notFoundTransits', async (req, res) => {
   try {
-      const tickets = await transitsModel.getAllNotFoundTickets();
-      res.status(200).json(tickets);
+    const tickets = await transitsModel.getAllNotFoundTickets();
+    res.status(200).json(tickets);
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
@@ -389,7 +463,7 @@ app.get('/notFoundTransits', async (req, res) => {
 
 // Create a new transit
 
-app.post('/transits',transitsMiddleware.sanitizeCreateTransitInputs, async (req, res) => {
+app.post('/transits', transitsMiddleware.sanitizeCreateTransitInput, async (req, res) => {
   const { plate, speed, weather, vehicles_types, gate } = req.body;
 
   try {
@@ -412,16 +486,16 @@ app.post('/transits',transitsMiddleware.sanitizeCreateTransitInputs, async (req,
 
 // Update a transit
 
-app.put('/transits/:id',transitsMiddleware.sanitizeUpdateTransitInputs, async (req, res) => {
+app.put('/transits/:id', transitsMiddleware.sanitizeUpdateTransitInputs, async (req, res) => {
   const { id } = req.params;
-  console.log(typeof(id));
+  console.log(typeof (id));
   const { newPlate, newSpeed, newWeather, newVehicles_types, newGate } = req.body;
- 
+
   try {
     // Convert id from string to number
     const transitId = parseInt(id, 10); // Use parseInt with base 10
     //const newDate = new Date(newTransit_date);
-    console.log(typeof(transitId));
+    console.log(typeof (transitId));
     const updatedTransit = await transitsController.updateTransit(transitId, newPlate, newSpeed, newWeather, newVehicles_types, newGate);
     if (updatedTransit) {
       res.status(200).json(updatedTransit);
@@ -474,17 +548,19 @@ app.get('/tickets', async (req, res) => {
 
 // Get tickets by plates and time
 app.post('/tickets', ticketsMiddleware.sanitizeGetTicketsInputs, async (req, res) => {
-  const { plates, startDate, endDate } = req.body;
+  const { plates, startDate, endDate, format } = req.body;
 
   // Converte plates in un array
   const platesArray = plates ? plates.split(', ') : [];
 
   try {
-    const tickets = await ticketsModel.getTicketsByPlatesAndTime(platesArray, startDate, endDate);
-    if (tickets.length > 0) {
-      res.status(200).json(tickets);
-    } else {
-      res.status(404).json({ error: 'Tickets not found' });
+    const tickets = await ticketsModel.getTicketsByPlatesAndTime(platesArray, startDate, endDate, format, res);
+    if (format === 'json') {
+      if (tickets.length > 0) {
+        res.status(200).json(tickets);
+      } else {
+        res.status(404).json({ error: 'Tickets not found' });
+      }
     }
   } catch (error) {
     if (error instanceof Error) {
@@ -495,20 +571,19 @@ app.post('/tickets', ticketsMiddleware.sanitizeGetTicketsInputs, async (req, res
   }
 });
 
-// Get section with most tickets
-app.get('/mostTicketsSection', async (req, res) => {
+// Statistics routes
+
+// Get the most frequent gates
+
+app.get('/frequentGates', async (req, res) => {
   try {
-    const section = await ticketsController.getSectionWithMostTickets();
-    if (section) {
-      res.status(200).json(section);
-    } else {
-      res.status(404).json({ error: 'Section not found' });
-    }
+    const frequentGates = await ticketsModel.getFrequentGates();
+    res.status(200).json(frequentGates);
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+      res.status(500).json({ error: "An unknown error occurred." });
     }
   }
 });

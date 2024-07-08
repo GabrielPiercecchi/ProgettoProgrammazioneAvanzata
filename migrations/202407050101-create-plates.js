@@ -1,11 +1,11 @@
-'use strict' // Enables strict mode for JavaScript code
+'use strict';
+
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        await queryInterface.createTable('gates', {
-            location: {
+        await queryInterface.createTable('plates', {
+            plate: {
                 type: Sequelize.STRING,
-                primaryKey: true,
-                allowNull: false
+                primaryKey: true
             },
             username: {
                 type: Sequelize.STRING,
@@ -15,11 +15,12 @@ module.exports = {
                     key: 'username'
                 },
                 onUpdate: 'CASCADE',
+                onDelete: 'CASCADE'
             },
         });
     },
 
     down: async (queryInterface, Sequelize) => {
-        await queryInterface.dropTable('gates');
+        await queryInterface.dropTable('plates');
     }
 };

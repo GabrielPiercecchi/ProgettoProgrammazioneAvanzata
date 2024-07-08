@@ -127,29 +127,6 @@ export async function checkAndHandleTickets(): Promise<void> {
     }
 }
 
-// Funzione per ottenere la section con più tickets
-export async function getSectionWithMostTickets(): Promise<any> {
-    try {
-        const result = await Ticket.findAll({
-            attributes: ['initial_gate', [Sequelize.fn('COUNT', Sequelize.col('id_ticket')), 'ticket_count']],
-            group: ['initial_gate'],
-            order: [[Sequelize.literal('ticket_count'), 'DESC']],
-            limit: 1,
-            include: [{ model: Section, as: 'section' }]
-        });
-
-        return result.length > 0 ? result[0] : null;
-    } catch (error) {
-        if (error instanceof Error) {
-            console.error('Error during Tickets fetching in the database:', error.message);
-            throw new Error(`Error during Tickets fetching in the database: ${error.message}`);
-        } else {
-            console.error('Unknown error during Tickets fetching in the database:', error);
-            throw new Error('Unknown error during Gate updating in the database.');
-        }
-    }
-}
-
 // Funzione per ottenere la section con velocità media più alta e più bassa
 export async function getSectionWithHighestAndLowestSpeed(): Promise<any> {
     try {
