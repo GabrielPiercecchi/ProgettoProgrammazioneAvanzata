@@ -19,6 +19,10 @@ export const User = sequelize.define('users', {
         type: DataTypes.ENUM('operator', 'gate', 'driver'),
         defaultValue: 'operator',
     },
+    token: {
+        type: DataTypes.INTEGER,
+        defaultValue: 10,
+    }
 },
     {
         modelName: 'users',

@@ -133,16 +133,7 @@ app.delete('/users/:username', usersMiddleware.sanitizeDeleteGateUserInputs, asy
 app.post('/gates', pipe.createGate, async (req: any, res: any) => {
   const { location, username } = req.body;
 
-  try {
-    const newGate = await gatesController.createGate(location, username);
-    res.status(201).json(newGate);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  gatesController.returnCreateGate(req, res, location, username);
 });
 
 // Route getAllGates
@@ -155,62 +146,20 @@ app.get('/gates', pipe.getAllgates, async (req: any, res: any) => {
 // Route getGates
 app.get('/gates/:location', pipe.getGate, async (req: any, res: any) => {
   const { location } = req.params;
-
-  try {
-    const gate = await gatesModel.getGates(location);
-    if (gate) {
-      res.status(200).json(gate);
-    } else {
-      res.status(404).json({ error: 'Gate not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  gatesController.returnGate(req, res, location);
 });
 
 //Route updateGates
 app.put('/gates/:location', pipe.updateGate, async (req: any, res: any) => {
   const { location } = req.params;
   const { newUsername } = req.body;
-
-  try {
-    const updatedGate = await gatesController.updateGate(location, newUsername);
-    if (updatedGate) {
-      res.status(200).json(updatedGate);
-    } else {
-      res.status(404).json({ error: 'Gate not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  gatesController.returnUpdateGate(req, res, location, newUsername);
 });
 
 // Route deleteGates
 app.delete('/gates/:location', pipe.deleteGate, async (req: any, res: any) => {
   const { location } = req.params;
-
-  try {
-    const gate = await gatesController.deleteGate(location);
-    if (gate) {
-      res.status(200).json(gate);
-    } else {
-      res.status(404).json({ error: 'Gate not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  gatesController.returnDeleteGate(req, res, location);
 });
 
 // Section routes

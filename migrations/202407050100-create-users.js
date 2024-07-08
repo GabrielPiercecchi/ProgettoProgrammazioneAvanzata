@@ -11,6 +11,10 @@ module.exports = {
                 type: Sequelize.STRING,
                 primaryKey: true,
             },
+            token: {
+                type: Sequelize.INTEGER,
+                defaultValue: 10,
+            },
         });
     },
 
