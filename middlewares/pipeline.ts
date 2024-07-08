@@ -8,7 +8,7 @@ import * as vehiclesMiddleware from './vehiclesMiddleware';
 
 // chain of responsibility
 
-export const getAllgates = [
+export const getAll = [
     authMiddleware.authentication,
     authMiddleware.checkOperator,
 ]
@@ -35,11 +35,6 @@ export const deleteGate = [
     authMiddleware.authentication,
     authMiddleware.checkOperator,
     gatesMiddleware.sanitizeDeleteGateInputs,
-]
-
-export const getAllSections = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
 ]
 export const getSection = [
     authMiddleware.authentication,

@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import { Vehicle } from '../models/vehicles';
+import { Vehicle, getAllVehicles, getVehicles } from '../models/vehicles';
 
 // CREATE
 export async function createVehicle(type: string, limit: number): Promise<any> {
@@ -95,4 +95,73 @@ export async function deleteVehicle(type: string): Promise<any> {
             throw new Error('Unknown error during Vehicle deletion in the database.');
         }
     }
+}
+
+export async function returngetAllVehicles (req: any, res: any): Promise<any> {
+    try {
+        const vehicles = await getAllVehicles();
+        res.status(200).json(vehicles);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnVehicle(req: any, res: any, type: string): Promise<any> {
+    try {
+        const vehicle = await getVehicles(type);
+        if (vehicle) {
+          res.status(200).json(vehicle);
+        } else {
+          res.status(404).json({ error: 'Vehicle not found.' });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnCreateVehicle(req: any, res: any, type: string, limit: number) {
+    try {
+        const newVehicle = await createVehicle(type, limit);
+        res.status(201).json(newVehicle);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnUpdateVehicle(req: any, res: any, type: string, newLimit: number) {
+    try {
+        const updatedVehicle = await updateVehicle(type, newLimit);
+        res.status(201).json(updatedVehicle);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnDeleteVehicle(req: any, res: any, type: string) {
+    try {
+        const deletedVehicle = await deleteVehicle(type);
+        res.status(200).json(deletedVehicle);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
 }
