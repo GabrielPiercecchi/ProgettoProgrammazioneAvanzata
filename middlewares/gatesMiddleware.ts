@@ -14,13 +14,6 @@ function validateUsername(username: string): boolean {
     return regex.test(username) && isNaN(Number(username));
 }
 
-async function validateForeignKey(username: string): Promise<boolean> {
-    let result: any;
-    result = await User.findByPk(username);
-    console.log(result);
-    return (result == null);
-}
-
 // Middleware per la sanitizzazione dei parametri per GET
 export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFunction) {
     const { location } = req.params;
@@ -90,10 +83,6 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
     // Validazione del nuovo username
     if (newUsername && !validateUsername(newUsername)) {
         return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
-    }
-
-    if (!validateForeignKey(newUsername)) {
-        return res.status(400).json({ error: 'Foreign key constraint violation. Username does not exist in User.' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller

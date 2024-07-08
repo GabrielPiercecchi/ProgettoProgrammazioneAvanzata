@@ -36,8 +36,14 @@ export async function createGate(location: string, username: string): Promise<an
 // UPDATE
 export async function updateGate(location: string, newUsername: string): Promise<any> {
     let result: any;
+    let user: any;
     try {
         result = await Gate.findByPk(location);
+        user = await User.findByPk(newUsername, { raw: true });
+        console.log(user);
+        if(!user){ 
+            throw new Error('User does not exists in Users. You have to create it first');
+        }
         if (result) {
             result.username = newUsername;// Hash della nuova password
             await result.save();
