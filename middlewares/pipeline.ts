@@ -1,4 +1,3 @@
-import exp from 'constants';
 import * as authMiddleware from './authMiddleware';
 import * as gatesMiddleware from './gatesMiddleware';
 import * as sectionsMiddleware from './sectionsMiddleware';
@@ -8,6 +7,11 @@ import * as vehiclesMiddleware from './vehiclesMiddleware';
 
 
 // chain of responsibility
+
+export const getAllgates = [
+    authMiddleware.authentication,
+    authMiddleware.checkOperator,
+]
 
 export const getGate = [
     authMiddleware.authentication,

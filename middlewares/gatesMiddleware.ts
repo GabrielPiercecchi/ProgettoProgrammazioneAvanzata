@@ -27,23 +27,6 @@ export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFun
     next();
 }
 
-// Middleware per la sanitizzazione dei parametri per DELETE
-export function sanitizeDeleteGateInputs(req: Request, res: Response, next: NextFunction) {
-    const { location } = req.params;
-
-    if(!validateNotNullorEmpty(location)) { 
-        return res.status(400).json({ error: 'Username cannot be null or undefined.' });
-    }
-
-    // Validazione della location
-    if (!validateLocation(location)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
-    }
-
-    // Se tutte le validazioni passano, passa al middleware successivo o al controller
-    next();
-}
-
 // Middleware per la sanitizzazione dei parametri per CREATE
 export function sanitizeCreateGateInputs(req: Request, res: Response, next: NextFunction) {
     const { location, username } = req.body;

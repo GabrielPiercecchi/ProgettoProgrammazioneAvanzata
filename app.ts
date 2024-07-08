@@ -11,12 +11,13 @@ import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
 import * as ticketsController from './controllers/ticketsController';
 import * as usersController from './controllers/usersController';
-import * as gatesMiddleware from './middlewares/gatesMiddleware';
+//import * as gatesMiddleware from './middlewares/gatesMiddleware';
 import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
 import * as sectionsMiddleware from './middlewares/sectionsMiddleware';
 import * as transitsMiddleware from './middlewares/transitsMiddleware';
 import * as ticketsMiddleware from './middlewares/ticketsMiddleware';
 import * as usersMiddleware from './middlewares/usersMiddleware';
+import * as pipe from './middlewares/pipeline';
 
 
 
@@ -129,7 +130,7 @@ app.delete('/users/:username', usersMiddleware.sanitizeDeleteGateUserInputs, asy
 // Gates routes
 
 // Route createGates
-app.post('/gates', gatesMiddleware.sanitizeCreateGateInputs, async (req, res) => {
+app.post('/gates', pipe.createGate, async (req: any, res: any) => {
   const { location, username } = req.body;
 
   try {
@@ -145,7 +146,8 @@ app.post('/gates', gatesMiddleware.sanitizeCreateGateInputs, async (req, res) =>
 });
 
 // Route getAllGates, @Francesco gli passiamo direttamente auth middleware
-app.get('/gates', async (req, res) => {
+app.get('/gates', pipe.getAllgates, async (req: any, res: any) => {
+  
   try {
     const gates = await gatesModel.getAllGates();
     res.status(200).json(gates);
@@ -159,7 +161,7 @@ app.get('/gates', async (req, res) => {
 });
 
 // Route getGates
-app.get('/gates/:location', gatesMiddleware.sanitizeGetGateInputs, async (req, res) => {
+app.get('/gates/:location', pipe.getGate, async (req: any, res: any) => {
   const { location } = req.params;
 
   try {
@@ -179,7 +181,7 @@ app.get('/gates/:location', gatesMiddleware.sanitizeGetGateInputs, async (req, r
 });
 
 //Route updateGates
-app.put('/gates/:location', gatesMiddleware.sanitizeUpdateGateInputs, async (req, res) => {
+app.put('/gates/:location', pipe.updateGate, async (req: any, res: any) => {
   const { location } = req.params;
   const { newUsername } = req.body;
 
@@ -200,7 +202,7 @@ app.put('/gates/:location', gatesMiddleware.sanitizeUpdateGateInputs, async (req
 });
 
 // Route deleteGates
-app.delete('/gates/:location', gatesMiddleware.sanitizeDeleteGateInputs, async (req, res) => {
+app.delete('/gates/:location', pipe.deleteGate, async (req: any, res: any) => {
   const { location } = req.params;
 
   try {
