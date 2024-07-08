@@ -135,7 +135,7 @@ app.post('/gates', pipe.createGate, async (req: any, res: any) => {
 });
 
 // Route getAllGates
-app.get('/gates', pipe.getAllgates, async (req: any, res: any) => {
+app.get('/gates', pipe.getAll, async (req: any, res: any) => {
 
   gatesController.returnAllGates(req, res);
   
@@ -169,7 +169,7 @@ app.post('/sections', pipe.createSection, async (req: any, res: any) => {
 });
 
 // Route getAllSections
-app.get('/sections', pipe.getAllSections, async (req: any, res: any) => {
+app.get('/sections', pipe.getAll, async (req: any, res: any) => {
 
   sectionsController.returAllSections(req, res);
   
@@ -198,89 +198,37 @@ app.delete('/sections/:id', pipe.deleteSection, async (req: any, res: any) => {
 
 // Get all vehicles
 
-app.get('/vehicles', async (req, res) => {
-  try {
-    const vehicles = await vehiclesModel.getAllVehicles();
-    res.status(200).json(vehicles);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+app.get('/vehicles', pipe.getAll, async (req: any, res: any) => {
+  vehiclesController.returngetAllVehicles(req, res);
 });
 
 // Get vehicles by type
 
-app.get('/vehicles/:type', vehiclesMiddleware.sanitizeGetVehicleInputs, async (req, res) => {
+app.get('/vehicles/:type', pipe.getVehicles, async (req: any, res: any) => {
   const { type } = req.params;
-  try {
-    const vehicle = await vehiclesModel.getVehicles(type);
-    if (vehicle) {
-      res.status(200).json(vehicle);
-    } else {
-      res.status(404).json({ error: 'Vehicle not found.' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  vehiclesController.returnVehicle(req, res, type);
 });
 
 // Create a new vehicle
 
-app.post('/vehicles', vehiclesMiddleware.sanitizeCreateVehicleInputs, async (req, res) => {
+app.post('/vehicles', pipe.updateVehicle, async (req: any, res: any) => {
   const { type, limit } = req.body;
-
-  try {
-    const newVehicle = await vehiclesController.createVehicle(type, limit);
-    res.status(201).json(newVehicle);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  vehiclesController.returnCreateVehicle(req, res, type, limit);
 });
 
 // Update a vehicle
 
-app.put('/vehicles/:type', vehiclesMiddleware.sanitizeUpdateVehicleInputs, async (req, res) => {
+app.put('/vehicles/:type', pipe.updateVehicle, async (req: any, res: any) => {
   const { type } = req.params;
   const { newLimit } = req.body;
-
-  try {
-    const updatedVehicle = await vehiclesController.updateVehicle(type, newLimit);
-    res.status(201).json(updatedVehicle);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  vehiclesController.returnUpdateVehicle(req, res, type, newLimit);
 });
 
 // Delete a vehicle
 
-app.delete('/vehicles/:type', vehiclesMiddleware.sanitizeDeleteVehicleInputs, async (req, res) => {
+app.delete('/vehicles/:type', pipe.deleteVehicle, async (req: any, res: any) => {
   const { type } = req.params;
-
-  try {
-    const deletedVehicle = await vehiclesController.deleteVehicle(type);
-    res.status(200).json(deletedVehicle);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  vehiclesController.returnDeleteVehicle(req, res, type);
 });
 
 // Transits routes
