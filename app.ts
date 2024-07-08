@@ -572,44 +572,8 @@ app.post('/tickets', ticketsMiddleware.sanitizeGetTicketsInputs, async (req, res
   }
 });
 
-// Statistics routes
-
-// Get the most frequent gates
-
-// app.get('/frequentGates', async (req, res) => {
-//   try {
-//     const frequentGates = await ticketsModel.getFrequentGates();
-//     res.status(200).json(frequentGates);
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       res.status(500).json({ error: error.message });
-//     } else {
-//       res.status(500).json({ error: "An unknown error occurred." });
-//     }
-//   }
-// });
-
-// // Get section with highest and lowest speed
-// app.get('/speedSection', async (req, res) => {
-//   try {
-//     const { maxSpeedGatePairs, minSpeedGatePairs } = await ticketsModel.getMinMaxSpeed();
-
-//     if (maxSpeedGatePairs.length > 0 && minSpeedGatePairs.length > 0) {
-//       res.status(200).json({ maxSpeedGatePairs, minSpeedGatePairs });
-//     } else {
-//       res.status(404).json({ error: 'No frequent gate pairs found' });
-//     }
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       res.status(500).json({ error: error.message });
-//     } else {
-//       res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-//     }
-//   }
-// });
-
 // Get stats by method
-app.get('/stats/:method', async (req, res) => {
+app.get('/stats/:method', ticketsMiddleware.sanitizePostStatisticsInputs, async (req, res) => {
   const { method } = req.params;
 
   let data: any;

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { validateNotNullorEmpty } from './vehiclesMiddleware';
 
 // Funzione di validazione per le targhe
 function validatePlate(plate: string): boolean {
@@ -58,6 +59,19 @@ export function sanitizeGetTicketsInputs(req: Request, res: Response, next: Next
     // Validazione del formato
     if (!format || !validateFormat(format)) {
         return res.status(400).json({ error: 'Invalid format. Format must be either "json" or "pdf".' });
+    }
+
+    // Se tutte le validazioni passano, passa al middleware successivo o al controller
+    next();
+}
+
+// Middleware per la sanitizzazione dei parametri per POST STATISTICS
+export function sanitizePostStatisticsInputs(req: Request, res: Response, next: NextFunction) {
+    const { method } = req.params;
+
+    // Validazione del metodo
+    if (!validateNotNullorEmpty(method) || (method !== 'getFrequentGates' && method !== 'getMinMaxSpeed')) {
+        return res.status(400).json({ error: 'Invalid method. Method must be either "getFrequentGates" or "getMinMaxSpeed".' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller

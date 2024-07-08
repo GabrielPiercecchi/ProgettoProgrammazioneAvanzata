@@ -133,13 +133,9 @@ export const handleGatePairsMethod = async (method: String) => {
     try {
         let data;
 
-        if(method === null || method === undefined) {
-            throw new Error('Method not specified.');
-        }
-
-        if (method && method === 'getFrequentGates') {
+        if (method === 'getFrequentGates') {
             data = await getFrequentGates();
-        } else if (method && method === 'getMinMaxSpeed') {
+        } else if (method === 'getMinMaxSpeed') {
             const { maxSpeedGatePairs, minSpeedGatePairs } = await getMinMaxSpeed();
             data = { maxSpeedGatePairs, minSpeedGatePairs };
         } else {
