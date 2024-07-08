@@ -2,7 +2,7 @@ import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, Model } from 'sequelize';
 import { Gate } from './gates'; // Import the Gate model
 import { Op } from 'sequelize'; // Import the Sequelize operator
-import {  fn, col, literal } from 'sequelize';
+import { fn, col, literal } from 'sequelize';
 import PDFDocument from 'pdfkit';
 
 import dotenv from 'dotenv';
@@ -159,6 +159,41 @@ export async function getFrequentGates(): Promise<any> {
         const frequentGatePairs = gatePairs.filter(pair => pair.get('count') === maxCount);
 
         return frequentGatePairs;
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error('Error fetching frequent gate pairs from the database:', error.message);
+            throw new Error(`Error fetching frequent gate pairs from the database: ${error.message}`);
+        } else {
+            console.error('Unknown error fetching frequent gate pairs from the database:', error);
+            throw new Error('Unknown error fetching frequent gate pairs from the database.');
+        }
+    }
+}
+
+// Funzione per ottenere la section con velocità media più alta e più bassa
+export async function getMinMaxSpeed() {
+    try {
+        // Trova tutte le coppie con la velocità massima
+        const maxSpeedGatePairs = await Ticket.findAll({
+            attributes: ['initial_gate', 'final_gate', 'medium_speed'],
+            where: {
+                medium_speed: {
+                    [Op.eq]: Sequelize.literal(`(SELECT MAX(medium_speed) FROM tickets)`),
+                },
+            },
+        });
+
+        // Trova tutte le coppie con la velocità minima
+        const minSpeedGatePairs = await Ticket.findAll({
+            attributes: ['initial_gate', 'final_gate', 'medium_speed'],
+            where: {
+                medium_speed: {
+                    [Op.eq]: Sequelize.literal(`(SELECT MIN(medium_speed) FROM tickets)`),
+                },
+            },
+        });
+
+        return { maxSpeedGatePairs, minSpeedGatePairs };
     } catch (error) {
         if (error instanceof Error) {
             console.error('Error fetching frequent gate pairs from the database:', error.message);

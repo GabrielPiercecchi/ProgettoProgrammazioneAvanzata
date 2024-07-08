@@ -1,6 +1,6 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize } from 'sequelize';
-import { User } from './users'; 
+import { User } from './users';
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();

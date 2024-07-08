@@ -1,4 +1,4 @@
-import {Sequelize} from 'sequelize';
+import { Sequelize } from 'sequelize';
 
 /**
  *  The DBAccess class is a Singleton class responsible for connectiong to the database

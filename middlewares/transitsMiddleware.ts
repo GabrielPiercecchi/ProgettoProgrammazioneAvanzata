@@ -29,31 +29,31 @@ function validateVehicleType(vehicleType: any): boolean {
 export function sanitizeCreateTransitInputs(req: Request, res: Response, next: NextFunction) {
     const { plate, speed, weather, vehicles_types, gate } = req.body;
 
-    if(!validateNotNullorEmpty(plate) || !validateNotNullorEmpty(speed) || !validateNotNullorEmpty(weather) || !validateNotNullorEmpty(vehicles_types) || !validateNotNullorEmpty(gate)){
+    if (!validateNotNullorEmpty(plate) || !validateNotNullorEmpty(speed) || !validateNotNullorEmpty(weather) || !validateNotNullorEmpty(vehicles_types) || !validateNotNullorEmpty(gate)) {
         return res.status(400).json({ error: 'Plate, speed, weather, vehicles_types and gate cannot be null or undefined' });
     }
     // Validation of the plate
-    if(!validatePlate(plate) && !(plate === "notFound")){
+    if (!validatePlate(plate) && !(plate === "notFound")) {
         return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA' });
     }
 
     // Validation of the speed
-    if(!validateSpeedLimit(speed)){
+    if (!validateSpeedLimit(speed)) {
         return res.status(400).json({ error: 'Invalid speed. Speed must be an integer between 30 and 150.' });
     }
 
     // Validation of the weather
-    if(!validateWeather(weather)){
+    if (!validateWeather(weather)) {
         return res.status(400).json({ error: 'Invalid weather. Weather must be good weather or bad weather.' });
     }
 
     // Validation of the vehicles_types
-    if(!validateVehicleType(vehicles_types)){
+    if (!validateVehicleType(vehicles_types)) {
         return res.status(400).json({ error: 'Invalid vehicle type. Vehicle type must be a string.' });
     }
 
     // Validation of the gate
-    if(!validateLocation(gate)){
+    if (!validateLocation(gate)) {
         console.log(gate);
         return res.status(400).json({ error: 'Invalid gate format. Expected format: LAT43.615899LON13.518915' });
     }
@@ -70,36 +70,36 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
 
     // Validation of id
     //console.log(typeof(transitId));
-    if(!validateId(Number(id))){
+    if (!validateId(Number(id))) {
         //console.log(typeof(transitId));
         return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
     }
 
-    if(!validateNotNullorEmpty(newPlate) || !validateNotNullorEmpty(newSpeed) || !validateNotNullorEmpty(newWeather) || !validateNotNullorEmpty(newVehicles_types) || !validateNotNullorEmpty(newGate)){
+    if (!validateNotNullorEmpty(newPlate) || !validateNotNullorEmpty(newSpeed) || !validateNotNullorEmpty(newWeather) || !validateNotNullorEmpty(newVehicles_types) || !validateNotNullorEmpty(newGate)) {
         return res.status(400).json({ error: 'Plate, speed, weather, vehicles_types and gate cannot be null or undefined' });
     }
     // Validation of the plate
-    if(!validatePlate(newPlate) && !(newPlate === "notFound")){
+    if (!validatePlate(newPlate) && !(newPlate === "notFound")) {
         return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA' });
     }
 
     // Validation of the speed
-    if(!validateSpeedLimit(newSpeed)){
+    if (!validateSpeedLimit(newSpeed)) {
         return res.status(400).json({ error: 'Invalid speed. Speed must be an integer between 30 and 150.' });
     }
 
     // Validation of the weather
-    if(!validateWeather(newWeather)){
+    if (!validateWeather(newWeather)) {
         return res.status(400).json({ error: 'Invalid weather. Weather must be good weather or bad weather.' });
     }
 
     // Validation of the vehicles_types
-    if(!validateVehicleType(newVehicles_types)){
+    if (!validateVehicleType(newVehicles_types)) {
         return res.status(400).json({ error: 'Invalid vehicle type. Vehicle type must be a string.' });
     }
 
     // Validation of the gate
-    if(!validateLocation(newGate)){
+    if (!validateLocation(newGate)) {
         //console.log(gate);
         return res.status(400).json({ error: 'Invalid gate format. Expected format: LAT43.615899LON13.518915' });
     }
@@ -115,7 +115,7 @@ export function sanitizeDeleteTransitInputs(req: Request, res: Response, next: N
     //console.log(typeof(id));
     // Validation of id
     //console.log(typeof(transitId));
-    if(!validateId(Number(id))){
+    if (!validateId(Number(id))) {
         //console.log(typeof(transitId));
         return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
     }
@@ -130,7 +130,7 @@ export function sanitizeGetTransitInputs(req: Request, res: Response, next: Next
     //console.log(typeof(id));
     // Validation of id
     //console.log(typeof(transitId));
-    if(!validateId(Number(id))){
+    if (!validateId(Number(id))) {
         //console.log(typeof(transitId));
         return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
     }

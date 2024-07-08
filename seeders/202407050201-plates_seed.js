@@ -6,11 +6,11 @@ module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.bulkInsert('plates', [
             {
-                username: 'operator',
+                username: 'driver',
                 plate: 'AB123CD'
             },
             {
-                username: 'gate',
+                username: 'driver',
                 plate: 'XY123XY'
             },
             {
