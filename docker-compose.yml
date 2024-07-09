@@ -14,7 +14,7 @@ services:
       - postgres
 #      DATABASE_URL: postgres://yourusername:yourpassword@postgres:5432/autostrade_monitoring
     volumes:
-      - .:/app
+      - .:/usr/src/app
 #      - /app/node_modules
 
   postgres:

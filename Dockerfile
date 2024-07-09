@@ -1,6 +1,9 @@
 FROM node:slim
 
 # Imposta la directory di lavoro
+
+COPY package*.json ./
+
 WORKDIR /usr/src/app
 
 COPY . .
