@@ -1,5 +1,4 @@
 import express from 'express';
-import * as ticketsModel from './models/tickets';
 import * as transitsModel from './models/transits';
 import * as gatesController from './controllers/gatesController';
 import * as sectionsController from './controllers/sectionsController';
@@ -7,7 +6,6 @@ import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
 import * as ticketsController from './controllers/ticketsController';
 import * as usersController from './controllers/usersController';
-import * as ticketsMiddleware from './middlewares/ticketsMiddleware';
 import * as pipe from './middlewares/pipeline';
 
 
