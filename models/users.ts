@@ -1,5 +1,6 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize } from 'sequelize';
+import { ErrorMessagesUserModel } from '../errorMessages/errorMessages';
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -40,11 +41,11 @@ export async function getUser(username: string): Promise<any> {
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Users creation in the database:', error.message);
-            throw new Error(`Error during Users creation in the database: ${error.message}`);
+            console.error(ErrorMessagesUserModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesUserModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Users creation in the database:', error);
-            throw new Error('Unknown error during Users creation in the database.');
+            console.error(ErrorMessagesUserModel.unknownFetchError, error);
+            throw new Error(ErrorMessagesUserModel.unknownFetchError);
         }
     }
 }
@@ -56,11 +57,11 @@ export async function getAllUsers(): Promise<any> {
         return gates;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Users fetch in the database:', error.message);
-            throw new Error(`Error during Users fetch in the database: ${error.message}`);
+            console.error(ErrorMessagesUserModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesUserModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Users fetch in the database:', error);
-            throw new Error('Unknown error during Users fetch in the database.');
+            console.error(ErrorMessagesUserModel.unknownFetchError, error);
+            throw new Error(ErrorMessagesUserModel.unknownFetchError);
         }
     }
 }

@@ -66,32 +66,3 @@ export async function getAllVehicles(): Promise<any> {
         }
     }
 };
-
-/**
- * Verifies if the request is made by an operator.
- * @param chargedata Body of the request containing operator details.
- * @returns Boolean indicating if the request is valid or a string error message.
- */
-export async function TokenChargeVal(chargedata: any): Promise<boolean | string> {
-    try {
-        if (!chargedata.id_operator) {
-            return 'User is not authorized to perform this operation.';
-        }
-
-        return true;
-    } catch (error) {
-        console.error('Error in TokenChargeVal function:', error);
-        throw new Error('Error in TokenChargeVal function');
-    }
-}
-
-// async function syncDatabase() {
-//     try {
-//       await Vehicle.sync(); // { force: true } ricrea la tabella, cancellando la precedente se esiste
-//       console.log('Database synchronized');
-//     } catch (error) {
-//       console.error('Error synchronizing the database:', error);
-//     }
-//   }
-  
-//   syncDatabase();
