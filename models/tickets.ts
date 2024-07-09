@@ -144,10 +144,29 @@ export async function getTicketsByPlatesAndTime(plates: string[], startDate: str
 }
 
 // NEW METHOD TO GET FREQUENT GATE PAIRS
-export async function getFrequentGates(): Promise<any> {
+export async function getFrequentGates(startDate?: string, endDate?: string): Promise<any> {
+    let whereClause: any = {};
+    let ticketDates: any;
+    let tickets: any;
     try {
+
+        if (startDate && endDate) {
+            whereClause.ticket_date = {
+                [Op.between]: [new Date(startDate), new Date(endDate)]
+            };
+        } else if (startDate) {
+            whereClause.ticket_date = {
+                [Op.gte]: new Date(startDate)
+            };
+        } else if (endDate) {
+            whereClause.ticket_date = {
+                [Op.lte]: new Date(endDate)
+            };
+        }
+
         const gatePairs = await Ticket.findAll({
             attributes: ['initial_gate', 'final_gate', [fn('COUNT', '*'), 'count']],
+            where: whereClause,
             group: ['initial_gate', 'final_gate'],
             order: [[literal('count'), 'DESC']]
         });
@@ -158,7 +177,29 @@ export async function getFrequentGates(): Promise<any> {
         // Filter to include only pairs with the maximum count
         const frequentGatePairs = gatePairs.filter(pair => pair.get('count') === maxCount);
 
-        return frequentGatePairs;
+        // Collect ticket dates for each pair
+        const result = await Promise.all(frequentGatePairs.map(async (pair) => {
+            const { initial_gate, final_gate } = pair.get();
+            tickets = await Ticket.findAll({
+                attributes: ['ticket_date'],
+                where: {
+                    initial_gate,
+                    final_gate,
+                    ...whereClause
+                }
+            });
+
+            ticketDates = tickets.map((ticket: { ticket_date: any; }) => ticket.ticket_date);
+
+            return {
+                initial_gate,
+                final_gate,
+                count: pair.get('count'),
+                ticket_dates: ticketDates
+            };
+        }));
+
+        return result;
     } catch (error) {
         if (error instanceof Error) {
             console.error('Error fetching frequent gate pairs from the database:', error.message);
@@ -171,24 +212,40 @@ export async function getFrequentGates(): Promise<any> {
 }
 
 // Funzione per ottenere la section con velocità media più alta e più bassa
-export async function getMinMaxSpeed() {
+export async function getMinMaxSpeed(startDate?: string, endDate?: string) {
     try {
+        const whereClause: any = {};
+
+        if (startDate && endDate) {
+            whereClause.ticket_date = {
+                [Op.between]: [new Date(startDate), new Date(endDate)]
+            };
+        } else if (startDate) {
+            whereClause.ticket_date = {
+                [Op.gte]: new Date(startDate)
+            };
+        } else if (endDate) {
+            whereClause.ticket_date = {
+                [Op.lte]: new Date(endDate)
+            };
+        }
+
         // Trova tutte le coppie con la velocità massima
         const maxSpeedGatePairs = await Ticket.findAll({
-            attributes: ['initial_gate', 'final_gate', 'medium_speed'],
             where: {
+                ...whereClause,
                 medium_speed: {
-                    [Op.eq]: Sequelize.literal(`(SELECT MAX(medium_speed) FROM tickets)`),
+                    [Op.eq]: Sequelize.literal(`(SELECT MAX(medium_speed) FROM tickets ${whereClause.ticket_date ? `WHERE ticket_date BETWEEN '${startDate}' AND '${endDate}'` : ''})`),
                 },
             },
         });
 
         // Trova tutte le coppie con la velocità minima
         const minSpeedGatePairs = await Ticket.findAll({
-            attributes: ['initial_gate', 'final_gate', 'medium_speed'],
             where: {
+                ...whereClause,
                 medium_speed: {
-                    [Op.eq]: Sequelize.literal(`(SELECT MIN(medium_speed) FROM tickets)`),
+                    [Op.eq]: Sequelize.literal(`(SELECT MIN(medium_speed) FROM tickets ${whereClause.ticket_date ? `WHERE ticket_date BETWEEN '${startDate}' AND '${endDate}'` : ''})`),
                 },
             },
         });

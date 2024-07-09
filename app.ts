@@ -266,16 +266,17 @@ app.post('/tickets', ticketsMiddleware.sanitizeGetTicketsInputs, async (req, res
 // Get stats by method
 app.get('/stats/:method', ticketsMiddleware.sanitizePostStatisticsInputs, async (req, res) => {
   const { method } = req.params;
+  const { startDate, endDate } = req.body;
 
   let data: any;
   try {
-    data = await ticketsController.handleGatePairsMethod(method);
-    res.status(200).json(data);
+      data = await ticketsController.handleGatePairsMethod(method, startDate as string, endDate as string);
+      res.status(200).json(data);
   } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: 'An unknown error occurred.' });
-    }
+      if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+      } else {
+          res.status(500).json({ error: 'An unknown error occurred.' });
+      }
   }
 });
