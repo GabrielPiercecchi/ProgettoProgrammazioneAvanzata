@@ -36,11 +36,11 @@ module.exports = {
                 },
             },
             gate: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
                     model: 'gates',
-                    key: 'location'
+                    key: 'id'
                 },
             },
             used: {

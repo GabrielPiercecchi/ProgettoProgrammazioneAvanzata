@@ -21,19 +21,19 @@ module.exports = {
                 allowNull: false
             },
             initial_gate: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
                     model: 'gates',
-                    key: 'location'
+                    key: 'id'
                 },
             },
             final_gate: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
                     model: 'gates',
-                    key: 'location'
+                    key: 'id'
                 },
             },
             medium_speed: {

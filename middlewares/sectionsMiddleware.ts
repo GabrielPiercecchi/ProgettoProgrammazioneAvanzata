@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
 
-// Funzione di validazione per la location
-function validateLocation(location: string): boolean {
-    const regex = /^LAT-?\d{2}\.\d{6}LON-?\d{2}\.\d{6}$/;
-    return regex.test(location);
-}
+// // Funzione di validazione per la location
+// function validateLocation(location: string): boolean {
+//     const regex = /^LAT-?\d{2}\.\d{6}LON-?\d{2}\.\d{6}$/;
+//     return regex.test(location);
+// }
 
 // Funzione di validazione per id
 export function validateId(id: number): boolean {
@@ -33,7 +33,7 @@ export function sanitizeCreateSectionInputs(req: Request, res: Response, next: N
         return res.status(400).json({ error: 'Initial Gate or Final Gate cannot be null or undefiened' });
     }
     // Validazione della location
-    if (!validateLocation(initialGate) || !validateLocation(finalGate)) {
+    if (!validateId(initialGate) || !validateId(finalGate)) {
         return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
     }
 
@@ -55,7 +55,7 @@ export function sanitizeUpdateSectionInputs(req: Request, res: Response, next: N
     }
 
     // Validazione della location
-    if (!validateLocation(newFinalGate) || !validateLocation(newInitialGate)) {
+    if (!validateId(newFinalGate) || !validateId(newInitialGate)) {
         return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
     }
 

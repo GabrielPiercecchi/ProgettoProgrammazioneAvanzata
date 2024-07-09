@@ -36,19 +36,19 @@ export const Ticket = sequelize.define('tickets', {
         allowNull: false
     },
     initial_gate: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Gate,
-            key: 'location'
+            key: 'id'
         }
     },
     final_gate: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Gate,
-            key: 'location'
+            key: 'id'
         }
     },
     medium_speed: {

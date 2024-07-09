@@ -9,19 +9,19 @@ module.exports = {
                 primaryKey: true
             },
             initialGate: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
                     model: 'gates',
-                    key: 'location'
+                    key: 'id'
                 },
             },
             finalGate: {
-                type: Sequelize.STRING,
+                type: Sequelize.INTEGER,
                 allowNull: false,
                 references: {
                     model: 'gates',
-                    key: 'location'
+                    key: 'id'
                 },
             },
             distance: {

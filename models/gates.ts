@@ -1,5 +1,5 @@
 import { DBIsConnected } from "../database/database";
-import { DataTypes, Sequelize } from 'sequelize';
+import { DataTypes, Sequelize, where } from 'sequelize';
 import { User } from './users';
 
 //Connection to DataBase
@@ -11,9 +11,15 @@ const sequelize: Sequelize = DBIsConnected.getInstance();
  * Define the model 'Gate' to interface with the "gates" table
  */
 export const Gate = sequelize.define('gates', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
     location: {
         type: DataTypes.STRING,
-        primaryKey: true,
+        unique: true,
+        allowNull: false,
     },
     username: {
         type: DataTypes.STRING,
@@ -32,11 +38,11 @@ export const Gate = sequelize.define('gates', {
 
 // Verify if the Gate is in the database
 //GET
-export async function getGates(location: string): Promise<any> {
+export async function getGates(id: number): Promise<any> {
     let result: any;
     try {
         // Converti il parametro type in minuscolo per la ricerca
-        result = await Gate.findByPk(location, { raw: true });
+        result = await Gate.findByPk(id);
 
         return result;
     } catch (error) {
@@ -64,23 +70,5 @@ export async function getAllGates(): Promise<any> {
             console.error('Unknown error during Gate fetch in the database:', error);
             throw new Error('Unknown error during Gate fetch in the database.');
         }
-    }
-}
-
-/**
- * Verifies if the request is made by an operator.
- * @param chargedata Body of the request containing operator details.
- * @returns Boolean indicating if the request is valid or a string error message.
- */
-export async function TokenChargeVal(chargedata: any): Promise<boolean | string> {
-    try {
-        if (!chargedata.id_operator) {
-            return 'User is not authorized to perform this operation.';
-        }
-
-        return true;
-    } catch (error) {
-        console.error('Error in TokenChargeVal function:', error);
-        throw new Error('Error in TokenChargeVal function');
     }
 }

@@ -2,9 +2,14 @@
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('gates', {
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true,
+                allowNull: false
+            },
             location: {
                 type: Sequelize.STRING,
-                primaryKey: true,
                 allowNull: false
             },
             username: {
@@ -16,6 +21,12 @@ module.exports = {
                 },
                 onUpdate: 'CASCADE',
             },
+        });
+        // Adding the unique constraint
+        await queryInterface.addConstraint('gates', {
+            fields: ['location'],
+            type: 'unique',
+            name: 'unique_gate_location'
         });
     },
 
