@@ -1,4 +1,4 @@
-import { Transit, getAllTransits,getTransit, getAllNotFoundTickets } from '../models/transits';
+import { Transit, getAllTransits, getTransit, getAllNotFoundTickets } from '../models/transits';
 import * as ticketController from './ticketsController';
 
 // CREATE 
@@ -82,31 +82,83 @@ export async function returnAllTransits(req: any, res: any): Promise<any> {
     try {
         const transits = await getAllTransits();
         res.status(200).json(transits);
-      } catch (error) {
+    } catch (error) {
         if (error instanceof Error) {
-          res.status(500).json({ error: error.message });
+            res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
         }
-      }
+    }
 }
 
 export async function returnTransit(req: any, res: any, id: string): Promise<any> {
     try {
         // Convert id from string to number using parseInt with base 10
         const transitId = parseInt(id, 10);
-    
+
         const transit = await getTransit(transitId);
         if (transit) {
-          res.status(200).json(transit);
+            res.status(200).json(transit);
         } else {
-          res.status(404).json({ error: 'Transit not found' });
+            res.status(404).json({ error: 'Transit not found' });
         }
-      } catch (error) {
+    } catch (error) {
         if (error instanceof Error) {
-          res.status(500).json({ error: error.message });
+            res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
         }
-      }
+    }
+}
+
+export async function returnCreateTransit(req: any, res: any, plate: string, speed: number, weather: string, vehicles_types: string, gate: string): Promise<any> {
+    try {
+        const newTransit = await createTransit(
+            plate,
+            speed,
+            weather,
+            vehicles_types,
+            gate,
+        );
+        res.status(201).json(newTransit);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+    }
+}
+
+export async function returnUpdateTransit(req: any, res: any, id: string, newPlate: string, newSpeed: number, newWeather: string, newVehicles_types: string, newGate: string): Promise<any> {
+    try {
+        // Convert id from string to number using parseInt with base 10
+        const transitId = parseInt(id, 10);
+        const updatedTransit = await updateTransit(transitId, newPlate, newSpeed, newWeather, newVehicles_types, newGate);
+        if (updatedTransit) {
+            res.status(200).json(updatedTransit);
+        } else {
+            res.status(404).json({ error: 'Section not found' });
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+    }
+}
+
+export async function returnDeleteTransit(req: any, res: any, id: string): Promise<any> {
+    try {
+        const transitId = parseInt(id, 10)
+        const deletedTransit = await deleteTransit(transitId);
+        res.status(200).json(deletedTransit);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+    }
 }

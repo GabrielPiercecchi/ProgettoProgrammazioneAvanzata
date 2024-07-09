@@ -31,7 +31,7 @@ export const User = sequelize.define('users', {
 
 // Verify if the Gate is in the database
 //GET
-export async function getUsers(username: string): Promise<any> {
+export async function getUser(username: string): Promise<any> {
     let result: any;
     try {
         // Converti il parametro type in minuscolo per la ricerca
@@ -62,23 +62,5 @@ export async function getAllUsers(): Promise<any> {
             console.error('Unknown error during Users fetch in the database:', error);
             throw new Error('Unknown error during Users fetch in the database.');
         }
-    }
-}
-
-/**
- * Verifies if the request is made by an operator.
- * @param chargedata Body of the request containing operator details.
- * @returns Boolean indicating if the request is valid or a string error message.
- */
-export async function TokenChargeVal(chargedata: any): Promise<boolean | string> {
-    try {
-        if (!chargedata.id_operator) {
-            return 'User is not authorized to perform this operation.';
-        }
-
-        return true;
-    } catch (error) {
-        console.error('Error in TokenChargeVal function:', error);
-        throw new Error('Error in TokenChargeVal function');
     }
 }

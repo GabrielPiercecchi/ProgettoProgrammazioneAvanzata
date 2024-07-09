@@ -35,95 +35,33 @@ app.listen(process.env.SERVICE_PORT, () => {
 // Users routes
 
 // Route createUser
-app.post('/users', usersMiddleware.sanitizeCreateGateUserInputs, async (req, res) => {
+app.post('/users', pipe.createUser, async (req: any, res: any) => {
   const { username } = req.body;
-  try {
-    const newGateUser = await usersController.createGateUser(username);
-    res.status(201).json(newGateUser);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  usersController.returnCreateUser(req, res, username);
 });
 
-// Route getAllUsers
+// Route getAllUsers, no middleware
 app.get('/users', async (req, res) => {
-  let users: any;
-  try {
-    users = await usersModel.getAllUsers();
-    res.status(200).json(users);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  usersController.returnAllUsers(req, res);
 });
 
 // Route getUser
-app.get('/users/:username', usersMiddleware.sanitizeGetGateUserInputs, async (req, res) => {
+app.get('/users/:username', pipe.getUser, async (req: any, res: any) => {
   const { username } = req.params;
-  let user: any;
-  try {
-    user = await usersModel.getUsers(username);
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).json({ error: 'User not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "An unknown error occurred." });
-    }
-  }
+  usersController.returnGetUser(req, res, username);
 });
 
 // Route updateUser
-app.put('/users/:username', usersMiddleware.sanitizeUpdateGateUserInputs, async (req, res) => {
+app.put('/users/:username', pipe.updateUser, async (req: any, res: any) => {
   const { username } = req.params;
   const { newUsername } = req.body;
-
-  let user: any;
-  try {
-    user = await usersController.updateGateUser(username, newUsername);
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).json({ error: 'User not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "An unknown error occurred." });
-    }
-  }
+  usersController.returnUpdateUser(req, res, username, newUsername);
 });
 
 // Route deleteUser
-app.delete('/users/:username', usersMiddleware.sanitizeDeleteGateUserInputs, async (req, res) => {
+app.delete('/users/:username', pipe.deleteUser, async (req: any, res: any) => {
   const { username } = req.params;
-  let user: any;
-  try {
-    user = await usersController.deleteGateUser(username);
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).json({ error: 'User not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "An unknown error occurred." });
-    }
-  }
+  usersController.returnDeleteUser(req, res, username);
 });
 
 // Gates routes
@@ -139,7 +77,7 @@ app.post('/gates', pipe.createGate, async (req: any, res: any) => {
 app.get('/gates', pipe.getAll, async (req: any, res: any) => {
 
   gatesController.returnAllGates(req, res);
-  
+
 });
 
 // Route getGates
@@ -173,7 +111,7 @@ app.post('/sections', pipe.createSection, async (req: any, res: any) => {
 app.get('/sections', pipe.getAll, async (req: any, res: any) => {
 
   sectionsController.returAllSections(req, res);
-  
+
 });
 
 // Route getSection
@@ -248,7 +186,7 @@ app.get('/transits/:id', pipe.getTransit, async (req: any, res: any) => {
 });
 
 // Route to get all transits with plate "notFound" TODO check if the pipe works 
-app.get('/notFoundTransits',async (req, res) => {
+app.get('/notFoundTransits', async (req, res) => {
   try {
     const tickets = await transitsModel.getAllNotFoundTickets();
     res.status(200).json(tickets);
@@ -263,70 +201,24 @@ app.get('/notFoundTransits',async (req, res) => {
 
 // Create a new transit
 
-app.post('/transits', transitsMiddleware.sanitizeCreateTransitInputs, async (req, res) => {
+app.post('/transits', pipe.createTransit, async (req: any, res: any) => {
   const { plate, speed, weather, vehicles_types, gate } = req.body;
-
-  try {
-    const newTransit = await transitsController.createTransit(
-      plate,
-      speed,
-      weather,
-      vehicles_types,
-      gate,
-    );
-    res.status(201).json(newTransit);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  transitsController.returnCreateTransit(req, res, plate, speed, weather, vehicles_types, gate);
 });
 
 // Update a transit
 
-app.put('/transits/:id', transitsMiddleware.sanitizeUpdateTransitInputs, async (req, res) => {
+app.put('/transits/:id', pipe.updateTransit, async (req: any, res: any) => {
   const { id } = req.params;
-  console.log(typeof (id));
   const { newPlate, newSpeed, newWeather, newVehicles_types, newGate } = req.body;
-
-  try {
-    // Convert id from string to number
-    const transitId = parseInt(id, 10); // Use parseInt with base 10
-    //const newDate = new Date(newTransit_date);
-    console.log(typeof (transitId));
-    const updatedTransit = await transitsController.updateTransit(transitId, newPlate, newSpeed, newWeather, newVehicles_types, newGate);
-    if (updatedTransit) {
-      res.status(200).json(updatedTransit);
-    } else {
-      res.status(404).json({ error: 'Section not found' });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  transitsController.returnUpdateTransit(req, res, id, newPlate, newSpeed, newWeather, newVehicles_types, newGate);
 });
 
 // Delete a transit
 
-app.delete('/transits/:id', transitsMiddleware.sanitizeDeleteTransitInputs, async (req, res) => {
+app.delete('/transits/:id', pipe.deleteTransit, async (req: any, res: any) => {
   const { id } = req.params;
-
-  try {
-    const transitId = parseInt(id, 10)
-    const deletedTransit = await transitsController.deleteTransit(transitId);
-    res.status(200).json(deletedTransit);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  transitsController.returnDeleteTransit(req, res, id);
 });
 
 

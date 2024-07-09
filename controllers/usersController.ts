@@ -1,8 +1,7 @@
 import { DBIsConnected } from "../database/database";
-import { DataTypes, Sequelize } from 'sequelize';
-import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import { Gate } from '../models/gates';
-import { User } from "../models/users";
+import { User, getAllUsers, getUser } from "../models/users";
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -89,4 +88,83 @@ export async function updateGateUser(username: string, newUsername: string): Pro
     }
 }
 
+export async function returnAllUsers(req: any, res: any): Promise<any> {
+    let users: any;
+    try {
+        users = await getAllUsers();
+        res.status(200).json(users);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+    }
+}
 
+export async function returnGetUser(req: any, res: any, username: string) {
+    let user: any;
+    try {
+        user = await getUser(username);
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "An unknown error occurred." });
+        }
+    }
+}
+
+export async function returnCreateUser(req: any, res: any, username: string): Promise<any> {
+    try {
+        const newGateUser = await createGateUser(username);
+        res.status(201).json(newGateUser);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+    }
+}
+
+export async function returnUpdateUser(req: any, res: any, username: string, newUsername: string): Promise<any> {
+    let user: any;
+    try {
+        user = await updateGateUser(username, newUsername);
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "An unknown error occurred." });
+        }
+    }
+}
+
+export async function returnDeleteUser(req: any, res: any, username: string): Promise<any> {
+    let user: any;
+    try {
+        user = await deleteGateUser(username);
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "An unknown error occurred." });
+        }
+    }
+}

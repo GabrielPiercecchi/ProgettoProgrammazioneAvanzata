@@ -4,13 +4,38 @@ import * as sectionsMiddleware from './sectionsMiddleware';
 import * as ticketsMiddleware from './ticketsMiddleware';
 import * as transitsMiddleware from './transitsMiddleware';
 import * as vehiclesMiddleware from './vehiclesMiddleware';
+import * as usersMiddleware from './usersMiddleware';
 
 
-// chain of responsibility
+// Chain of Responsibility
 
 export const getAll = [
     authMiddleware.authentication,
     authMiddleware.checkOperator,
+]
+
+export const getUser = [
+    authMiddleware.authentication,
+    authMiddleware.checkOperator,
+    usersMiddleware.sanitizeGetGateUserInputs,
+]
+
+export const createUser = [
+    authMiddleware.authentication,
+    authMiddleware.checkOperator,
+    usersMiddleware.sanitizeCreateGateUserInputs,
+]
+
+export const updateUser = [
+    authMiddleware.authentication,
+    authMiddleware.checkOperator,
+    usersMiddleware.sanitizeUpdateGateUserInputs,
+]
+
+export const deleteUser = [
+    authMiddleware.authentication,
+    authMiddleware.checkOperator,
+    usersMiddleware.sanitizeDeleteGateUserInputs,
 ]
 
 export const getGate = [
