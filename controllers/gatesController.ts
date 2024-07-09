@@ -1,7 +1,6 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize } from 'sequelize';
-import { Op } from 'sequelize';
-import { Gate } from '../models/gates';
+import { Gate, getAllGates, getGates } from '../models/gates';
 import { User } from "../models/users";
 import { ErrorMessagesGateController } from "../errorMessages/errorMessages";
 
@@ -82,4 +81,82 @@ export async function deleteGate(location: string): Promise<any> {
             throw new Error('Unknown error during Gate deletion in the database.');
         }
     }
+}
+
+export async function returnAllGates(req: any, res: any): Promise<any> {
+    try {
+        const gates = await getAllGates();
+        res.status(200).json(gates);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+
+}
+
+export async function returnGate(req: any, res: any, location: string): Promise<any> {
+    try {
+        const gate = await getGates(location);
+        if (gate) {
+          res.status(200).json(gate);
+        } else {
+          res.status(404).json({ error: 'Gate not found' });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnCreateGate(req: any, res: any, location: string, username: string): Promise<any> {
+    try {
+        const newGate = await createGate(location, username);
+        res.status(201).json(newGate);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnUpdateGate(req: any, res: any, location: string, newUsername: string): Promise<any> {
+    try {
+        const updatedGate = await updateGate(location, newUsername);
+        if (updatedGate) {
+          res.status(200).json(updatedGate);
+        } else {
+          res.status(404).json({ error: 'Gate not found' });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnDeleteGate(req: any, res: any, location: string): Promise<any> {
+    try {
+        const gate = await deleteGate(location);
+        if (gate) {
+          res.status(200).json(gate);
+        } else {
+          res.status(404).json({ error: 'Gate not found' });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
 }

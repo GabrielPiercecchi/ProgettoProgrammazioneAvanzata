@@ -1,8 +1,7 @@
 import { DBIsConnected } from "../database/database";
-import { DataTypes, Sequelize } from 'sequelize';
-import { Section } from '../models/sections';
+import { Sequelize } from 'sequelize';
+import { Section, getAllSections, getSections } from '../models/sections';
 import * as distanceCalculator from '../other/distanceCalculator';
-import bcrypt from 'bcrypt';
 
 const SALT_ROUNDS = 10;
 
@@ -107,3 +106,84 @@ export async function deleteSection(sectionId: number): Promise<string> {
     }
 }
 
+export async function returAllSections(req: any, res: any){
+    try {
+        const sections = await getAllSections();
+        res.status(200).json(sections);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnSection(req: any, res: any, id: string){
+    try {
+        // Convert id from string to number using parseInt with base 10
+        const sectionId = parseInt(id, 10);
+    
+        const section = await getSections(sectionId);
+        if (section) {
+          res.status(200).json(section);
+        } else {
+          res.status(404).json({ error: 'Section not found' });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnCreateSection(req: any, res: any, initialGate: string, finalGate: string) {
+    try {
+        const newSection = await createSection(initialGate, finalGate);
+        res.status(201).json(newSection);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnUpdateSection(req: any, res: any, id: string, newInitialGate: string, newFinalGate: string) {
+    try {
+        // Convert id from string to number using parseInt with base 10
+        const sectionId = parseInt(id, 10); 
+    
+        const updatedSection = await updateSection(sectionId, newInitialGate, newFinalGate);
+        if (updatedSection) {
+          res.status(200).json(updatedSection);
+        } else {
+          res.status(404).json({ error: 'Section not found' });
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}
+
+export async function returnDeleteSection(req: any, res: any, id: string) {
+    try {
+        // Convert id from string to number using parseInt with base 10
+        const sectionId = parseInt(id, 10);
+    
+        const result = await deleteSection(sectionId);
+        res.status(200).json(result);
+      } catch (error) {
+        if (error instanceof Error) {
+          res.status(500).json({ error: error.message });
+        } else {
+          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+      }
+}

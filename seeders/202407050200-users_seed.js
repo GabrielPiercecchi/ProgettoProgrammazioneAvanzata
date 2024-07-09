@@ -8,14 +8,17 @@ module.exports = {
             {
                 role: 'operator',
                 username: 'operator',
+                token: 10,
             },
             {
                 role: 'gate',
                 username: 'gate',
+                token: 10,
             },
             {
                 role: 'driver',
                 username: 'driver',
+                token: 10,
             }
         ]);
     },
