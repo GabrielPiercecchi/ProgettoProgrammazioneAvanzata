@@ -1,44 +1,28 @@
 import express from 'express';
-import * as gatesModel from './models/gates';
 import * as ticketsModel from './models/tickets';
-import * as vehiclesModel from './models/vehicles';
 import * as transitsModel from './models/transits';
-import * as sectionsModel from './models/sections';
-import * as usersModel from './models/users';
 import * as gatesController from './controllers/gatesController';
 import * as sectionsController from './controllers/sectionsController';
 import * as vehiclesController from './controllers/vehiclesController';
 import * as transitsController from './controllers/transitsController';
 import * as ticketsController from './controllers/ticketsController';
 import * as usersController from './controllers/usersController';
-import * as vehiclesMiddleware from './middlewares/vehiclesMiddleware';
-import * as transitsMiddleware from './middlewares/transitsMiddleware';
 import * as ticketsMiddleware from './middlewares/ticketsMiddleware';
-import * as usersMiddleware from './middlewares/usersMiddleware';
 import * as pipe from './middlewares/pipeline';
 
 
 
 const app = express();
-const port = process.env.SERVICE_PORT;
 
 // Middleware per il parsing del corpo delle richieste in formato JSON
 app.use(express.json());
 
-let serverStarted = false;
-
 // Open the server
 app.listen(process.env.SERVICE_PORT, () => {
-  console.log('Server is running on port 3000');
+  console.log('Server is running on port ' + process.env.SERVICE_PORT);
 });
 
 // Users routes
-
-// Route createUser
-app.post('/users', pipe.createUser, async (req: any, res: any) => {
-  const { username } = req.body;
-  usersController.returnCreateUser(req, res, username);
-});
 
 // Route getAllUsers, no middleware
 app.get('/users', async (req, res) => {
@@ -49,6 +33,12 @@ app.get('/users', async (req, res) => {
 app.get('/users/:username', pipe.getUser, async (req: any, res: any) => {
   const { username } = req.params;
   usersController.returnGetUser(req, res, username);
+});
+
+// Route createUser
+app.post('/users', pipe.createUser, async (req: any, res: any) => {
+  const { username } = req.body;
+  usersController.returnCreateUser(req, res, username);
 });
 
 // Route updateUser
@@ -150,7 +140,7 @@ app.get('/vehicles/:type', pipe.getVehicles, async (req: any, res: any) => {
 
 // Create a new vehicle
 
-app.post('/vehicles', pipe.updateVehicle, async (req: any, res: any) => {
+app.post('/vehicles', pipe.createVehicle, async (req: any, res: any) => {
   const { type, limit } = req.body;
   vehiclesController.returnCreateVehicle(req, res, type, limit);
 });
@@ -270,13 +260,13 @@ app.get('/stats/:method', ticketsMiddleware.sanitizePostStatisticsInputs, async 
 
   let data: any;
   try {
-      data = await ticketsController.handleGatePairsMethod(method, startDate as string, endDate as string);
-      res.status(200).json(data);
+    data = await ticketsController.handleGatePairsMethod(method, startDate as string, endDate as string);
+    res.status(200).json(data);
   } catch (error) {
-      if (error instanceof Error) {
-          res.status(500).json({ error: error.message });
-      } else {
-          res.status(500).json({ error: 'An unknown error occurred.' });
-      }
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: 'An unknown error occurred.' });
+    }
   }
 });

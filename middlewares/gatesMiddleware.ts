@@ -27,23 +27,6 @@ export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFun
     next();
 }
 
-// Middleware per la sanitizzazione dei parametri per DELETE
-export function sanitizeDeleteGateInput(req: Request, res: Response, next: NextFunction) {
-    const { location } = req.params;
-
-    if (!validateNotNullorEmpty(location)) {
-        return res.status(400).json({ error: 'Username cannot be null or undefined.' });
-    }
-
-    // Validazione della location
-    if (!validateLocation(location)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
-    }
-
-    // Se tutte le validazioni passano, passa al middleware successivo o al controller
-    next();
-}
-
 // Middleware per la sanitizzazione dei parametri per CREATE
 export function sanitizeCreateGateInputs(req: Request, res: Response, next: NextFunction) {
     const { location, username } = req.body;
@@ -91,15 +74,15 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
 
 // Middleware per la sanitizzazione dei parametri per DELETE
 export function sanitizeDeleteGateInputs(req: Request, res: Response, next: NextFunction) {
-    const { username } = req.params;
-
-    if(!validateNotNullorEmpty(username)) { 
+    const { location } = req.params;
+    console.log(location);
+    if (!validateNotNullorEmpty(location)) {
         return res.status(400).json({ error: 'Username cannot be null or undefined.' });
     }
 
     // Validazione della location
-    if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
+    if (!validateLocation(location)) {
+        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
