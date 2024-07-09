@@ -215,58 +215,21 @@ app.delete('/transits/:id', pipe.deleteTransit, async (req: any, res: any) => {
 // Ticket routes
 
 // Get all tickets
-app.get('/tickets', async (req, res) => {
-  try {
-    const tickets = await ticketsModel.getAllTickets();
-    res.status(200).json(tickets);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+app.get('/tickets', pipe.getAll, async (req: any, res: any) => {
+  ticketsController.returnAllTickets(req, res);
 });
 
 // Get tickets by plates and time
-app.post('/tickets', ticketsMiddleware.sanitizeGetTicketsInputs, async (req, res) => {
+app.post('/tickets', pipe.getTicket, async (req: any, res: any) => {
   const { plates, startDate, endDate, format } = req.body;
 
   // Converte plates in un array
-  const platesArray = plates ? plates.split(', ') : [];
-
-  try {
-    const tickets = await ticketsModel.getTicketsByPlatesAndTime(platesArray, startDate, endDate, format, res);
-    if (format === 'json') {
-      if (tickets.length > 0) {
-        res.status(200).json(tickets);
-      } else {
-        res.status(404).json({ error: 'Tickets not found' });
-      }
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  ticketsController.returnGetTickets(req, res, plates, startDate, endDate, format);
 });
 
 // Get stats by method
-app.get('/stats/:method', ticketsMiddleware.sanitizePostStatisticsInputs, async (req, res) => {
+app.get('/stats/:method', pipe.getAll, async (req: any, res: any) => {
   const { method } = req.params;
   const { startDate, endDate } = req.body;
-
-  let data: any;
-  try {
-    data = await ticketsController.handleGatePairsMethod(method, startDate as string, endDate as string);
-    res.status(200).json(data);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: 'An unknown error occurred.' });
-    }
-  }
+  ticketsController.returnStats(req, res, method, startDate, endDate);
 });
