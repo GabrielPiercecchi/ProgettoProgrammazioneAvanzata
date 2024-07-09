@@ -1,10 +1,10 @@
 import { Transit } from '../models/transits'; // Supponiamo che Transit sia il modello per la tabella transits
 import { Section } from '../models/sections'; // Supponiamo che Section sia il modello per la tabella sections
 import { Vehicle } from '../models/vehicles';
-import { Ticket, getMinMaxSpeed, getFrequentGates } from '../models/tickets';
-import { Gate } from '../models/gates';
+import { Ticket, getMinMaxSpeed, getFrequentGates, getAllTickets, getTicketsByPlatesAndTime } from '../models/tickets';
 import { v4 as uuidv4 } from 'uuid';
-import { Op, Sequelize } from 'sequelize'; // Importa l'operatore Sequelize
+import { Op } from 'sequelize'; // Importa l'operatore Sequelize
+import { Plate } from '../models/plates';
 
 // Funzione per controllare e gestire i ticket
 export async function checkAndHandleTickets(): Promise<void> {
@@ -153,3 +153,69 @@ export const handleGatePairsMethod = async (method: string, startDate?: string, 
     }
 }
 
+export async function returnAllTickets(req: any, res: any) {
+    try {
+        const tickets = await getAllTickets();
+        res.status(200).json(tickets);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+    }
+
+}
+
+export async function returnGetTickets(req: any, res: any, plates: string, startDate: string, endDate: string, format: string) {
+    // Converte plates in un array
+    const platesArray = plates ? plates.split(', ') : [];
+    let driverPlates: any[] = [];
+    let allPlatesExist: boolean = false;
+
+    try {
+        if (req.body.user.role === 'driver') {
+            const resultDriver = await Plate.findAll({
+                where: {
+                    username: req.body.user.username
+                }
+            });
+
+            // Assicurati che 'plate' sia il campo corretto nel tuo modello Plate
+            driverPlates = resultDriver.map((driver: any) => driver.plate);
+
+            allPlatesExist = platesArray.every(plate => driverPlates.includes(plate));
+
+            if (!allPlatesExist) {
+                return res.status(400).json({ error: 'Some plates are not assigned to the driver' });
+            }
+        }
+        const tickets = await getTicketsByPlatesAndTime(platesArray, startDate, endDate, format, res);
+        if (format === 'json') {
+            if (tickets.length > 0) {
+                res.status(200).json(tickets);
+            } else {
+                res.status(404).json({ error: 'Tickets not found' });
+            }
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+        }
+    }
+}
+export async function returnStats(req: any, res: any, method: string, startDate: string, endDate: string) {
+    let data: any;
+    try {
+        data = await handleGatePairsMethod(method, startDate as string, endDate as string);
+        res.status(200).json(data);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred.' });
+        }
+    }
+}

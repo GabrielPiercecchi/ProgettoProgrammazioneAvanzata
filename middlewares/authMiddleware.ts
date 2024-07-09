@@ -195,5 +195,6 @@ export function checkOperatorDriver(req: Request, res: Response, next: NextFunct
         res.header('content-type', 'application/json');
         return res.status(401).send({ message: 'Unauthorized' });
     }
+
 }
 
