@@ -133,4 +133,7 @@ dist
 TIPS.txt
 
 #private key
-private_key.pem
+*.pem
+
+#.idea
+*.idea
