@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateNotNullorEmpty } from './vehiclesMiddleware';
-import { User } from '../models/users';
+import { validateNotNullorEmpty } from './vehiclesMiddleware'; // Assumo che validateNotNullorEmpty sia definito in vehiclesMiddleware.ts
+import { UserMiddlewareErrors } from '../errorMessages/errorMessages'; // Importa i messaggi di errore
 
 // Funzione di validazione per l'username
 function validateUsername(username: string): boolean {
@@ -14,7 +14,7 @@ export function sanitizeGetGateUserInputs(req: Request, res: Response, next: Nex
 
     // Validazione della location
     if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid username format. Expected format: String' });
+        return res.status(400).json({ error: UserMiddlewareErrors.invalidUsernameFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -26,12 +26,12 @@ export function sanitizeCreateGateUserInputs(req: Request, res: Response, next: 
     const { username } = req.body;
 
     if (!validateNotNullorEmpty(username)) {
-        return res.status(400).json({ error: 'Username cannot be null or undefined.' });
+        return res.status(400).json({ error: UserMiddlewareErrors.usernameNotNullOrEmpty });
     }
 
     // Validazione dell'username
     if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
+        return res.status(400).json({ error: UserMiddlewareErrors.invalidUsernameFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -43,12 +43,12 @@ export function sanitizeDeleteGateUserInputs(req: Request, res: Response, next: 
     const { username } = req.params;
 
     if (!validateNotNullorEmpty(username)) {
-        return res.status(400).json({ error: 'Username cannot be null or undefined.' });
+        return res.status(400).json({ error: UserMiddlewareErrors.usernameNotNullOrEmpty });
     }
 
     // Validazione della location
     if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid Username format. Expected format: String' });
+        return res.status(400).json({ error: UserMiddlewareErrors.invalidUsernameFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -61,12 +61,12 @@ export function sanitizeUpdateGateUserInputs(req: Request, res: Response, next: 
     const { newUsername } = req.body;
 
     if (!validateNotNullorEmpty(username) || !validateNotNullorEmpty(newUsername)) {
-        return res.status(400).json({ error: 'Username and newUsername cannot be null or undefined.' });
+        return res.status(400).json({ error: UserMiddlewareErrors.usernameNewUsernameNotNullOrEmpty });
     }
 
     // Validazione della location
     if (!validateUsername(username) || !validateUsername(newUsername)) {
-        return res.status(400).json({ error: 'Invalid Username format. Expected format: String' });
+        return res.status(400).json({ error: UserMiddlewareErrors.invalidUsernameFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
