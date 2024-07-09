@@ -68,10 +68,19 @@ export function sanitizeGetTicketsInputs(req: Request, res: Response, next: Next
 // Middleware per la sanitizzazione dei parametri per POST STATISTICS
 export function sanitizePostStatisticsInputs(req: Request, res: Response, next: NextFunction) {
     const { method } = req.params;
+    const { startDate, endDate } = req.body;
 
     // Validazione del metodo
     if (!validateNotNullorEmpty(method) || (method !== 'getFrequentGates' && method !== 'getMinMaxSpeed')) {
         return res.status(400).json({ error: 'Invalid method. Method must be either "getFrequentGates" or "getMinMaxSpeed".' });
+    }
+
+    if (!validateNotNullorEmpty(startDate) || !validateDate(startDate)) {
+        return res.status(400).json({ error: `Invalid start date format: ${startDate}. Expected format: YYYY-MM-DDTHH:MM:SS.` });
+    }
+
+    if (!validateNotNullorEmpty(endDate) || !validateDate(endDate)) {
+        return res.status(400).json({ error: `Invalid end date format: ${endDate}. Expected format: YYYY-MM-DDTHH:MM:SS.` });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller

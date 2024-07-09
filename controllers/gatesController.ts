@@ -3,6 +3,7 @@ import { DataTypes, Sequelize } from 'sequelize';
 import { Op } from 'sequelize';
 import { Gate } from '../models/gates';
 import { User } from "../models/users";
+import { ErrorMessagesGateController } from "../errorMessages/errorMessages";
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();

@@ -128,19 +128,19 @@ export async function checkAndHandleTickets(): Promise<void> {
 }
 
 // Funzione per gestire le stats dei ticket
-export const handleGatePairsMethod = async (method: String) => {
-
+export const handleGatePairsMethod = async (method: string, startDate?: string, endDate?: string) => {
     try {
         let data;
 
         if (method === 'getFrequentGates') {
-            data = await getFrequentGates();
+            data = await getFrequentGates(startDate, endDate);
         } else if (method === 'getMinMaxSpeed') {
-            const { maxSpeedGatePairs, minSpeedGatePairs } = await getMinMaxSpeed();
+            const { maxSpeedGatePairs, minSpeedGatePairs } = await getMinMaxSpeed(startDate, endDate);
             data = { maxSpeedGatePairs, minSpeedGatePairs };
         } else {
             throw new Error('Invalid method specified: must be either "getFrequentGates" or "getMinMaxSpeed".');
         }
+
         return data;
     } catch (error) {
         if (error instanceof Error) {
