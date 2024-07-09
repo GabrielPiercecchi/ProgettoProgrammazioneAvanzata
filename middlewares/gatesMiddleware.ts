@@ -32,7 +32,7 @@ export function sanitizeDeleteGateInputs(req: Request, res: Response, next: Next
     const { location } = req.params;
 
     if (!validateNotNullorEmpty(location)) {
-        return res.status(400).json({ error: 'Username cannot be null or undefined.' });
+        return res.status(400).json({ error: 'Location cannot be null or undefined.' });
     }
 
     // Validazione della location
