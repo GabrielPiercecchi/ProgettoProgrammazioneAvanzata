@@ -1,8 +1,8 @@
-FROM node:slim
+FROM node:lts-slim
 
 # Imposta la directory di lavoro
 
-COPY package*.json ./
+# COPY package*.json ./
 
 WORKDIR /usr/src/app
 
