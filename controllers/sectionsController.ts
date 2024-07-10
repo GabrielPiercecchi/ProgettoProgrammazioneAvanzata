@@ -3,6 +3,7 @@ import { Sequelize } from 'sequelize';
 import { Section, getAllSections, getSections } from '../models/sections';
 import * as distanceCalculator from '../other/distanceCalculator';
 import { Gate } from "../models/gates";
+import { ErrorMessagesSectionController } from "../messages/errorMessages";
 
 const SALT_ROUNDS = 10;
 
@@ -28,11 +29,11 @@ export async function createSection(initialGate: number, finalGate: number): Pro
     return newSection;
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error during Section creation in the database:', error.message);
-      throw new Error(`Error during Section creation in the database: ${error.message}`);
+      console.error(ErrorMessagesSectionController.creationError, error.message);
+      throw new Error(`${ErrorMessagesSectionController.creationError} ${error.message}`);
     } else {
-      console.error('Unknown error during Section creation in the database:', error);
-      throw new Error('Unknown error during Section creation in the database.');
+      console.error(ErrorMessagesSectionController.unknownCreationError, error);
+      throw new Error(`${ErrorMessagesSectionController.unknownCreationError} ${error}`);
     }
   }
 }
@@ -64,15 +65,15 @@ export async function updateSection(sectionId: number, newInitialGate: number, n
       await result.save();
       return result;
     } else {
-      throw new Error('Section not found.');
+      throw new Error(`${ErrorMessagesSectionController.sectionNotFound} ${sectionId}`);
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error during Section update in the database:', error.message);
-      throw new Error(`Error during Section update in the database: ${error.message}`);
+      console.error(ErrorMessagesSectionController.updatingError, error.message);
+      throw new Error(`${ErrorMessagesSectionController.updatingError} ${error.message}`);
     } else {
-      console.error('Unknown error during Section update in the database:', error);
-      throw new Error('Unknown error during Section update in the database.');
+      console.error(ErrorMessagesSectionController.unknownUpdatingError, error);
+      throw new Error(`${ErrorMessagesSectionController.unknownUpdatingError} ${error}`);
     }
   }
 }
@@ -91,15 +92,15 @@ export async function deleteSection(sectionId: number): Promise<string> {
       await result.destroy();
       return `Section with ID ${sectionId} was deleted successfully.`;
     } else {
-      throw new Error('Section not found.');
+      throw new Error(`${ErrorMessagesSectionController.sectionNotFound} ${sectionId}`);
     }
   } catch (error) {
     if (error instanceof Error) {
-      console.error('Error during Section deletion in the database:', error.message);
-      throw new Error(`Error during Section deletion in the database: ${error.message}`);
+      console.error(ErrorMessagesSectionController.deletionError, error.message);
+      throw new Error(`${ErrorMessagesSectionController.deletionError} ${error.message}`);
     } else {
-      console.error('Unknown error during Section deletion in the database:', error);
-      throw new Error('Unknown error during Section deletion in the database.');
+      console.error(ErrorMessagesSectionController.unknownDeletionError, error);
+      throw new Error(`${ErrorMessagesSectionController.unknownDeletionError} ${error}`);
     }
   }
 }
@@ -112,7 +113,7 @@ export async function returAllSections(req: any, res: any) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+      res.status(500).json({ error: ErrorMessagesSectionController.unknownError });
     }
   }
 }
@@ -126,13 +127,13 @@ export async function returnSection(req: any, res: any, id: string) {
     if (section) {
       res.status(200).json(section);
     } else {
-      res.status(404).json({ error: 'Section not found' });
+      res.status(404).json({ error: ErrorMessagesSectionController.sectionNotFound });
     }
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+      res.status(500).json({ error: ErrorMessagesSectionController.unknownError });
     }
   }
 }
@@ -145,7 +146,7 @@ export async function returnCreateSection(req: any, res: any, initialGate: numbe
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+      res.status(500).json({ error: ErrorMessagesSectionController.unknownError });
     }
   }
 }
@@ -159,13 +160,13 @@ export async function returnUpdateSection(req: any, res: any, id: string, newIni
     if (updatedSection) {
       res.status(200).json(updatedSection);
     } else {
-      res.status(404).json({ error: 'Section not found' });
+      res.status(404).json({ error: ErrorMessagesSectionController.sectionNotFound });
     }
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+      res.status(500).json({ error: ErrorMessagesSectionController.unknownError });
     }
   }
 }
@@ -181,7 +182,7 @@ export async function returnDeleteSection(req: any, res: any, id: string) {
     if (error instanceof Error) {
       res.status(500).json({ error: error.message });
     } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+      res.status(500).json({ error: ErrorMessagesSectionController.unknownError });
     }
   }
 }

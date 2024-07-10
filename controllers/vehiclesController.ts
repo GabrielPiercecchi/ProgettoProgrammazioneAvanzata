@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { Vehicle, getAllVehicles, getVehicles } from '../models/vehicles';
-import { ErrorMessagesVehicleController } from '../errorMessages/errorMessages';
+import { ErrorMessagesVehicleController } from '../messages/errorMessages';
 
 // CREATE
 export async function createVehicle(type: string, limit: number): Promise<any> {

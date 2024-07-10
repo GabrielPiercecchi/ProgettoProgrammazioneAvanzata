@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateNotNullorEmpty } from './vehiclesMiddleware';
-import { ErrorMessagesTicketMiddleware } from '../errorMessages/errorMessages';
+import { ErrorMessagesTicketMiddleware } from '../messages/errorMessages';
 
 // Funzione di validazione per le targhe
 function validatePlate(plate: string): boolean {

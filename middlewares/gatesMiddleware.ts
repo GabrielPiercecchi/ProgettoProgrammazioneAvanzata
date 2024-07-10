@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
 import { User } from '../models/users';
-import { ErrorMessagesGateMIddleware } from '../errorMessages/errorMessages';
+import { ErrorMessagesGateMIddleware } from '../messages/errorMessages';
 
 // Funzione di validazione per la location
 export function validateLocation(location: string): boolean {

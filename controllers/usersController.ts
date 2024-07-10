@@ -2,7 +2,7 @@ import { DBIsConnected } from "../database/database";
 import { Sequelize } from 'sequelize';
 import { Gate } from '../models/gates';
 import { User, getAllUsers, getUser } from "../models/users";
-import { ErrorMessagesUserController } from "../errorMessages/errorMessages";
+import { ErrorMessagesUserController } from "../messages/errorMessages";
 
 // Connection to the database
 const sequelize: Sequelize = DBIsConnected.getInstance();

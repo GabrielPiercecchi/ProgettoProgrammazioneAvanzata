@@ -1,4 +1,4 @@
-import { ErrorMessagesTransitController } from '../errorMessages/errorMessages';
+import { ErrorMessagesTransitController } from '../messages/errorMessages';
 import { Transit, getAllTransits, getTransit, getAllNotFoundTickets } from '../models/transits';
 import * as ticketController from './ticketsController';
 

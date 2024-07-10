@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
+import { ErrorMessagesSectionMiddleware } from '../messages/errorMessages';
 
 // // Funzione di validazione per la location
 // function validateLocation(location: string): boolean {
@@ -18,7 +19,7 @@ export function sanitizeGetSectionInputs(req: Request, res: Response, next: Next
 
     // Validazione della location
     if (!validateId(Number(id))) {
-        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+        return res.status(400).json({ error: ErrorMessagesSectionMiddleware.invalidIdFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -30,11 +31,11 @@ export function sanitizeCreateSectionInputs(req: Request, res: Response, next: N
     const { initialGate, finalGate } = req.body;
 
     if (!validateNotNullorEmpty(initialGate) || !validateNotNullorEmpty(finalGate)) {
-        return res.status(400).json({ error: 'Initial Gate or Final Gate cannot be null or undefiened' });
+        return res.status(400).json({ error: ErrorMessagesSectionMiddleware.gateNotNull });
     }
     // Validazione della location
     if (!validateId(initialGate) || !validateId(finalGate)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
+        return res.status(400).json({ error: ErrorMessagesSectionMiddleware.invalidGateFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -47,16 +48,16 @@ export function sanitizeUpdateSectionInputs(req: Request, res: Response, next: N
     const { newInitialGate, newFinalGate } = req.body;
 
     if (!validateId(Number(id))) {
-        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+        return res.status(400).json({ error: ErrorMessagesSectionMiddleware.invalidIdFormat });
     }
 
     if (!validateNotNullorEmpty(newInitialGate) || !validateNotNullorEmpty(newFinalGate)) {
-        return res.status(400).json({ error: 'Initial Gate or Final Gate cannot be null or undefiened' });
+        return res.status(400).json({ error: ErrorMessagesSectionMiddleware.gateNotNull });
     }
 
     // Validazione della location
     if (!validateId(newFinalGate) || !validateId(newInitialGate)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
+        return res.status(400).json({ error: ErrorMessagesSectionMiddleware.invalidGateFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -68,7 +69,7 @@ export function sanitizeDeleteSectionInputs(req: Request, res: Response, next: N
     const { id } = req.params;
 
     if (!validateId(Number(id))) {
-        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+        return res.status(400).json({ error: ErrorMessagesSectionMiddleware.invalidIdFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller

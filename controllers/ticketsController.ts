@@ -5,7 +5,7 @@ import { Ticket, getMinMaxSpeed, getFrequentGates, getAllTickets, getTicketsByPl
 import { v4 as uuidv4 } from 'uuid';
 import { Op } from 'sequelize'; // Importa l'operatore Sequelize
 import { Plate } from '../models/plates';
-import { ErrorMessagesTicketController } from '../errorMessages/errorMessages';
+import { ErrorMessagesTicketController } from '../messages/errorMessages';
 
 // Funzione per controllare e gestire i ticket
 export async function checkAndHandleTickets(): Promise<void> {

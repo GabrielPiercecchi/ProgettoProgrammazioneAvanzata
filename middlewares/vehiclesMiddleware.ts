@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ErrorMessagesVehicleMiddleware } from '../errorMessages/errorMessages';
+import { ErrorMessagesVehicleMiddleware } from '../messages/errorMessages';
 
 // Funzione di validazione per il limite di velocità
 export function validateSpeedLimit(limit: number): boolean {

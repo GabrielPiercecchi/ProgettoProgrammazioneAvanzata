@@ -1,3 +1,13 @@
+// Auth errors
+export const ErrorMessagesAuth = {
+    unauthorized: 'Unauthorized',
+    invalidEnvToken: 'Invalid Env Token.',
+    internalServerError: 'Internal Server Error',
+    failedToDecode: 'Failed to decode',
+    userNotFound: 'User not found',
+    terminatedToken: 'Unauthorized. Token remained:',
+};
+
 //User errors
 
 // user model errors
@@ -162,4 +172,33 @@ export const ErrorMessagesTransitMiddleware = {
     plateSpeedWeatherVehiclesTypesGateNotNullOrEmpty: 'Plate, speed, weather, vehicles_types, and gate cannot be null or undefined.',
     newPlateSpeedWeatherVehiclesTypesGateNotNullOrEmpty: 'Plate, speed, weather, vehicles_types, and gate cannot be null or undefined.',
     invalidId: 'Invalid id. Id must be an integer.',
+};
+
+// Section errors
+
+// section model errors
+export const ErrorMessagesSectionModel = {
+    fetchError: 'Error during Section fetch in the database:',
+    unknownFetchError: 'Unknown error during Section fetch in the database.'
+};
+
+// section controller errors
+export const ErrorMessagesSectionController = {
+    creationError: 'Error during Section creation in the database:',
+    updatingError: 'Error during Section updating in the database:',
+    deletionError: 'Error during Section deletion in the database:',
+    fetchError: 'Error during Section fetch in the database:',
+    unknownCreationError: 'Unknown error during Section creation in the database.',
+    unknownUpdatingError: 'Unknown error during Section updating in the database.',
+    unknownDeletionError: 'Unknown error during Section deletion in the database.',
+    unknownFetchError: 'Unknown error during Section fetch in the database.',
+    sectionNotFound: 'Section not found.',
+    unknownError: 'An unknown error occurred.'
+};
+
+// section middleware errors
+export const ErrorMessagesSectionMiddleware = {
+    invalidIdFormat: 'Invalid id format. Expected format: Number > 0',
+    gateNotNull : 'Initial Gate or Final Gate cannot be null or undefiened',
+    invalidGateFormat: 'Invalid gate format. Expected format: Number > 0',
 };

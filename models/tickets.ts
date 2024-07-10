@@ -7,7 +7,7 @@ import PDFDocument from 'pdfkit';
 
 import dotenv from 'dotenv';
 import { Response } from 'express'; // Ensure this matches the framework you're using
-import { ErrorMessagesTicketModel } from "../errorMessages/errorMessages";
+import { ErrorMessagesTicketModel } from "../messages/errorMessages";
 
 dotenv.config();
 //Connection to DataBase

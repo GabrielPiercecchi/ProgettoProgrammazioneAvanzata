@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateId } from './sectionsMiddleware'; // we choose to import it cause its the same
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
-import { ErrorMessagesTransitMiddleware } from '../errorMessages/errorMessages';
+import { ErrorMessagesTransitMiddleware } from '../messages/errorMessages';
 
 enum Weather {
     GoodWeather = 'good weather',

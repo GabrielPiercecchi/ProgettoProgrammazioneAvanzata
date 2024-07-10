@@ -2,7 +2,7 @@ import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, Model } from 'sequelize';
 import { Vehicle } from './vehicles'; // Import the Vehicle model
 import { Gate } from './gates'; // Import the Gates model
-import { ErrorMessagesTransitModel } from "../errorMessages/errorMessages";
+import { ErrorMessagesTransitModel } from "../messages/errorMessages";
 
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
