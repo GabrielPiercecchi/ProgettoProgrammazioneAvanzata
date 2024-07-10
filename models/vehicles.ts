@@ -1,5 +1,6 @@
 import {DBIsConnected} from "../database/database";
 import {DataTypes, Sequelize} from 'sequelize';
+import { ErrorMessagesVehicleModel } from "../errorMessages/errorMessages";
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -40,11 +41,11 @@ export async function getVehicles(type: string): Promise<any> {
         return vehicle;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Vehicles fetch in the database:', error.message);
-            throw new Error(`Error during Vehicles fetch in the database: ${error.message}`);
+            console.error(ErrorMessagesVehicleModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesVehicleModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Vehicles fetch in the database:', error);
-            throw new Error('Unknown error during Vehicles fetch in the database.');
+            console.error(ErrorMessagesVehicleModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesVehicleModel.unknownFetchError}`);
         }
     }
 };
@@ -58,11 +59,11 @@ export async function getAllVehicles(): Promise<any> {
         return vehicles;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Vehicles fetch in the database:', error.message);
-            throw new Error(`Error during Vehicles fetch in the database: ${error.message}`);
+            console.error(ErrorMessagesVehicleModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesVehicleModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Vehicles fetch in the database:', error);
-            throw new Error('Unknown error during Vehicles fetch in the database.');
+            console.error(ErrorMessagesVehicleModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesVehicleModel.unknownFetchError}`);
         }
     }
 };

@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import { Vehicle, getAllVehicles, getVehicles } from '../models/vehicles';
+import { ErrorMessagesVehicleController } from '../errorMessages/errorMessages';
 
 // CREATE
 export async function createVehicle(type: string, limit: number): Promise<any> {
@@ -16,7 +17,7 @@ export async function createVehicle(type: string, limit: number): Promise<any> {
         });
 
         if (existingVehicle) {
-            throw new Error('Vehicle with this type already exists.');
+            throw new Error(`${ErrorMessagesVehicleController.alreadyExists} ${type}`);
         }
 
         // Se non esiste, crea il nuovo veicolo
@@ -24,11 +25,11 @@ export async function createVehicle(type: string, limit: number): Promise<any> {
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Vehicle creation in the database:', error.message);
-            throw new Error(`Error during Vehicle creation in the database: ${error.message}`);
+            console.error(ErrorMessagesVehicleController.createVehicle, error.message);
+            throw new Error(`${ErrorMessagesVehicleController.createVehicle} ${error.message}`);
         } else {
-            console.error('Unknown error during Vehicle creation in the database:', error);
-            throw new Error('Unknown error during Vehicle creation in the database.');
+            console.error(ErrorMessagesVehicleController.unknownError, error);
+            throw new Error(`${ErrorMessagesVehicleController.unknownError} ${error}`);
         }
     }
 }
@@ -54,15 +55,15 @@ export async function updateVehicle(type: string, newLimit: number): Promise<any
             await result.save();
             return result;
         } else {
-            throw new Error('Vehicle not found.');
+            throw new Error(`${ErrorMessagesVehicleController.vehicleNotFound} ${type}`);
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Vehicle update in the database:', error.message);
-            throw new Error(`Error during Vehicle update in the database: ${error.message}`);
+            console.error(ErrorMessagesVehicleController.updateVehicle, error.message);
+            throw new Error(`${ErrorMessagesVehicleController.updateVehicle} ${error.message}`);
         } else {
-            console.error('Unknown error during Vehicle update in the database:', error);
-            throw new Error('Unknown error during Vehicle update in the database.');
+            console.error(ErrorMessagesVehicleController.unknownError, error);
+            throw new Error(`${ErrorMessagesVehicleController.unknownError} ${error}`);
         }
     }
 }
@@ -84,15 +85,15 @@ export async function deleteVehicle(type: string): Promise<any> {
             await result.destroy();
             return `Vehicle with type ${type} was deleted successfully.`;
         } else {
-            throw new Error('Vehicle not found.');
+            throw new Error(`${ErrorMessagesVehicleController.vehicleNotFound} ${type}`);
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Vehicle deletion in the database:', error.message);
-            throw new Error(`Error during Vehicle deletion in the database: ${error.message}`);
+            console.error(ErrorMessagesVehicleController.deleteVehicle, error.message);
+            throw new Error(`${ErrorMessagesVehicleController.deleteVehicle} ${error.message}`);
         } else {
-            console.error('Unknown error during Vehicle deletion in the database:', error);
-            throw new Error('Unknown error during Vehicle deletion in the database.');
+            console.error(ErrorMessagesVehicleController.unknownError, error);
+            throw new Error(`${ErrorMessagesVehicleController.unknownError} ${error}`);
         }
     }
 }
@@ -105,7 +106,7 @@ export async function returnAllVehicles (req: any, res: any): Promise<any> {
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesVehicleController.unknownError });
         }
       }
 }
@@ -116,13 +117,13 @@ export async function returnVehicle(req: any, res: any, type: string): Promise<a
         if (vehicle) {
           res.status(200).json(vehicle);
         } else {
-          res.status(404).json({ error: 'Vehicle not found.' });
+          res.status(404).json({ error:ErrorMessagesVehicleController.vehicleNotFound });
         }
       } catch (error) {
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesVehicleController.unknownError });
         }
       }
 }
@@ -135,7 +136,7 @@ export async function returnCreateVehicle(req: any, res: any, type: string, limi
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesVehicleController.unknownError });
         }
       }
 }
@@ -148,7 +149,7 @@ export async function returnUpdateVehicle(req: any, res: any, type: string, newL
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesVehicleController.unknownError });
         }
       }
 }
@@ -161,7 +162,7 @@ export async function returnDeleteVehicle(req: any, res: any, type: string) {
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesVehicleController.unknownError });
         }
       }
 }

@@ -18,12 +18,20 @@ module.exports = {
       // Calculate distance
       const distance = haversineDistance(initialCoordinates, finalCoordinates);
 
-      // Insert into database using Sequelize model
-      await Section.create({
-        initialGate: 1,
-        finalGate: 2,
-        distance: distance.toFixed(2) // in Km
-      });
+      // // Insert into database using Sequelize model
+      // await Section.create({
+      //   initialGate: 1,
+      //   finalGate: 2,
+      //   distance: distance.toFixed(2) // in Km
+      // });
+
+      await queryInterface.bulkInsert('sections', [
+        {
+          initialGate: 1,
+          finalGate: 2,
+          distance: distance.toFixed(2) // in Km
+        }
+      ], {});
 
       console.log('Seed executed successfully.');
 
