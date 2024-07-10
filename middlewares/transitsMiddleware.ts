@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateLocation } from './gatesMiddleware'; // we choose to import it cause its the same
 import { validateId } from './sectionsMiddleware'; // we choose to import it cause its the same
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
 
@@ -34,12 +33,12 @@ export function sanitizeCreateTransitInputs(req: Request, res: Response, next: N
     }
     // Validation of the plate
     if (!validatePlate(plate) && !(plate === "notFound")) {
-        return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA' });
+        return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA or notFound' });
     }
 
     // Validation of the speed
-    if (!validateSpeedLimit(speed)) {
-        return res.status(400).json({ error: 'Invalid speed. Speed must be an integer between 30 and 150.' });
+    if (!validateSpeedLimit(speed) || !(speed > 0)) {
+        return res.status(400).json({ error: 'Invalid speed. Speed must be an integer > 0.' });
     }
 
     // Validation of the weather
@@ -53,7 +52,7 @@ export function sanitizeCreateTransitInputs(req: Request, res: Response, next: N
     }
 
     // Validation of the gate
-    if (!validateLocation(gate)) {
+    if (!validateId(gate)) {
         console.log(gate);
         return res.status(400).json({ error: 'Invalid gate format. Expected format: LAT43.615899LON13.518915' });
     }
@@ -80,12 +79,12 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
     }
     // Validation of the plate
     if (!validatePlate(newPlate) && !(newPlate === "notFound")) {
-        return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA' });
+        return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA or notFound.' });
     }
 
     // Validation of the speed
-    if (!validateSpeedLimit(newSpeed)) {
-        return res.status(400).json({ error: 'Invalid speed. Speed must be an integer between 30 and 150.' });
+    if (!validateSpeedLimit(newSpeed) || !(newSpeed > 0)) {
+        return res.status(400).json({ error: 'Invalid speed. Speed must be an integer > 0 .' });
     }
 
     // Validation of the weather
@@ -99,9 +98,9 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
     }
 
     // Validation of the gate
-    if (!validateLocation(newGate)) {
+    if (!validateId(newGate)) {
         //console.log(gate);
-        return res.status(400).json({ error: 'Invalid gate format. Expected format: LAT43.615899LON13.518915' });
+        return res.status(400).json({ error: 'Invalid gate format. Expected format: number > 0' });
     }
 
     // If all validations pass, it moves on

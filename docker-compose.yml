@@ -11,7 +11,8 @@ services:
     depends_on:
       - postgres
     volumes:
-      - .:/app
+      - .:/usr/src/app
+#      - /app/node_modules
 
   postgres:
     image: postgres:latest

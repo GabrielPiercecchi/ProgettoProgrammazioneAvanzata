@@ -8,6 +8,10 @@ export function validateLocation(location: string): boolean {
     return regex.test(location);
 }
 
+export function validateId(id: number): boolean {
+    return !isNaN(id);
+}
+
 // Funzione di validazione per l'username
 function validateUsername(username: string): boolean {
     const regex = /^[a-zA-Z][a-zA-Z0-9]*$/;
@@ -16,11 +20,11 @@ function validateUsername(username: string): boolean {
 
 // Middleware per la sanitizzazione dei parametri per GET
 export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFunction) {
-    const { location } = req.params;
+    const { id } = req.params;
 
     // Validazione della location
-    if (!validateLocation(location)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
+    if (!validateId(Number(id))) {
+        return res.status(400).json({ error: 'Invalid id format. Expected format: Number > 0' });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -51,7 +55,7 @@ export function sanitizeCreateGateInputs(req: Request, res: Response, next: Next
 
 // Middleware per la sanitizzazione dei parametri per UPDATE
 export function sanitizeUpdateGateInputs(req: Request, res: Response, next: NextFunction) {
-    const { location } = req.params;
+    const { id } = req.params;
     const { newUsername } = req.body;
 
     if (!validateNotNullorEmpty(newUsername)) {
@@ -59,8 +63,8 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
     }
 
     // Validazione della location
-    if (!validateLocation(location)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
+    if (!validateId(Number(id))) {
+        return res.status(400).json({ error: 'Invalid id format. Expected format: Number > 0' });
     }
 
     // Validazione del nuovo username
@@ -74,16 +78,17 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
 
 // Middleware per la sanitizzazione dei parametri per DELETE
 export function sanitizeDeleteGateInputs(req: Request, res: Response, next: NextFunction) {
-    const { location } = req.params;
+    const { id } = req.params;
     console.log(location);
     if (!validateNotNullorEmpty(location)) {
         return res.status(400).json({ error: 'Location cannot be null or undefined.' });
     }
 
-    // Validazione della location
-    if (!validateLocation(location)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
+    // Validazione del id
+    if (!validateId(Number(id))) {
+        return res.status(400).json({ error: 'Invalid id format. Expected format: Number > 0' });
     }
+
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
     next();

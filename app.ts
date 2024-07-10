@@ -69,22 +69,22 @@ app.get('/gates', pipe.getAll, async (req: any, res: any) => {
 });
 
 // Route getGates
-app.get('/gates/:location', pipe.getGate, async (req: any, res: any) => {
-  const { location } = req.params;
-  gatesController.returnGate(req, res, location);
+app.get('/gates/:id', pipe.getGate, async (req: any, res: any) => {
+  const { id } = req.params;
+  gatesController.returnGate(req, res, id);
 });
 
 //Route updateGates
-app.put('/gates/:location', pipe.updateGate, async (req: any, res: any) => {
-  const { location } = req.params;
+app.put('/gates/:id', pipe.updateGate, async (req: any, res: any) => {
+  const { id } = req.params;
   const { newUsername } = req.body;
-  gatesController.returnUpdateGate(req, res, location, newUsername);
+  gatesController.returnUpdateGate(req, res, id, newUsername);
 });
 
 // Route deleteGates
-app.delete('/gates/:location', pipe.deleteGate, async (req: any, res: any) => {
-  const { location } = req.params;
-  gatesController.returnDeleteGate(req, res, location);
+app.delete('/gates/:id', pipe.deleteGate, async (req: any, res: any) => {
+  const { id } = req.params;
+  gatesController.returnDeleteGate(req, res, id);
 });
 
 // Section routes

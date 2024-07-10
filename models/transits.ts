@@ -39,11 +39,11 @@ export const Transit = sequelize.define('transits', {
         }
     },
     gate: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Gate,
-            key: 'location'
+            key: 'id'
         }
     },
     // Boolean value to check if the transit is in use in the tickets Database

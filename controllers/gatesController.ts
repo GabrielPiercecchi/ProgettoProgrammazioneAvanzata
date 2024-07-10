@@ -32,11 +32,11 @@ export async function createGate(location: string, username: string): Promise<an
 }
 
 // UPDATE
-export async function updateGate(location: string, newUsername: string): Promise<any> {
+export async function updateGate(id: number, newUsername: string): Promise<any> {
     let result: any;
     let user: any;
     try {
-        result = await Gate.findByPk(location);
+        result = await Gate.findByPk(id);
         user = await User.findByPk(newUsername, { raw: true });
         console.log(user);
         if (!user) {
@@ -61,10 +61,10 @@ export async function updateGate(location: string, newUsername: string): Promise
 }
 
 // DELETE
-export async function deleteGate(location: string): Promise<any> {
+export async function deleteGate(id: number): Promise<any> {
     let result: any;
     try {
-        result = await Gate.findByPk(location);
+        result = await Gate.findByPk(id);
         if (result) {
             // Cancella il gate
             await result.destroy();
@@ -97,9 +97,9 @@ export async function returnAllGates(req: any, res: any): Promise<any> {
 
 }
 
-export async function returnGate(req: any, res: any, location: string): Promise<any> {
+export async function returnGate(req: any, res: any, id: number): Promise<any> {
     try {
-        const gate = await getGates(location);
+        const gate = await getGates(id);
         if (gate) {
           res.status(200).json(gate);
         } else {
@@ -127,9 +127,9 @@ export async function returnCreateGate(req: any, res: any, location: string, use
       }
 }
 
-export async function returnUpdateGate(req: any, res: any, location: string, newUsername: string): Promise<any> {
+export async function returnUpdateGate(req: any, res: any, id: number, newUsername: string): Promise<any> {
     try {
-        const updatedGate = await updateGate(location, newUsername);
+        const updatedGate = await updateGate(id, newUsername);
         if (updatedGate) {
           res.status(200).json(updatedGate);
         } else {
@@ -144,9 +144,9 @@ export async function returnUpdateGate(req: any, res: any, location: string, new
       }
 }
 
-export async function returnDeleteGate(req: any, res: any, location: string): Promise<any> {
+export async function returnDeleteGate(req: any, res: any, id: number): Promise<any> {
     try {
-        const gate = await deleteGate(location);
+        const gate = await deleteGate(id);
         if (gate) {
           res.status(200).json(gate);
         } else {

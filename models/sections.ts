@@ -19,19 +19,19 @@ export const Section = sequelize.define('sections', {
         primaryKey: true
     },
     initialGate: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Gate,
-            key: 'location'
+            key: 'id'
         },
     },
     finalGate: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Gate,
-            key: 'location'
+            key: 'id'
         },
     },
     distance: {
@@ -82,23 +82,5 @@ export async function getAllSections(): Promise<any> {
             console.error('Unknown error Sections Gate fetch in the database:', error);
             throw new Error('Unknown error Sections Gate fetch in the database.');
         }
-    }
-}
-
-/**
- * Verifies if the request is made by an operator.
- * @param chargedata Body of the request containing operator details.
- * @returns Boolean indicating if the request is valid or a string error message.
- */
-export async function TokenChargeVal(chargedata: any): Promise<boolean | string> {
-    try {
-        if (!chargedata.id_operator) {
-            return 'User is not authorized to perform this operation.';
-        }
-
-        return true;
-    } catch (error) {
-        console.error('Error in TokenChargeVal function:', error);
-        throw new Error('Error in TokenChargeVal function');
     }
 }

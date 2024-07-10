@@ -20,8 +20,8 @@ module.exports = {
 
       // Insert into database using Sequelize model
       await Section.create({
-        initialGate: initialGate,
-        finalGate: finalGate,
+        initialGate: 1,
+        finalGate: 2,
         distance: distance.toFixed(2) // in Km
       });
 

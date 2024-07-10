@@ -134,3 +134,6 @@ TIPS.txt
 
 #private key
 *.pem
+
+#.idea
+*.idea

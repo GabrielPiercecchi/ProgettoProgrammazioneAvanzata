@@ -2,7 +2,7 @@ import { Transit, getAllTransits, getTransit, getAllNotFoundTickets } from '../m
 import * as ticketController from './ticketsController';
 
 // CREATE 
-export const createTransit = async (plate: string, speed: number, weather: string, vehicles_types: string, gate: string): Promise<void> => {
+export const createTransit = async (plate: string, speed: number, weather: string, vehicles_types: string, gate: number): Promise<void> => {
     let result: any;
     try {
         const transit_date = new Date();
@@ -24,7 +24,7 @@ export const createTransit = async (plate: string, speed: number, weather: strin
 
 // Update 
 
-export async function updateTransit(transitId: number, newPlate: string, newSpeed: number, newWeather: string, newVehicles_types: string, newGate: string): Promise<any> {
+export async function updateTransit(transitId: number, newPlate: string, newSpeed: number, newWeather: string, newVehicles_types: string, newGate: number): Promise<any> {
     let result: any;
     try {
         result = await Transit.findByPk(transitId);
@@ -111,7 +111,7 @@ export async function returnTransit(req: any, res: any, id: string): Promise<any
     }
 }
 
-export async function returnCreateTransit(req: any, res: any, plate: string, speed: number, weather: string, vehicles_types: string, gate: string): Promise<any> {
+export async function returnCreateTransit(req: any, res: any, plate: string, speed: number, weather: string, vehicles_types: string, gate: number): Promise<any> {
     try {
         const newTransit = await createTransit(
             plate,
@@ -130,7 +130,7 @@ export async function returnCreateTransit(req: any, res: any, plate: string, spe
     }
 }
 
-export async function returnUpdateTransit(req: any, res: any, id: string, newPlate: string, newSpeed: number, newWeather: string, newVehicles_types: string, newGate: string): Promise<any> {
+export async function returnUpdateTransit(req: any, res: any, id: string, newPlate: string, newSpeed: number, newWeather: string, newVehicles_types: string, newGate: number): Promise<any> {
     try {
         // Convert id from string to number using parseInt with base 10
         const transitId = parseInt(id, 10);
