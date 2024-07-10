@@ -12,7 +12,7 @@ export async function createGate(location: string, username: string): Promise<an
     try {
 
         if (await User.findByPk(username) == null) {
-            throw new Error('User does not exists in Users. You have to create it first');
+          throw new Error(`${ErrorMessagesGateController.userNotFound} ${username}`);
         }
         // Creare il nuovo gate
         const newGate = await Gate.create({
@@ -22,11 +22,11 @@ export async function createGate(location: string, username: string): Promise<an
         return newGate;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Gate creation in the database:', error.message);
-            throw new Error(`Error during Gate creation in the database: ${error.message}`);
+            console.error(ErrorMessagesGateController.creationError, error.message);
+            throw new Error(`${ErrorMessagesGateController.creationError} ${error.message}`);
         } else {
-            console.error('Unknown error during Gate creation in the database:', error);
-            throw new Error('Unknown error during Gate creation in the database.');
+            console.error(ErrorMessagesGateController.unknownCreationError, error);
+            throw new Error(`${ErrorMessagesGateController.unknownCreationError} ${error}`);
         }
     }
 }
@@ -40,22 +40,22 @@ export async function updateGate(id: number, newUsername: string): Promise<any> 
         user = await User.findByPk(newUsername, { raw: true });
         console.log(user);
         if (!user) {
-            throw new Error('User does not exists in Users. You have to create it first');
+          throw new Error(`${ErrorMessagesGateController.userNotFound} ${newUsername}`);
         }
         if (result) {
             result.username = newUsername;
             await result.save();
             return result;
         } else {
-            throw new Error('Gate not found.');
+          throw new Error(`${ErrorMessagesGateController.gateNotFound} ${id}`);
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Gate updating in the database:', error.message);
-            throw new Error(`Error during Gate updating in the database: ${error.message}`);
+            console.error(ErrorMessagesGateController.updatingError, error.message);
+            throw new Error(`${ErrorMessagesGateController.updatingError} ${error.message}`);
         } else {
-            console.error('Unknown error during Gate updating in the database:', error);
-            throw new Error('Unknown error during Gate updating in the database.');
+            console.error(ErrorMessagesGateController.unknownUpdatingError, error);
+            throw new Error(`${ErrorMessagesGateController.unknownUpdatingError} ${error}`);
         }
     }
 }
@@ -70,15 +70,15 @@ export async function deleteGate(id: number): Promise<any> {
             await result.destroy();
             return `Gate with location ${location} was deleted successfully.`;
         } else {
-            throw new Error('Gate not found.');
+          throw new Error(`${ErrorMessagesGateController.gateNotFound} ${id}`);
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Gate deletion in the database:', error.message);
-            throw new Error(`Error during Gate deletion in the database: ${error.message}`);
+            console.error(ErrorMessagesGateController.deletionError, error.message);
+            throw new Error(`${ErrorMessagesGateController.deletionError} ${error.message}`);
         } else {
-            console.error('Unknown error during Gate deletion in the database:', error);
-            throw new Error('Unknown error during Gate deletion in the database.');
+            console.error(ErrorMessagesGateController.unknownDeletionError, error);
+            throw new Error(`${ErrorMessagesGateController.unknownDeletionError} ${error}`);
         }
     }
 }
@@ -91,7 +91,7 @@ export async function returnAllGates(req: any, res: any): Promise<any> {
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesGateController.unknownError });
         }
       }
 
@@ -103,13 +103,13 @@ export async function returnGate(req: any, res: any, id: number): Promise<any> {
         if (gate) {
           res.status(200).json(gate);
         } else {
-          res.status(404).json({ error: 'Gate not found' });
+          res.status(404).json({ error: ErrorMessagesGateController.gateNotFound });
         }
       } catch (error) {
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesGateController.unknownError });
         }
       }
 }
@@ -122,7 +122,7 @@ export async function returnCreateGate(req: any, res: any, location: string, use
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesGateController.unknownError });
         }
       }
 }
@@ -133,13 +133,13 @@ export async function returnUpdateGate(req: any, res: any, id: number, newUserna
         if (updatedGate) {
           res.status(200).json(updatedGate);
         } else {
-          res.status(404).json({ error: 'Gate not found' });
+          res.status(404).json({ error: ErrorMessagesGateController.gateNotFound });
         }
       } catch (error) {
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesGateController.unknownError });
         }
       }
 }
@@ -150,13 +150,13 @@ export async function returnDeleteGate(req: any, res: any, id: number): Promise<
         if (gate) {
           res.status(200).json(gate);
         } else {
-          res.status(404).json({ error: 'Gate not found' });
+          res.status(404).json({ error: ErrorMessagesGateController.gateNotFound });
         }
       } catch (error) {
         if (error instanceof Error) {
           res.status(500).json({ error: error.message });
         } else {
-          res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+          res.status(500).json({ error: ErrorMessagesGateController.unknownError });
         }
       }
 }

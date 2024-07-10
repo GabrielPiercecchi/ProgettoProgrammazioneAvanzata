@@ -7,7 +7,6 @@ export const ErrorMessagesUserModel = {
 };
 
 // user controller errors
-
 export const ErrorMessagesUserController = {
     createUser: 'Error during User creation in the database.',
     deleteUser: 'Error during User deletion in the database.',
@@ -54,12 +53,35 @@ export const ErrorMessagesVehicleMiddleware = {
     newLimitNotNullOrEmpty: 'New limit cannot be null or undefined.'
 };
 
+// Gate errors
 
+// gate model errors
+export const ErrorMessagesGateModel = {
+    fetchError: 'Error during Gate fetch in the database:',
+    unknownFetchError: 'Unknown error during Gate fetch in the database.'
+};
+
+// gate controller errors
 export const ErrorMessagesGateController = {
-    USER_NOT_FOUND: 'User does not exist in Users. You have to create it first',
-    GATE_NOT_FOUND: 'Gate not found.',
-    GATE_CREATION_ERROR: 'Error during Gate creation in the database:',
-    GATE_UPDATING_ERROR: 'Error during Gate updating in the database:',
-    GATE_DELETION_ERROR: 'Error during Gate deletion in the database:',
-    UNKNOWN_ERROR: 'Unknown error in the database.'
+    creationError: 'Error during Gate creation in the database:',
+    updatingError: 'Error during Gate updating in the database:',
+    deletionError: 'Error during Gate deletion in the database:',
+    fetchError: 'Error during Gate fetch in the database:',
+    unknownCreationError: 'Unknown error during Gate creation in the database.',
+    unknownUpdatingError: 'Unknown error during Gate updating in the database.',
+    unknownDeletionError: 'Unknown error during Gate deletion in the database.',
+    unknownFetchError: 'Unknown error during Gate fetch in the database.',
+    userNotFound: 'User does not exist in Users. You have to create it first.',
+    gateNotFound: 'Gate not found.',
+    unknownError: 'An unknown error occurred.'
+};
+
+// gate middleware errors
+export const ErrorMessagesGateMIddleware = {
+    invalidIdFormat: 'Invalid id format. Expected format: Number > 0',
+    locationNotNull: 'Location, username, and password cannot be null or undefined.',
+    invalidLocationFormat: 'Invalid location format. Expected format: LAT43.615829LON13.518915',
+    invalidUsernameFormat: 'Invalid username format. Username must start with a letter and without special characters.',
+    newUsernameNotNull: 'New username cannot be null or undefined.',
+    locationNotNullOrUndefined: 'Location cannot be null or undefined.',
 };
