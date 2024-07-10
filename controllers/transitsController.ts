@@ -1,3 +1,4 @@
+import { ErrorMessagesTransitController } from '../errorMessages/errorMessages';
 import { Transit, getAllTransits, getTransit, getAllNotFoundTickets } from '../models/transits';
 import * as ticketController from './ticketsController';
 
@@ -13,11 +14,11 @@ export const createTransit = async (plate: string, speed: number, weather: strin
 
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Transit creation in the database:', error.message);
-            throw new Error(`Error during Transit creation in the database: ${error.message}`);
+            console.error(ErrorMessagesTransitController.creationError, error.message);
+            throw new Error(`${ErrorMessagesTransitController.creationError} ${error.message}`);
         } else {
-            console.error('Unknown error during Transit creation in the database:', error);
-            throw new Error('Unknown error during Transit creation in the database.');
+            console.error(ErrorMessagesTransitController.unknownCreationError, error);
+            throw new Error(`${ErrorMessagesTransitController.unknownCreationError} ${error}`);
         }
     }
 }
@@ -47,11 +48,11 @@ export async function updateTransit(transitId: number, newPlate: string, newSpee
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Transit update in the database:', error.message);
-            throw new Error(`Error during Transit update in the database: ${error.message}`);
+            console.error(ErrorMessagesTransitController.updatingError, error.message);
+            throw new Error(`${ErrorMessagesTransitController.updatingError} ${error.message}`);
         } else {
-            console.error('Unknown error during Transit update in the database:', error);
-            throw new Error('Unknown error during Transit update in the database.');
+            console.error(ErrorMessagesTransitController.unknownUpdatingError, error);
+            throw new Error(`${ErrorMessagesTransitController.unknownUpdatingError} ${error}`);
         }
     }
 }
@@ -65,15 +66,15 @@ export async function deleteTransit(transitId: number): Promise<any> {
             await result.destroy();
             return `Transit with ID ${transitId} was deleted successfully.`;
         } else {
-            throw new Error('Transit not found.');
+            throw new Error(`${ErrorMessagesTransitController.notFound}`);
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Transit deletion in the database:', error.message);
-            throw new Error(`Error during Transit deletion in the database: ${error.message}`);
+            console.error(ErrorMessagesTransitController.deletionError, error.message);
+            throw new Error(`${ErrorMessagesTransitController.deletionError} ${error.message}`);
         } else {
-            console.error('Unknown error during Transit deletion in the database:', error);
-            throw new Error('Unknown error during Transit deletion in the database.');
+            console.error(ErrorMessagesTransitController.unknownDeletionError, error);
+            throw new Error(`${ErrorMessagesTransitController.unknownDeletionError} ${error}`);
         }
     }
 }
@@ -86,7 +87,7 @@ export async function returnAllTransits(req: any, res: any): Promise<any> {
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });
         } else {
-            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: ErrorMessagesTransitController.unknownError });
         }
     }
 }
@@ -100,13 +101,13 @@ export async function returnTransit(req: any, res: any, id: string): Promise<any
         if (transit) {
             res.status(200).json(transit);
         } else {
-            res.status(404).json({ error: 'Transit not found' });
+            res.status(404).json({ error: ErrorMessagesTransitController.transitNotFound });
         }
     } catch (error) {
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });
         } else {
-            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: ErrorMessagesTransitController.unknownError });
         }
     }
 }
@@ -125,7 +126,7 @@ export async function returnCreateTransit(req: any, res: any, plate: string, spe
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });
         } else {
-            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: ErrorMessagesTransitController.unknownError });
         }
     }
 }
@@ -138,13 +139,13 @@ export async function returnUpdateTransit(req: any, res: any, id: string, newPla
         if (updatedTransit) {
             res.status(200).json(updatedTransit);
         } else {
-            res.status(404).json({ error: 'Section not found' });
+            res.status(404).json({ error: ErrorMessagesTransitController.transitNotFound });
         }
     } catch (error) {
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });
         } else {
-            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: ErrorMessagesTransitController.unknownError });
         }
     }
 }
@@ -158,7 +159,7 @@ export async function returnDeleteTransit(req: any, res: any, id: string): Promi
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });
         } else {
-            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: ErrorMessagesTransitController.unknownError });
         }
     }
 }

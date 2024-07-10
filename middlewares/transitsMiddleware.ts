@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateId } from './sectionsMiddleware'; // we choose to import it cause its the same
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
+import { ErrorMessagesTransitMiddleware } from '../errorMessages/errorMessages';
 
 enum Weather {
     GoodWeather = 'good weather',
@@ -29,32 +30,32 @@ export function sanitizeCreateTransitInputs(req: Request, res: Response, next: N
     const { plate, speed, weather, vehicles_types, gate } = req.body;
 
     if (!validateNotNullorEmpty(plate) || !validateNotNullorEmpty(speed) || !validateNotNullorEmpty(weather) || !validateNotNullorEmpty(vehicles_types) || !validateNotNullorEmpty(gate)) {
-        return res.status(400).json({ error: 'Plate, speed, weather, vehicles_types and gate cannot be null or undefined' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.plateSpeedWeatherVehiclesTypesGateNotNullOrEmpty });
     }
     // Validation of the plate
     if (!validatePlate(plate) && !(plate === "notFound")) {
-        return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA or notFound' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidPlateFormat });
     }
 
     // Validation of the speed
     if (!validateSpeedLimit(speed) || !(speed > 0)) {
-        return res.status(400).json({ error: 'Invalid speed. Speed must be an integer > 0.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidSpeedFormat });
     }
 
     // Validation of the weather
     if (!validateWeather(weather)) {
-        return res.status(400).json({ error: 'Invalid weather. Weather must be good weather or bad weather.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidWeatherFormat });
     }
 
     // Validation of the vehicles_types
     if (!validateVehicleType(vehicles_types)) {
-        return res.status(400).json({ error: 'Invalid vehicle type. Vehicle type must be a string.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidVehiclesTypesFormat });
     }
 
     // Validation of the gate
     if (!validateId(gate)) {
         console.log(gate);
-        return res.status(400).json({ error: 'Invalid gate format. Expected format: LAT43.615899LON13.518915' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidGateFormat });
     }
 
     // If all validations pass, it moves on
@@ -71,36 +72,36 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
     //console.log(typeof(transitId));
     if (!validateId(Number(id))) {
         //console.log(typeof(transitId));
-        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidPlateFormat });
     }
 
     if (!validateNotNullorEmpty(newPlate) || !validateNotNullorEmpty(newSpeed) || !validateNotNullorEmpty(newWeather) || !validateNotNullorEmpty(newVehicles_types) || !validateNotNullorEmpty(newGate)) {
-        return res.status(400).json({ error: 'Plate, speed, weather, vehicles_types and gate cannot be null or undefined' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.newPlateSpeedWeatherVehiclesTypesGateNotNullOrEmpty });
     }
     // Validation of the plate
     if (!validatePlate(newPlate) && !(newPlate === "notFound")) {
-        return res.status(400).json({ error: 'Invalid plate format. Expected format: AA123AA or notFound.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidPlateFormat });
     }
 
     // Validation of the speed
     if (!validateSpeedLimit(newSpeed) || !(newSpeed > 0)) {
-        return res.status(400).json({ error: 'Invalid speed. Speed must be an integer > 0 .' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidSpeedFormat });
     }
 
     // Validation of the weather
     if (!validateWeather(newWeather)) {
-        return res.status(400).json({ error: 'Invalid weather. Weather must be good weather or bad weather.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidWeatherFormat });
     }
 
     // Validation of the vehicles_types
     if (!validateVehicleType(newVehicles_types)) {
-        return res.status(400).json({ error: 'Invalid vehicle type. Vehicle type must be a string.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidVehiclesTypesFormat });
     }
 
     // Validation of the gate
     if (!validateId(newGate)) {
         //console.log(gate);
-        return res.status(400).json({ error: 'Invalid gate format. Expected format: number > 0' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidGateFormat });
     }
 
     // If all validations pass, it moves on
@@ -116,7 +117,7 @@ export function sanitizeDeleteTransitInputs(req: Request, res: Response, next: N
     //console.log(typeof(transitId));
     if (!validateId(Number(id))) {
         //console.log(typeof(transitId));
-        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidId });
     }
     // If all validations pass, it moves on
     next();
@@ -131,7 +132,7 @@ export function sanitizeGetTransitInputs(req: Request, res: Response, next: Next
     //console.log(typeof(transitId));
     if (!validateId(Number(id))) {
         //console.log(typeof(transitId));
-        return res.status(400).json({ error: 'Invalid id. Id must be an integer.' });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidId });
     }
     // If all validations pass, it moves on
     next();
