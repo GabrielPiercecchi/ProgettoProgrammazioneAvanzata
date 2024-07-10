@@ -1,37 +1,44 @@
-import {DBIsConnected} from "../database/database";
-import {DataTypes, Sequelize} from 'sequelize';
+import { DBIsConnected } from "../database/database";
+import { DataTypes, Sequelize } from 'sequelize';
 import { ErrorMessagesVehicleModel } from "../errorMessages/errorMessages";
 
-//Connection to DataBase
+// Connection to the database
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
 /**
- * model 'Veichle'
+ * Model 'Vehicle'
  *
- * Define the model 'Veichle' to interface with the "vehicles" table
+ * Defines the model 'Vehicle' to interface with the "vehicles" table
  */
 export const Vehicle = sequelize.define('vehicles', {
     type: {
         type: DataTypes.STRING,
-        primaryKey: true,},
+        primaryKey: true,
+    },
     limit: {
-        type: DataTypes.INTEGER, 
-        allowNull: false},
-},
-{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+}, {
     modelName: 'vehicles',
-    timestamps: false
+    timestamps: false,
 });
 
-// Get a specific Vehicle
+/**
+ * This function returns a specific vehicle from the database based on the type provided as a parameter
+ * 
+ * @param {string} type - The type of the vehicle to fetch
+ * @returns {Promise<any>} - A promise that resolves to the vehicle data or null if not found
+ * @throws {Error} - Throws an error if there is an issue fetching the vehicle
+ */
 export async function getVehicles(type: string): Promise<any> {
     let vehicle: any;
     try {
-        // Converti il parametro type in minuscolo per la ricerca
+        // Convert the parameter to lowercase for the search
         const typeLowerCase = type.toLowerCase();
         vehicle = await Vehicle.findOne({
             where: sequelize.where(
-                sequelize.fn('lower', sequelize.col('type')), 
+                sequelize.fn('lower', sequelize.col('type')),
                 typeLowerCase
             ),
             raw: true
@@ -48,9 +55,14 @@ export async function getVehicles(type: string): Promise<any> {
             throw new Error(`${ErrorMessagesVehicleModel.unknownFetchError}`);
         }
     }
-};
+}
 
-// Get all the istances of the Vehicle
+/**
+ * This function returns all the instances of the Vehicle model from the database
+ * 
+ * @returns {Promise<any>} - A promise that resolves to an array of all vehicle data
+ * @throws {Error} - Throws an error if there is an issue fetching the vehicles
+ */
 export async function getAllVehicles(): Promise<any> {
     try {
         const vehicles = await Vehicle.findAll();
@@ -66,4 +78,4 @@ export async function getAllVehicles(): Promise<any> {
             throw new Error(`${ErrorMessagesVehicleModel.unknownFetchError}`);
         }
     }
-};
+}
