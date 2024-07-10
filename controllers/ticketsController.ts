@@ -1,13 +1,21 @@
-import { Transit } from '../models/transits'; // Supponiamo che Transit sia il modello per la tabella transits
-import { Section } from '../models/sections'; // Supponiamo che Section sia il modello per la tabella sections
+import { Transit } from '../models/transits';
+import { Section } from '../models/sections';
 import { Vehicle } from '../models/vehicles';
 import { Ticket, getMinMaxSpeed, getFrequentGates, getAllTickets, getTicketsByPlatesAndTime } from '../models/tickets';
 import { v4 as uuidv4 } from 'uuid';
-import { Op } from 'sequelize'; // Importa l'operatore Sequelize
+import { Op } from 'sequelize';
 import { Plate } from '../models/plates';
 import { ErrorMessagesTicketController } from '../errorMessages/errorMessages';
 
-// Funzione per controllare e gestire i ticket
+/**
+ * Function to check and handle tickets based on transit data and sections.
+ * This function is designed to find matching transits between gates,
+ * calculate average speeds, compare with vehicle speed limits,
+ * and create tickets if necessary.
+ * 
+ * @returns {Promise<void>} - A promise that resolves when ticket handling is complete
+ * @throws {Error} - Throws an error if there's an issue during ticket handling
+ */
 export async function checkAndHandleTickets(): Promise<void> {
     try {
         const transitCount = await Transit.count();
@@ -19,8 +27,7 @@ export async function checkAndHandleTickets(): Promise<void> {
         let vehicleType: any;
 
         if (transitCount >= 2) {
-
-            // Step 1: Trova tutti i transiti con used = false e plate diverso da "notFound"
+            // Step 1: Find all transits with used = false and plate not equal to "notFound"
             transits = await Transit.findAll({
                 where: {
                     used: false,
@@ -28,7 +35,7 @@ export async function checkAndHandleTickets(): Promise<void> {
                 }
             });
 
-            // Step 2: Crea una mappa delle targhe per raggruppare i transiti per targa
+            // Step 2: Create a map of plates to group transits by plate
             platesMap = new Map<string, any[]>();
             for (const transit of transits) {
                 if (platesMap.has(transit.plate)) {
@@ -38,10 +45,10 @@ export async function checkAndHandleTickets(): Promise<void> {
                 }
             }
 
-            // Step 3: Recupera tutte le sezioni
+            // Step 3: Retrieve all sections
             sections = await Section.findAll();
 
-            // Step 4: Trova transiti che corrispondono a initialGate e finalGate nelle sezioni
+            // Step 4: Find transits matching initialGate and finalGate in sections
             for (const [plate, transits] of platesMap.entries()) {
                 const matchingTransits = [];
 
@@ -58,23 +65,23 @@ export async function checkAndHandleTickets(): Promise<void> {
                             ) {
                                 matchingTransits.push([transit1, transit2]);
 
-                                // Calcolo della velocità media
+                                // Calculate average speed
                                 const timeDifference = Math.abs(new Date(transit2.transit_date).getTime() - new Date(transit1.transit_date).getTime());
-                                const timeDifferenceHours = timeDifference / (1000 * 60 * 60); // Converti la differenza in ore
+                                const timeDifferenceHours = timeDifference / (1000 * 60 * 60); // Convert difference to hours
                                 const averageSpeed = section.distance / timeDifferenceHours;
                                 const averageSpeedRounded = parseFloat(averageSpeed.toFixed(2));
 
-                                // Recupera il limite di velocità per il tipo di veicolo
+                                // Retrieve speed limit for vehicle type
                                 vehicleType = await transit1.vehicles_types;
                                 vehicle = await Vehicle.findOne({ where: { type: vehicleType } });
                                 if (vehicle) {
                                     const speedLimit = vehicle.limit;
 
                                     if (averageSpeedRounded > speedLimit) {
-                                        // Calcolo del delta limit
+                                        // Calculate delta limit
                                         const deltaLimit = parseFloat((averageSpeedRounded - speedLimit).toFixed(2));
 
-                                        // Creazione del nuovo ticket
+                                        // Create new ticket
                                         const newTicket = await Ticket.create({
                                             id_ticket: uuidv4(),
                                             weather: transit1.weather,
@@ -86,7 +93,7 @@ export async function checkAndHandleTickets(): Promise<void> {
                                             delta_limit: deltaLimit
                                         });
 
-                                        // Aggiornare il campo `used` dei transiti coinvolti
+                                        // Update 'used' field of involved transits
                                         await transit1.update({ used: true });
                                         await transit2.update({ used: true });
                                     }
@@ -108,8 +115,16 @@ export async function checkAndHandleTickets(): Promise<void> {
     }
 }
 
-// Funzione per gestire le stats dei ticket
-export const handleGatePairsMethod = async (method: string, startDate?: string, endDate?: string) => {
+/**
+ * Function to handle gate pairs statistics.
+ * 
+ * @param {string} method - Method name ('getFrequentGates' or 'getMinMaxSpeed')
+ * @param {string} startDate - Optional start date in string format (YYYY-MM-DD)
+ * @param {string} endDate - Optional end date in string format (YYYY-MM-DD)
+ * @returns {Promise<any>} - A promise that resolves to the requested statistics data
+ * @throws {Error} - Throws an error if there's an issue fetching statistics
+ */
+export const handleGatePairsMethod = async (method: string, startDate?: string, endDate?: string): Promise<any> => {
     try {
         let data;
 
@@ -134,7 +149,14 @@ export const handleGatePairsMethod = async (method: string, startDate?: string, 
     }
 }
 
-export async function returnAllTickets(req: any, res: any) {
+/**
+ * Function to return all tickets.
+ * 
+ * @param {any} req - Express request object
+ * @param {any} res - Express response object
+ * @returns {Promise<void>} - A promise that resolves when tickets are returned to the client
+ */
+export async function returnAllTickets(req: any, res: any): Promise<void> {
     try {
         const tickets = await getAllTickets();
         res.status(200).json(tickets);
@@ -145,11 +167,20 @@ export async function returnAllTickets(req: any, res: any) {
             res.status(500).json({ error: ErrorMessagesTicketController.unknownError });
         }
     }
-
 }
 
-export async function returnGetTickets(req: any, res: any, plates: string, startDate: string, endDate: string, format: string) {
-    // Converte plates in un array
+/**
+ * Function to return tickets based on plates and time range.
+ * 
+ * @param {any} req - Express request object
+ * @param {any} res - Express response object
+ * @param {string} plates - Comma-separated string of plates
+ * @param {string} startDate - Optional start date in string format (YYYY-MM-DD)
+ * @param {string} endDate - Optional end date in string format (YYYY-MM-DD)
+ * @param {string} format - Output format ('json' or 'pdf')
+ * @returns {Promise<void>} - A promise that resolves when tickets are returned to the client
+ */
+export async function returnGetTickets(req: any, res: any, plates: string, startDate: string, endDate: string, format: string): Promise<void> {
     const platesArray = plates ? plates.split(', ') : [];
     let driverPlates: any[] = [];
     let allPlatesExist: boolean = false;
@@ -162,7 +193,6 @@ export async function returnGetTickets(req: any, res: any, plates: string, start
                 }
             });
 
-            // Assicurati che 'plate' sia il campo corretto nel tuo modello Plate
             driverPlates = resultDriver.map((driver: any) => driver.plate);
 
             allPlatesExist = platesArray.every(plate => driverPlates.includes(plate));
@@ -171,7 +201,9 @@ export async function returnGetTickets(req: any, res: any, plates: string, start
                 return res.status(400).json({ error: ErrorMessagesTicketController.platesNotAssigned });
             }
         }
+
         const tickets = await getTicketsByPlatesAndTime(platesArray, startDate, endDate, format, res);
+
         if (format === 'json') {
             if (tickets.length > 0) {
                 res.status(200).json(tickets);
@@ -187,7 +219,18 @@ export async function returnGetTickets(req: any, res: any, plates: string, start
         }
     }
 }
-export async function returnStats(req: any, res: any, method: string, startDate: string, endDate: string) {
+
+/**
+ * Function to return statistics data based on the specified method.
+ * 
+ * @param {any} req - Express request object
+ * @param {any} res - Express response object
+ * @param {string} method - Method name ('getFrequentGates' or 'getMinMaxSpeed')
+ * @param {string} startDate - Optional start date in string format (YYYY-MM-DD)
+ * @param {string} endDate - Optional end date in string format (YYYY-MM-DD)
+ * @returns {Promise<void>} - A promise that resolves when statistics data are returned to the client
+ */
+export async function returnStats(req: any, res: any, method: string, startDate: string, endDate: string): Promise<void> {
     let data: any;
     try {
         data = await handleGatePairsMethod(method, startDate as string, endDate as string);

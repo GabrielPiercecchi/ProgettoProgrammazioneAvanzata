@@ -1,41 +1,46 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateNotNullorEmpty } from './vehiclesMiddleware';
+import { validateNotNullorEmpty } from './vehiclesMiddleware'; // Importing because it's the same.
 import { ErrorMessagesTicketMiddleware } from '../errorMessages/errorMessages';
 
-// Funzione di validazione per le targhe
+// Validation function for plates
 function validatePlate(plate: string): boolean {
-    const regex = /^[A-Z]{2}\d{3}[A-Z]{2}$/;
+    const regex = /^[A-Z]{2}\d{3}[A-Z]{2}$/; // Regex to validate plate format
     return regex.test(plate);
 }
 
-// Funzione di validazione per la data
+// Validation function for date
 function validateDate(date: string): boolean {
-    // Regex per validare il formato ISO 8601 (YYYY-MM-DDTHH:MM:SS)
+    // Regex to validate ISO 8601 format (YYYY-MM-DDTHH:MM:SS)
     const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
     return regex.test(date);
 }
 
-// Funzione di validazione per la formattazione delle targhe
+// Validation function for plates format
 function validatePlatesFormat(plates: string): boolean {
-    const regex = /^([A-Z]{2}\d{3}[A-Z]{2})(, [A-Z]{2}\d{3}[A-Z]{2})*$/;
+    const regex = /^([A-Z]{2}\d{3}[A-Z]{2})(, [A-Z]{2}\d{3}[A-Z]{2})*$/; // Regex to validate comma-separated plates format
     return regex.test(plates);
 }
 
-// Funzione di validazione per il formato
+// Validation function for format
 function validateFormat(format: string): boolean {
-    return format === 'json' || format === 'pdf';
+    return format === 'json' || format === 'pdf'; // Check if format is 'json' or 'pdf'
 }
 
-// Middleware per la sanitizzazione dei parametri per GET
+/**
+ * Middleware to sanitize GET tickets endpoint inputs.
+ * @param {Request} req - Express Request object
+ * @param {Response} res - Express Response object
+ * @param {NextFunction} next - Express NextFunction callback
+ */
 export function sanitizeGetTicketsInputs(req: Request, res: Response, next: NextFunction) {
     const { plates, startDate, endDate, format } = req.body;
 
-    // Validazione della formattazione delle targhe
+    // Validate plates format
     if (plates && !validatePlatesFormat(plates)) {
         return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidPlatesFormat });
     }
 
-    // Validazione delle targhe
+    // Validate plates
     if (plates) {
         const platesArray = plates.split(', ');
         for (const plate of platesArray) {
@@ -47,43 +52,50 @@ export function sanitizeGetTicketsInputs(req: Request, res: Response, next: Next
         return res.status(400).json({ error: ErrorMessagesTicketMiddleware.platesNotNullOrUndefined });
     }
 
-    // Validazione della data di inizio
+    // Validate start date
     if (startDate && !validateDate(startDate)) {
         return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidStartDateFormat });
     }
 
-    // Validazione della data di fine
+    // Validate end date
     if (endDate && !validateDate(endDate)) {
         return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidEndDateFormat });
     }
 
-    // Validazione del formato
+    // Validate format
     if (!format || !validateFormat(format)) {
-        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidFormat});
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidFormat });
     }
 
-    // Se tutte le validazioni passano, passa al middleware successivo o al controller
+    // If all validations pass, move on to the next middleware or controller
     next();
 }
 
-// Middleware per la sanitizzazione dei parametri per POST STATISTICS
+/**
+ * Middleware to sanitize POST statistics endpoint inputs.
+ * @param {Request} req - Express Request object
+ * @param {Response} res - Express Response object
+ * @param {NextFunction} next - Express NextFunction callback
+ */
 export function sanitizePostStatisticsInputs(req: Request, res: Response, next: NextFunction) {
     const { method } = req.params;
     const { startDate, endDate } = req.body;
 
-    // Validazione del metodo
+    // Validate method
     if (!validateNotNullorEmpty(method) || (method !== 'getFrequentGates' && method !== 'getMinMaxSpeed')) {
         return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidMethod });
     }
 
+    // Validate start date
     if (!validateNotNullorEmpty(startDate) || !validateDate(startDate)) {
         return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidStartDateFormat });
     }
 
+    // Validate end date
     if (!validateNotNullorEmpty(endDate) || !validateDate(endDate)) {
         return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidEndDateFormat });
     }
 
-    // Se tutte le validazioni passano, passa al middleware successivo o al controller
+    // If all validations pass, move on to the next middleware or controller
     next();
 }

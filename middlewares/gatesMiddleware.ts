@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateNotNullorEmpty } from './vehiclesMiddleware'; // importing because it's the same
+import { validateNotNullorEmpty } from './vehiclesMiddleware'; // Importing because it's the same.
 import { ErrorMessagesGateMIddleware } from '../errorMessages/errorMessages';
 
 /**

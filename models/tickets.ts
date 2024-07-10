@@ -1,22 +1,22 @@
-import { DBIsConnected } from "../database/database";
-import { DataTypes, Sequelize, Model } from 'sequelize';
-import { Gate } from './gates'; // Import the Gate model
-import { Op } from 'sequelize'; // Import the Sequelize operator
-import { fn, col, literal } from 'sequelize';
+import { DBIsConnected } from '../database/database';
+import { DataTypes, Sequelize } from 'sequelize';
+import { Gate } from './gates';
+import { Op } from 'sequelize';
+import { fn, literal } from 'sequelize';
 import PDFDocument from 'pdfkit';
 
 import dotenv from 'dotenv';
-import { Response } from 'express'; // Ensure this matches the framework you're using
-import { ErrorMessagesTicketModel } from "../errorMessages/errorMessages";
+import { Response } from 'express';
+import { ErrorMessagesTicketModel } from '../errorMessages/errorMessages';
 
 dotenv.config();
-//Connection to DataBase
+
+// Establish database connection
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
 /**
- * model 'Ticket'
- *
- * Define the model 'Ticket' with its attributes
+ * Ticket model definition
+ * Defines the 'Ticket' model with its attributes.
  */
 export const Ticket = sequelize.define('tickets', {
     id_ticket: {
@@ -25,9 +25,9 @@ export const Ticket = sequelize.define('tickets', {
         primaryKey: true
     },
     weather: {
-        type: DataTypes.ENUM('good weather, bad weather'),
+        type: DataTypes.ENUM('good weather', 'bad weather'),
         allowNull: false
-    }, //we choose to work with only two generic weather conditions
+    }, // Only two generic weather conditions are chosen
     plate: {
         type: DataTypes.STRING,
         allowNull: false
@@ -62,10 +62,15 @@ export const Ticket = sequelize.define('tickets', {
     },
 }, {
     modelName: 'tickets',
-    timestamps: false, //TODO: hooks
+    timestamps: false,
 });
 
-// GET ALL TICKETS
+/**
+ * Retrieves all tickets from the database.
+ * 
+ * @returns {Promise<any>} - A promise that resolves to an array of Ticket instances
+ * @throws {Error} - Throws an error if there's an issue fetching tickets
+ */
 export async function getAllTickets(): Promise<any> {
     try {
         const result = await Ticket.findAll();
@@ -81,7 +86,17 @@ export async function getAllTickets(): Promise<any> {
     }
 }
 
-// GET TICKET BY PLATE AND TIME RANGE 
+/**
+ * Retrieves tickets based on plates and optional time range.
+ * 
+ * @param {string[]} plates - Array of plate numbers
+ * @param {string} startDate - Start date in string format (YYYY-MM-DD)
+ * @param {string} endDate - End date in string format (YYYY-MM-DD)
+ * @param {string} format - Output format ('pdf' or undefined for JSON)
+ * @param {Response} res - Express response object for sending PDF
+ * @returns {Promise<any>} - A promise that resolves to an array of Ticket instances or generates a PDF
+ * @throws {Error} - Throws an error if there's an issue fetching tickets
+ */
 export async function getTicketsByPlatesAndTime(plates: string[], startDate: string, endDate: string, format: string, res: Response): Promise<any> {
     let tickets: any;
     try {
@@ -112,7 +127,7 @@ export async function getTicketsByPlatesAndTime(plates: string[], startDate: str
                 res.setHeader('Content-Disposition', 'attachment; filename=tickets.pdf');
 
                 doc.pipe(res);
-                tickets.forEach((ticket: { id_ticket: any; weather: any; plate: any; ticket_date: any; initial_gate: any; final_gate: any; medium_speed: any; delta_limit: any; }) => {
+                tickets.forEach((ticket: any) => {
                     doc
                         .fontSize(12)
                         .text(`ID Ticket: ${ticket.id_ticket}`)
@@ -144,13 +159,19 @@ export async function getTicketsByPlatesAndTime(plates: string[], startDate: str
     }
 }
 
-// NEW METHOD TO GET FREQUENT GATE PAIRS
+/**
+ * Retrieves frequent gate pairs based on ticket data within an optional time range.
+ * 
+ * @param {string} startDate - Start date in string format (YYYY-MM-DD)
+ * @param {string} endDate - End date in string format (YYYY-MM-DD)
+ * @returns {Promise<any>} - A promise that resolves to an array of objects representing frequent gate pairs
+ * @throws {Error} - Throws an error if there's an issue fetching frequent gate pairs
+ */
 export async function getFrequentGates(startDate?: string, endDate?: string): Promise<any> {
     let whereClause: any = {};
     let ticketDates: any;
     let tickets: any;
     try {
-
         if (startDate && endDate) {
             whereClause.ticket_date = {
                 [Op.between]: [new Date(startDate), new Date(endDate)]
@@ -179,7 +200,7 @@ export async function getFrequentGates(startDate?: string, endDate?: string): Pr
         const frequentGatePairs = gatePairs.filter(pair => pair.get('count') === maxCount);
 
         // Collect ticket dates for each pair
-        const result = await Promise.all(frequentGatePairs.map(async (pair) => {
+        const result = await Promise.all(frequentGatePairs.map(async (pair: any) => {
             const { initial_gate, final_gate } = pair.get();
             tickets = await Ticket.findAll({
                 attributes: ['ticket_date'],
@@ -190,7 +211,7 @@ export async function getFrequentGates(startDate?: string, endDate?: string): Pr
                 }
             });
 
-            ticketDates = tickets.map((ticket: { ticket_date: any; }) => ticket.ticket_date);
+            ticketDates = tickets.map((ticket: any) => ticket.ticket_date);
 
             return {
                 initial_gate,
@@ -212,7 +233,14 @@ export async function getFrequentGates(startDate?: string, endDate?: string): Pr
     }
 }
 
-// Funzione per ottenere la section con velocità media più alta e più bassa
+/**
+ * Retrieves gate pairs with the highest and lowest average speeds within an optional time range.
+ * 
+ * @param {string} startDate - Start date in string format (YYYY-MM-DD)
+ * @param {string} endDate - End date in string format (YYYY-MM-DD)
+ * @returns {Promise<any>} - A promise that resolves to an object with max and min speed gate pairs
+ * @throws {Error} - Throws an error if there's an issue fetching speed data
+ */
 export async function getMinMaxSpeed(startDate?: string, endDate?: string) {
     try {
         const whereClause: any = {};
@@ -231,7 +259,7 @@ export async function getMinMaxSpeed(startDate?: string, endDate?: string) {
             };
         }
 
-        // Trova tutte le coppie con la velocità massima
+        // Find all pairs with maximum speed
         const maxSpeedGatePairs = await Ticket.findAll({
             where: {
                 ...whereClause,
@@ -241,7 +269,7 @@ export async function getMinMaxSpeed(startDate?: string, endDate?: string) {
             },
         });
 
-        // Trova tutte le coppie con la velocità minima
+        // Find all pairs with minimum speed
         const minSpeedGatePairs = await Ticket.findAll({
             where: {
                 ...whereClause,

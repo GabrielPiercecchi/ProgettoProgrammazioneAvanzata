@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
+import { validateNotNullorEmpty } from './vehiclesMiddleware'; //Importing because it's the same.
 
 // // Funzione di validazione per la location
 // function validateLocation(location: string): boolean {
