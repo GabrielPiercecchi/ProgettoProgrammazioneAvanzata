@@ -1,5 +1,3 @@
-#version: '3.8'
-
 services:
   app:
     build: .
@@ -12,10 +10,8 @@ services:
       - NODE_ENV=${NODE_ENV}
     depends_on:
       - postgres
-#      DATABASE_URL: postgres://yourusername:yourpassword@postgres:5432/autostrade_monitoring
     volumes:
       - .:/app
-#      - /app/node_modules
 
   postgres:
     image: postgres:latest
@@ -30,6 +26,5 @@ services:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
 volumes:
   postgres_data:

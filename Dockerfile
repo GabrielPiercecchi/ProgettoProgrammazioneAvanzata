@@ -1,6 +1,8 @@
 FROM node:slim
 
-# Imposta la directory di lavoro
+COPY package*.json ./
+
+# Set the working directory
 WORKDIR /usr/src/app
 
 COPY . .
@@ -16,7 +18,3 @@ RUN tsc
 
 # Run the app
 CMD ["nodemon", "app.ts"]
-
-#CMD ["npm", "run", "dev"]
-
-#--------------------------------------------
