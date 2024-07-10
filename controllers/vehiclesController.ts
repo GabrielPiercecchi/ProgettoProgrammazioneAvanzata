@@ -2,7 +2,6 @@ import { Op } from 'sequelize';
 import { Vehicle, getAllVehicles, getVehicles } from '../models/vehicles';
 import { ErrorMessagesVehicleController } from '../errorMessages/errorMessages';
 
-// CREATE
 /**
  * This function creates a new vehicle in the database
  * 
@@ -42,7 +41,6 @@ export async function createVehicle(type: string, limit: number): Promise<any> {
   }
 }
 
-// UPDATE
 /**
  * This function updates the limit of a specific vehicle in the database
  * 
@@ -84,7 +82,6 @@ export async function updateVehicle(type: string, newLimit: number): Promise<any
   }
 }
 
-// DELETE
 /**
  * This function deletes a specific vehicle from the database
  * 
@@ -121,7 +118,6 @@ export async function deleteVehicle(type: string): Promise<any> {
   }
 }
 
-// GET ALL VEHICLES
 /**
  * This function returns all the vehicles in the database
  * 
@@ -143,7 +139,6 @@ export async function returnAllVehicles(req: any, res: any): Promise<any> {
   }
 }
 
-// GET A SPECIFIC VEHICLE
 /**
  * This function returns a specific vehicle from the database based on the type provided as a parameter
  * 
@@ -170,7 +165,6 @@ export async function returnVehicle(req: any, res: any, type: string): Promise<a
   }
 }
 
-// CREATE A VEHICLE
 /**
  * This function creates a new vehicle and returns the created vehicle data
  * 
@@ -194,7 +188,6 @@ export async function returnCreateVehicle(req: any, res: any, type: string, limi
   }
 }
 
-// UPDATE A VEHICLE
 /**
  * This function updates the limit of a specific vehicle and returns the updated vehicle data
  * 
@@ -218,7 +211,6 @@ export async function returnUpdateVehicle(req: any, res: any, type: string, newL
   }
 }
 
-// DELETE A VEHICLE
 /**
  * This function deletes a specific vehicle and returns a success message
  * 

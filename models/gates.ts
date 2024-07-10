@@ -1,13 +1,13 @@
-import { DBIsConnected } from "../database/database";
-import { DataTypes, Sequelize, where } from 'sequelize';
+import { DBIsConnected } from '../database/database';
+import { DataTypes, Sequelize } from 'sequelize';
 import { User } from './users';
-import { ErrorMessagesGateModel } from "../errorMessages/errorMessages";
+import { ErrorMessagesGateModel } from '../errorMessages/errorMessages';
 
-//Connection to DataBase
+// Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
 /**
- * model 'Gate'
+ * Model 'Gate'
  *
  * Define the model 'Gate' to interface with the "gates" table
  */
@@ -37,12 +37,17 @@ export const Gate = sequelize.define('gates', {
         timestamps: false,
     });
 
-// Verify if the Gate is in the database
-//GET
+/**
+ * This function returns a specific gate from the database based on the id provided as a parameter
+ * 
+ * @param {number} id - The id of the gate to fetch
+ * @returns {Promise<any>} - A promise that resolves to the gate data or null if not found
+ * @throws {Error} - Throws an error if there is an issue fetching the gate
+ */
 export async function getGates(id: number): Promise<any> {
     let result: any;
     try {
-        // Converti il parametro type in minuscolo per la ricerca
+        // Convert the parameter type to lowercase for the search
         result = await Gate.findByPk(id);
 
         return result;
@@ -57,11 +62,16 @@ export async function getGates(id: number): Promise<any> {
     }
 }
 
-// GET ALL
+/**
+ * This function returns all the instances of the Gate model from the database
+ * 
+ * @returns {Promise<any>} - A promise that resolves to an array of all gate data
+ * @throws {Error} - Throws an error if there is an issue fetching the gates
+ */
 export async function getAllGates(): Promise<any> {
     try {
         const gates = await Gate.findAll();
-        console.log(gates)
+        console.log(gates);
         return gates;
     } catch (error) {
         if (error instanceof Error) {
