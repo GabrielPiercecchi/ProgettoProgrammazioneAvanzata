@@ -122,3 +122,44 @@ export const ErrorMessagesTicketMiddleware = {
     endDateNotNullOrEmpty: 'End date cannot be null or undefined.',
     invalidMethod: 'Invalid method. Method must be either "getFrequentGates" or "getMinMaxSpeed".'
 };
+
+// Transit errors
+
+// transit model errors
+export const ErrorMessagesTransitModel = {
+    fetchError: 'Error during Transit fetch in the database:',
+    unknownFetchError: 'Unknown error during Transit fetch in the database.',
+    notFound: 'No Transits found with plate "notFound"'
+}
+
+// transit controller errors
+export const ErrorMessagesTransitController = {
+    creationError: 'Error during Transit creation in the database:',
+    updatingError: 'Error during Transit updating in the database:',
+    deletionError: 'Error during Transit deletion in the database:',
+    fetchError: 'Error during Transit fetch in the database:',
+    unknownCreationError: 'Unknown error during Transit creation in the database.',
+    unknownUpdatingError: 'Unknown error during Transit updating in the database.',
+    unknownDeletionError: 'Unknown error during Transit deletion in the database.',
+    unknownFetchError: 'Unknown error during Transit fetch in the database.',
+    transitNotFound: 'Transit not found.',
+    unknownError: 'An unknown error occurred.',
+    notFound: 'No Transits found with plate "notFound"'
+};
+
+// transit middleware errors
+export const ErrorMessagesTransitMiddleware = {
+    invalidPlateFormat: 'Invalid plate format. Expected format: 2 letters, 3 numbers, 2 letters.',
+    invalidSpeedFormat: 'Invalid speed format. Expected format: Number > 0.',
+    invalidWeatherFormat: 'Invalid weather format. Expected format: String',
+    invalidVehiclesTypesFormat: 'Invalid vehicles_types format. Expected format: String',
+    invalidGateFormat: 'Invalid gate format. Expected format: Number > 0',
+    plateNotNullOrEmpty: 'Plate cannot be null or undefined.',
+    speedNotNullOrEmpty: 'Speed cannot be null or undefined.',
+    weatherNotNullOrEmpty: 'Weather cannot be null or undefined.',
+    vehiclesTypesNotNullOrEmpty: 'Vehicles_types cannot be null or undefined.',
+    gateNotNullOrEmpty: 'Gate cannot be null or undefined.',
+    plateSpeedWeatherVehiclesTypesGateNotNullOrEmpty: 'Plate, speed, weather, vehicles_types, and gate cannot be null or undefined.',
+    newPlateSpeedWeatherVehiclesTypesGateNotNullOrEmpty: 'Plate, speed, weather, vehicles_types, and gate cannot be null or undefined.',
+    invalidId: 'Invalid id. Id must be an integer.',
+};

@@ -2,6 +2,7 @@ import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, Model } from 'sequelize';
 import { Vehicle } from './vehicles'; // Import the Vehicle model
 import { Gate } from './gates'; // Import the Gates model
+import { ErrorMessagesTransitModel } from "../errorMessages/errorMessages";
 
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
@@ -72,11 +73,11 @@ export async function getAllTransits(): Promise<any[]> {
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Transits fetch in the database:', error.message);
-            throw new Error(`Error during Transits fetch in the database: ${error.message}`);
+            console.error(ErrorMessagesTransitModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesTransitModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error Transits Gate fetch in the database:', error);
-            throw new Error('Unknown error Transits Gate fetch in the database.');
+            console.error(ErrorMessagesTransitModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesTransitModel.unknownFetchError} ${error}`);
         }
     }
 }
@@ -87,17 +88,17 @@ export async function getAllNotFoundTickets(): Promise<any[]> {
         const tickets = await Transit.findAll({ where: { plate: 'notFound' } });
 
         if (tickets.length === 0) {
-            throw new Error('No Transits found with plate "notFound"');
+            throw new Error(`${ErrorMessagesTransitModel.notFound}`);
         }
 
         return tickets;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Transits fetching in the database:', error.message);
-            throw new Error(`Error during Transits fetching in the database: ${error.message}`);
+            console.error(ErrorMessagesTransitModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesTransitModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Transits fetching in the database:', error);
-            throw new Error('Unknown error during Transits fetching in the database.');
+            console.error(ErrorMessagesTransitModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesTransitModel.unknownFetchError} ${error}`);
         }
     }
 }
@@ -112,11 +113,11 @@ export async function getTransit(transitId: number): Promise<any> {
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Transit fetch in the database:', error.message);
-            throw new Error(`Error during Transit fetch in the database: ${error.message}`);
+            console.error(ErrorMessagesTransitModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesTransitModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Transit fetch in the database:', error);
-            throw new Error('Unknown error during Transit fetch in the database.');
+            console.error(ErrorMessagesTransitModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesTransitModel.unknownFetchError} ${error}`);
         }
     }
 }

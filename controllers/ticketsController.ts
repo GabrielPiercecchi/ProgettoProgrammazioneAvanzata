@@ -75,7 +75,12 @@ export async function checkAndHandleTickets(): Promise<void> {
                                 vehicleType = await transit1.vehicles_types;
                                 vehicle = await Vehicle.findOne({ where: { type: vehicleType } });
                                 if (vehicle) {
-                                    const speedLimit = vehicle.limit;
+                                    let speedLimit = vehicle.limit;
+
+                                    if(transit1.weather === 'bad weather' || transit2.weather === 'bad weather') {
+                                        // Se il tempo è cattivo, riduci il limite di velocità del 20%
+                                        speedLimit = speedLimit - (speedLimit * 0.2);
+                                    }
 
                                     if (averageSpeedRounded > speedLimit) {
                                         // Calculate delta limit
