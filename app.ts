@@ -11,7 +11,6 @@ import * as pipe from './middlewares/pipeline';
 
 const app = express();
 
-// Middleware per il parsing del corpo delle richieste in formato JSON
 app.use(express.json());
 
 // Open the server
@@ -53,13 +52,6 @@ app.delete('/users/:username', pipe.deleteUser, async (req: any, res: any) => {
 
 // Gates routes
 
-// Route createGates
-app.post('/gates', pipe.createGate, async (req: any, res: any) => {
-  const { location, username } = req.body;
-
-  gatesController.returnCreateGate(req, res, location, username);
-});
-
 // Route getAllGates
 app.get('/gates', pipe.getAll, async (req: any, res: any) => {
 
@@ -71,6 +63,13 @@ app.get('/gates', pipe.getAll, async (req: any, res: any) => {
 app.get('/gates/:id', pipe.getGate, async (req: any, res: any) => {
   const { id } = req.params;
   gatesController.returnGate(req, res, id);
+});
+
+// Route createGates
+app.post('/gates', pipe.createGate, async (req: any, res: any) => {
+  const { location, username } = req.body;
+
+  gatesController.returnCreateGate(req, res, location, username);
 });
 
 //Route updateGates
@@ -88,12 +87,6 @@ app.delete('/gates/:id', pipe.deleteGate, async (req: any, res: any) => {
 
 // Section routes
 
-// Route createSection
-app.post('/sections', pipe.createSection, async (req: any, res: any) => {
-  const { initialGate, finalGate } = req.body;
-  sectionsController.returnCreateSection(req, res, initialGate, finalGate);
-});
-
 // Route getAllSections
 app.get('/sections', pipe.getAll, async (req: any, res: any) => {
 
@@ -105,6 +98,12 @@ app.get('/sections', pipe.getAll, async (req: any, res: any) => {
 app.get('/sections/:id', pipe.getSection, async (req: any, res: any) => {
   const { id } = req.params;
   sectionsController.returnSection(req, res, id);
+});
+
+// Route createSection
+app.post('/sections', pipe.createSection, async (req: any, res: any) => {
+  const { initialGate, finalGate } = req.body;
+  sectionsController.returnCreateSection(req, res, initialGate, finalGate);
 });
 
 // Route updateSection
@@ -123,27 +122,23 @@ app.delete('/sections/:id', pipe.deleteSection, async (req: any, res: any) => {
 // Vehicles routes
 
 // Get all vehicles
-
 app.get('/vehicles', pipe.getAll, async (req: any, res: any) => {
   vehiclesController.returnAllVehicles(req, res);
 });
 
 // Get vehicles by type
-
 app.get('/vehicles/:type', pipe.getVehicles, async (req: any, res: any) => {
   const { type } = req.params;
   vehiclesController.returnVehicle(req, res, type);
 });
 
 // Create a new vehicle
-
 app.post('/vehicles', pipe.createVehicle, async (req: any, res: any) => {
   const { type, limit } = req.body;
   vehiclesController.returnCreateVehicle(req, res, type, limit);
 });
 
 // Update a vehicle
-
 app.put('/vehicles/:type', pipe.updateVehicle, async (req: any, res: any) => {
   const { type } = req.params;
   const { newLimit } = req.body;
@@ -151,7 +146,6 @@ app.put('/vehicles/:type', pipe.updateVehicle, async (req: any, res: any) => {
 });
 
 // Delete a vehicle
-
 app.delete('/vehicles/:type', pipe.deleteVehicle, async (req: any, res: any) => {
   const { type } = req.params;
   vehiclesController.returnDeleteVehicle(req, res, type);
@@ -160,13 +154,11 @@ app.delete('/vehicles/:type', pipe.deleteVehicle, async (req: any, res: any) => 
 // Transits routes
 
 // Get all transits
-
 app.get('/transits', pipe.getAll, async (req: any, res: any) => {
   transitsController.returnAllTransits(req, res);
 });
 
 // Get a specific transit
-
 app.get('/transits/:id', pipe.getTransit, async (req: any, res: any) => {
   const { id } = req.params;
   transitsController.returnTransit(req, res, id);
@@ -187,14 +179,12 @@ app.get('/notFoundTransits', async (req, res) => {
 });
 
 // Create a new transit
-
 app.post('/transits', pipe.createTransit, async (req: any, res: any) => {
   const { plate, speed, weather, vehicles_types, gate } = req.body;
   transitsController.returnCreateTransit(req, res, plate, speed, weather, vehicles_types, gate);
 });
 
 // Update a transit
-
 app.put('/transits/:id', pipe.updateTransit, async (req: any, res: any) => {
   const { id } = req.params;
   const { newPlate, newSpeed, newWeather, newVehicles_types, newGate } = req.body;
@@ -202,7 +192,6 @@ app.put('/transits/:id', pipe.updateTransit, async (req: any, res: any) => {
 });
 
 // Delete a transit
-
 app.delete('/transits/:id', pipe.deleteTransit, async (req: any, res: any) => {
   const { id } = req.params;
   transitsController.returnDeleteTransit(req, res, id);

@@ -29,7 +29,6 @@ module.exports = {
                 allowNull: false
             }
         });
-
         // Adding the unique constraint
         await queryInterface.addConstraint('sections', {
             fields: ['initialGate', 'finalGate'],

@@ -45,7 +45,7 @@ const coord2 = parseCoordinateString(coordString2);
 console.log(`Distanza: ${haversineDistance(coord1, coord2)} km`);
 */
 
-module.exports = {
-    parseCoordinateString,
-    haversineDistance
-}
+// module.exports = {
+//     parseCoordinateString,
+//     haversineDistance
+// }

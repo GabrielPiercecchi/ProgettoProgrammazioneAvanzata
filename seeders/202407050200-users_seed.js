@@ -1,7 +1,5 @@
 'use strict';
 
-//const { Sequelize } = require("sequelize");
-
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.bulkInsert('users', [
@@ -22,6 +20,7 @@ module.exports = {
             }
         ]);
     },
+
     down: async (queryInterface, Sequelize) => {
         await queryInterface.bulkDelete('users', null, {});
     }

@@ -1,7 +1,6 @@
 'use strict';
 
 const { parseCoordinateString, haversineDistance } = require('../other/distanceCalculator');
-// const { Section } = require('../models/sections'); // Assuming your model is located in 'models/Section.js'
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -17,13 +16,6 @@ module.exports = {
 
       // Calculate distance
       const distance = haversineDistance(initialCoordinates, finalCoordinates);
-
-      // // Insert into database using Sequelize model
-      // await Section.create({
-      //   initialGate: 1,
-      //   finalGate: 2,
-      //   distance: distance.toFixed(2) // in Km
-      // });
 
       await queryInterface.bulkInsert('sections', [
         {
@@ -42,6 +34,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    console.log('Down function not implemented for seed.');
+    await queryInterface.bulkDelete('sections', null, {});
   }
 };

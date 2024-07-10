@@ -1,4 +1,5 @@
-'use strict' // Enables strict mode for JavaScript code
+'use strict';
+
 module.exports = {
     up: async (queryInterface, Sequelize) => {
         await queryInterface.createTable('gates', {
