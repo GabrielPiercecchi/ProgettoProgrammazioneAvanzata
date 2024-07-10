@@ -6,136 +6,158 @@ import * as transitsMiddleware from './transitsMiddleware';
 import * as vehiclesMiddleware from './vehiclesMiddleware';
 import * as usersMiddleware from './usersMiddleware';
 
+// Chain of Responsibility for different routes and operations
 
-// Chain of Responsibility
-
+// Middleware chain for retrieving all resources
 export const getAll = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+];
 
+// Middleware chain for retrieving a specific user
 export const getUser = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    usersMiddleware.sanitizeGetGateUserInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    usersMiddleware.sanitizeGetGateUserInputs, // Sanitize inputs specific to getting a user
+];
 
+// Middleware chain for creating a user
 export const createUser = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    usersMiddleware.sanitizeCreateGateUserInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    usersMiddleware.sanitizeCreateGateUserInputs, // Sanitize inputs specific to creating a user
+];
 
+// Middleware chain for updating a user
 export const updateUser = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    usersMiddleware.sanitizeUpdateGateUserInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    usersMiddleware.sanitizeUpdateGateUserInputs, // Sanitize inputs specific to updating a user
+];
 
+// Middleware chain for deleting a user
 export const deleteUser = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    usersMiddleware.sanitizeDeleteGateUserInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    usersMiddleware.sanitizeDeleteGateUserInputs, // Sanitize inputs specific to deleting a user
+];
 
+// Middleware chain for retrieving a specific gate
 export const getGate = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    gatesMiddleware.sanitizeGetGateInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    gatesMiddleware.sanitizeGetGateInputs, // Sanitize inputs specific to getting a gate
+];
 
+// Middleware chain for creating a gate
 export const createGate = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    gatesMiddleware.sanitizeCreateGateInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    gatesMiddleware.sanitizeCreateGateInputs, // Sanitize inputs specific to creating a gate
+];
 
+// Middleware chain for updating a gate
 export const updateGate = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    gatesMiddleware.sanitizeUpdateGateInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    gatesMiddleware.sanitizeUpdateGateInputs, // Sanitize inputs specific to updating a gate
+];
 
+// Middleware chain for deleting a gate
 export const deleteGate = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    gatesMiddleware.sanitizeDeleteGateInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    gatesMiddleware.sanitizeDeleteGateInputs, // Sanitize inputs specific to deleting a gate
+];
+
+// Middleware chain for retrieving a specific section
 export const getSection = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    sectionsMiddleware.sanitizeGetSectionInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    sectionsMiddleware.sanitizeGetSectionInputs, // Sanitize inputs specific to getting a section
+];
 
+// Middleware chain for creating a section
 export const createSection = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    sectionsMiddleware.sanitizeCreateSectionInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    sectionsMiddleware.sanitizeCreateSectionInputs, // Sanitize inputs specific to creating a section
+];
 
+// Middleware chain for updating a section
 export const updateSection = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    sectionsMiddleware.sanitizeUpdateSectionInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    sectionsMiddleware.sanitizeUpdateSectionInputs, // Sanitize inputs specific to updating a section
+];
 
+// Middleware chain for deleting a section
 export const deleteSection = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    sectionsMiddleware.sanitizeDeleteSectionInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    sectionsMiddleware.sanitizeDeleteSectionInputs, // Sanitize inputs specific to deleting a section
+];
 
+// Middleware chain for retrieving vehicles
 export const getVehicles = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    vehiclesMiddleware.sanitizeGetVehicleInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    vehiclesMiddleware.sanitizeGetVehicleInputs, // Sanitize inputs specific to getting vehicles
+];
 
+// Middleware chain for creating a vehicle
 export const createVehicle = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    vehiclesMiddleware.sanitizeCreateVehicleInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    vehiclesMiddleware.sanitizeCreateVehicleInputs, // Sanitize inputs specific to creating a vehicle
+];
 
+// Middleware chain for updating a vehicle
 export const updateVehicle = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    vehiclesMiddleware.sanitizeUpdateVehicleInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    vehiclesMiddleware.sanitizeUpdateVehicleInputs, // Sanitize inputs specific to updating a vehicle
+];
 
+// Middleware chain for deleting a vehicle
 export const deleteVehicle = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    vehiclesMiddleware.sanitizeDeleteVehicleInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    vehiclesMiddleware.sanitizeDeleteVehicleInputs, // Sanitize inputs specific to deleting a vehicle
+];
 
+// Middleware chain for retrieving a transit
 export const getTransit = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    transitsMiddleware.sanitizeGetTransitInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    transitsMiddleware.sanitizeGetTransitInputs, // Sanitize inputs specific to getting a transit
+];
 
+// Middleware chain for creating a transit
 export const createTransit = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperatororGates,
-    transitsMiddleware.sanitizeCreateTransitInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperatororGates, // Check if user is an operator or gates
+    transitsMiddleware.sanitizeCreateTransitInputs, // Sanitize inputs specific to creating a transit
+];
 
+// Middleware chain for updating a transit
 export const updateTransit = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    transitsMiddleware.sanitizeUpdateTransitInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    transitsMiddleware.sanitizeUpdateTransitInputs, // Sanitize inputs specific to updating a transit
+];
 
+// Middleware chain for deleting a transit
 export const deleteTransit = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperator,
-    transitsMiddleware.sanitizeDeleteTransitInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    transitsMiddleware.sanitizeDeleteTransitInputs, // Sanitize inputs specific to deleting a transit
+];
 
+// Middleware chain for retrieving tickets
 export const getTicket = [
-    authMiddleware.authentication,
-    authMiddleware.checkOperatorDriver,
-    ticketsMiddleware.sanitizeGetTicketsInputs,
-]
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperatorDriver, // Check if user is an operator or driver
+    ticketsMiddleware.sanitizeGetTicketsInputs, // Sanitize inputs specific to getting tickets
+];
 

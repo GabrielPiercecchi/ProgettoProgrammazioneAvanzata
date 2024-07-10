@@ -1,11 +1,19 @@
 import { DBIsConnected } from "../database/database";
-import { DataTypes, Sequelize, Model } from 'sequelize';
-import { Vehicle } from './vehicles'; // Import the Vehicle model
-import { Gate } from './gates'; // Import the Gates model
+import { DataTypes, Sequelize } from 'sequelize';
+import { Vehicle } from './vehicles';
+import { Gate } from './gates';
 import { ErrorMessagesTransitModel } from "../errorMessages/errorMessages";
 
+/**
+ * Get the Sequelize instance from the connected database.
+ * 
+ * @returns {Sequelize} The Sequelize instance connected to the database.
+ */
 const sequelize: Sequelize = DBIsConnected.getInstance();
 
+/**
+ * Define the Transit model using Sequelize.
+ */
 export const Transit = sequelize.define('transits', {
     id: {
         type: DataTypes.INTEGER,
@@ -15,12 +23,12 @@ export const Transit = sequelize.define('transits', {
     plate: {
         type: DataTypes.STRING,
         allowNull: false,
-        //primaryKey: true
+        // primaryKey: true (commented out because 'id' is used as primary key)
     },
     transit_date: {
         type: DataTypes.DATE,
         allowNull: false,
-        //primaryKey: true
+        // primaryKey: true (commented out because 'id' is used as primary key)
     },
     speed: {
         type: DataTypes.INTEGER,
@@ -47,13 +55,12 @@ export const Transit = sequelize.define('transits', {
             key: 'id'
         }
     },
-    // Boolean value to check if the transit is in use in the tickets Database
+    // Boolean value to indicate if the transit is used in the tickets database
     used: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false
     }
-
 }, {
     modelName: 'transits',
     timestamps: false,
@@ -65,7 +72,12 @@ export const Transit = sequelize.define('transits', {
     ],
 });
 
-// GET ALL
+/**
+ * Retrieve all transits from the database.
+ * 
+ * @returns {Promise<any[]>} A promise that resolves to an array of transits.
+ * @throws {Error} If an error occurs during the fetch operation.
+ */
 export async function getAllTransits(): Promise<any[]> {
     let result: any;
     try {
@@ -82,7 +94,12 @@ export async function getAllTransits(): Promise<any[]> {
     }
 }
 
-// GET ALL TRANSITS WITH PLATE 'notFound'
+/**
+ * Retrieve all transits with plate 'notFound' from the database.
+ * 
+ * @returns {Promise<any[]>} A promise that resolves to an array of transits with plate 'notFound'.
+ * @throws {Error} If no transits with plate 'notFound' are found or if an error occurs during the fetch operation.
+ */
 export async function getAllNotFoundTickets(): Promise<any[]> {
     try {
         const tickets = await Transit.findAll({ where: { plate: 'notFound' } });
@@ -103,12 +120,16 @@ export async function getAllNotFoundTickets(): Promise<any[]> {
     }
 }
 
-
-// Method to get a transit by plate and transit_date
+/**
+ * Retrieve a transit by its ID from the database.
+ * 
+ * @param {number} transitId - The ID of the transit to retrieve.
+ * @returns {Promise<any>} A promise that resolves to the retrieved transit object.
+ * @throws {Error} If the transit with the specified ID is not found or if an error occurs during the fetch operation.
+ */
 export async function getTransit(transitId: number): Promise<any> {
-    let result:any;
+    let result: any;
     try {
-        // Use `findOne` with `where` for searching the Section with `initialGate` e `finalGate`
         result = await Transit.findByPk(transitId, { raw: true });
         return result;
     } catch (error) {
