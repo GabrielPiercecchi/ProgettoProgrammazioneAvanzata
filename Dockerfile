@@ -3,7 +3,7 @@ FROM node:slim
 COPY package*.json ./
 
 # Set the working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY . .
 
