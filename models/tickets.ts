@@ -7,6 +7,7 @@ import PDFDocument from 'pdfkit';
 
 import dotenv from 'dotenv';
 import { Response } from 'express'; // Ensure this matches the framework you're using
+import { ErrorMessagesTicketModel } from "../errorMessages/errorMessages";
 
 dotenv.config();
 //Connection to DataBase
@@ -71,11 +72,11 @@ export async function getAllTickets(): Promise<any> {
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Tickets fetching in the database:', error.message);
-            throw new Error(`Error during Tickets fetching in the database: ${error.message}`);
+            console.error(ErrorMessagesTicketModel.fetchingError, error.message);
+            throw new Error(`${ErrorMessagesTicketModel.fetchingError} ${error.message}`);
         } else {
-            console.error('Unknown error during Tickets fetching in the database:', error);
-            throw new Error('Unknown error during Tickets fetching in the database.');
+            console.error(ErrorMessagesTicketModel.unknownFetchingError, error);
+            throw new Error(`${ErrorMessagesTicketModel.unknownFetchingError} ${error}`);
         }
     }
 }
@@ -130,15 +131,15 @@ export async function getTicketsByPlatesAndTime(plates: string[], startDate: str
                 return tickets;
             }
         } else {
-            throw new Error('Tickets not found');
+            throw new Error(`${ErrorMessagesTicketModel.notFound}`);
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Tickets fetching in the database:', error.message);
-            throw new Error(`Error during Tickets fetching in the database: ${error.message}`);
+            console.error(ErrorMessagesTicketModel.fetchingError, error.message);
+            throw new Error(`${ErrorMessagesTicketModel.fetchingError} ${error.message}`);
         } else {
-            console.error('Unknown error during Tickets fetching in the database:', error);
-            throw new Error('Unknown error during Tickets fetching in the database.');
+            console.error(ErrorMessagesTicketModel.unknownFetchingError, error);
+            throw new Error(`${ErrorMessagesTicketModel.unknownFetchingError} ${error}`);
         }
     }
 }
@@ -202,11 +203,11 @@ export async function getFrequentGates(startDate?: string, endDate?: string): Pr
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error fetching frequent gate pairs from the database:', error.message);
-            throw new Error(`Error fetching frequent gate pairs from the database: ${error.message}`);
+            console.error(ErrorMessagesTicketModel.frequentGatePairsFetchingError, error.message);
+            throw new Error(`${ErrorMessagesTicketModel.frequentGatePairsFetchingError} ${error.message}`);
         } else {
-            console.error('Unknown error fetching frequent gate pairs from the database:', error);
-            throw new Error('Unknown error fetching frequent gate pairs from the database.');
+            console.error(ErrorMessagesTicketModel.unknownFrequentGatePairsFetchingError, error);
+            throw new Error(`${ErrorMessagesTicketModel.unknownFrequentGatePairsFetchingError} ${error}`);
         }
     }
 }
@@ -253,11 +254,11 @@ export async function getMinMaxSpeed(startDate?: string, endDate?: string) {
         return { maxSpeedGatePairs, minSpeedGatePairs };
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error fetching frequent gate pairs from the database:', error.message);
-            throw new Error(`Error fetching frequent gate pairs from the database: ${error.message}`);
+            console.error(ErrorMessagesTicketModel.frequentGetMinMaxSpeed, error.message);
+            throw new Error(`${ErrorMessagesTicketModel.frequentGetMinMaxSpeed} ${error.message}`);
         } else {
-            console.error('Unknown error fetching frequent gate pairs from the database:', error);
-            throw new Error('Unknown error fetching frequent gate pairs from the database.');
+            console.error(ErrorMessagesTicketModel.unknownFrequentGetMinMaxSpeed, error);
+            throw new Error(`${ErrorMessagesTicketModel.unknownFrequentGetMinMaxSpeed} ${error}`);
         }
     }
 }
