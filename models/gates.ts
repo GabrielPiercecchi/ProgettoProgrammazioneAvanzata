@@ -42,7 +42,6 @@ export const Gate = sequelize.define('gates', {
 export async function getGates(id: number): Promise<any> {
     let result: any;
     try {
-        // Converti il parametro type in minuscolo per la ricerca
         result = await Gate.findByPk(id);
 
         return result;

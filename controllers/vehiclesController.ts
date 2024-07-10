@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import { Vehicle, getAllVehicles, getVehicles } from '../models/vehicles';
 import { ErrorMessagesVehicleController } from '../messages/errorMessages';
+import { SuccessMessagesVehicleController } from '../messages/successMessages';
 
 // CREATE
 export async function createVehicle(type: string, limit: number): Promise<any> {
@@ -83,7 +84,7 @@ export async function deleteVehicle(type: string): Promise<any> {
         });
         if (result) {
             await result.destroy();
-            return `Vehicle with type ${type} was deleted successfully.`;
+            return `${SuccessMessagesVehicleController.deleteSuccess} ${type}`;
         } else {
             throw new Error(`${ErrorMessagesVehicleController.vehicleNotFound} ${type}`);
         }

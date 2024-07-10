@@ -3,6 +3,7 @@ import { Sequelize } from 'sequelize';
 import { Gate } from '../models/gates';
 import { User, getAllUsers, getUser } from "../models/users";
 import { ErrorMessagesUserController } from "../messages/errorMessages";
+import { SuccessMessagesUserController } from "../messages/successMessages";
 
 // Connection to the database
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -56,7 +57,7 @@ export async function deleteGateUser(username: string): Promise<any> {
 
         // Delete the user
         await result.destroy();
-        return `Gate User with username ${username} was deleted successfully.`;
+        return `${SuccessMessagesUserController.deleteSuccess} ${username}`;
     } catch (error) {
         if (error instanceof Error) {
             console.error(ErrorMessagesUserController.deleteUser, error.message);
