@@ -45,10 +45,13 @@ export const ErrorMessagesVehicleController = {
 };
 
 // Vehicle middleware errors
-export const VehicleMiddlewareErrors = {
-    invalidTypeFormat: 'Invalid type format. Expected format: String',
+export const ErrorMessagesVehicleMiddleware = {
     typeNotNullOrEmpty: 'Type cannot be null or undefined.',
-    limitNotNullOrEmpty: 'Limit cannot be null or undefined.'
+    limitNotNullOrEmpty: 'Limit cannot be null or undefined.',
+    invalidTypeFormat: 'Invalid Type format. Type must start with a letter and without special characters.',
+    invalidSpeedLimit: 'Invalid speed limit. Speed limit must be an integer between 30 and 150.',
+    typeAndLimitNotNullOrEmpty: 'Type and limit cannot be null or undefined.',
+    newLimitNotNullOrEmpty: 'New limit cannot be null or undefined.'
 };
 
 

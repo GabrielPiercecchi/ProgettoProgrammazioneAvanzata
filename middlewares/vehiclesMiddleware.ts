@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { ErrorMessagesVehicleMiddleware } from '../errorMessages/errorMessages';
 
 // Funzione di validazione per il limite di velocità
 export function validateSpeedLimit(limit: number): boolean {
@@ -22,7 +23,7 @@ export function sanitizeGetVehicleInputs(req: Request, res: Response, next: Next
 
     // Validazione del tipo
     if (!validateType(type)) {
-        return res.status(400).json({ error: 'Invalid Type format. Type must start with a letter and without special characters.' });
+        return res.status(400).json({ error: ErrorMessagesVehicleMiddleware.invalidTypeFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -34,17 +35,17 @@ export function sanitizeCreateVehicleInputs(req: Request, res: Response, next: N
     const { type, limit } = req.body;
 
     if (!validateNotNullorEmpty(type) || !validateNotNullorEmpty(limit)) {
-        return res.status(400).json({ error: 'Type and limit cannot be null or undefined.' });
+        return res.status(400).json({ error: ErrorMessagesVehicleMiddleware.typeNotNullOrEmpty});
     }
 
     // Validazione del tipo
     if (!validateType(type)) {
-        return res.status(400).json({ error: 'Invalid Type format. Type must start with a letter and without special characters.' });
+        return res.status(400).json({ error: ErrorMessagesVehicleMiddleware.invalidTypeFormat });
     }
 
     // Validazione del limite di velocità
     if (!validateSpeedLimit(limit)) {
-        return res.status(400).json({ error: 'Invalid speed limit. Speed limit must be an integer between 30 and 150.' });
+        return res.status(400).json({ error: ErrorMessagesVehicleMiddleware.invalidSpeedLimit });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -56,12 +57,12 @@ export function sanitizeUpdateVehicleInputs(req: Request, res: Response, next: N
     const { newLimit } = req.body;
 
     if (!validateNotNullorEmpty(newLimit)) {
-        return res.status(400).json({ error: 'New limit cannot be null or undefined.' });
+        return res.status(400).json({ error: ErrorMessagesVehicleMiddleware.newLimitNotNullOrEmpty });
     }
 
     // Validazione del nuovo limite di velocità
     if (!validateSpeedLimit(newLimit)) {
-        return res.status(400).json({ error: 'Invalid speed limit. Speed limit must be an integer between 30 and 150.' });
+        return res.status(400).json({ error: ErrorMessagesVehicleMiddleware.invalidSpeedLimit });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -74,7 +75,7 @@ export function sanitizeDeleteVehicleInputs(req: Request, res: Response, next: N
 
     // Validazione del tipo
     if (!validateType(type)) {
-        return res.status(400).json({ error: 'Invalid Type format. Type must start with a letter and without special characters.' });
+        return res.status(400).json({ error: ErrorMessagesVehicleMiddleware.invalidTypeFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
