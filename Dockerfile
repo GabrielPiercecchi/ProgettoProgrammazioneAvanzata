@@ -4,7 +4,8 @@ FROM node:lts-slim
 
 # COPY package*.json ./
 
-WORKDIR /usr/src/app
+# Set the working directory
+WORKDIR /app
 
 COPY . .
 
@@ -19,7 +20,3 @@ RUN tsc
 
 # Run the app
 CMD ["nodemon", "app.ts"]
-
-#CMD ["npm", "run", "dev"]
-
-#--------------------------------------------

@@ -1,7 +1,7 @@
 'use strict';
 
 const { parseCoordinateString, haversineDistance } = require('../other/distanceCalculator');
-const { Section } = require('../models/sections'); // Assuming your model is located in 'models/Section.js'
+// const { Section } = require('../models/sections'); // Assuming your model is located in 'models/Section.js'
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

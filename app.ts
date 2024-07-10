@@ -9,7 +9,6 @@ import * as usersController from './controllers/usersController';
 import * as pipe from './middlewares/pipeline';
 
 
-
 const app = express();
 
 // Middleware per il parsing del corpo delle richieste in formato JSON
