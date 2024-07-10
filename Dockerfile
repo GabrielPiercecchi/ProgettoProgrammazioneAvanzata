@@ -2,7 +2,7 @@ FROM node:lts-slim
 
 # Imposta la directory di lavoro
 
-# COPY package*.json ./
+COPY package*.json ./
 
 # Set the working directory
 WORKDIR /app
