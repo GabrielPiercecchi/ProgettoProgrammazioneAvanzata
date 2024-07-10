@@ -24,10 +24,10 @@ export async function createGateUser(username: string): Promise<any> {
         return newUser;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during User creation in the database:', error.message);
+            console.error(ErrorMessagesUserController.createUser, error.message);
             throw new Error(`${ErrorMessagesUserController.createUser} ${error.message}`);
         } else {
-            console.error('Unknown error during User creation in the database:', error);
+            console.error(ErrorMessagesUserController.createUser, error);
             throw new Error(ErrorMessagesUserController.createUser);
         }
     }
@@ -59,10 +59,10 @@ export async function deleteGateUser(username: string): Promise<any> {
         return `Gate User with username ${username} was deleted successfully.`;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during User deletion in the database:', error.message);
+            console.error(ErrorMessagesUserController.deleteUser, error.message);
             throw new Error(`${ErrorMessagesUserController.deleteUser} ${error.message}`);
         } else {
-            console.error('Unknown error during User deletion in the database:', error);
+            console.error(ErrorMessagesUserController.deleteUser, error);
             throw new Error(ErrorMessagesUserController.deleteUser);
         }
     }
@@ -92,10 +92,10 @@ export async function updateGateUser(username: string, newUsername: string): Pro
         return await User.findOne({ where: { username: newUsername } });
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during User updating in the database:', error.message);
+            console.error(ErrorMessagesUserController.updateUser, error.message);
             throw new Error(`${ErrorMessagesUserController.updateUser} ${error.message}`);
         } else {
-            console.error('Unknown error during User updating in the database:', error);
+            console.error(ErrorMessagesUserController.updateUser, error);
             throw new Error(ErrorMessagesUserController.updateUser);
         }
     }

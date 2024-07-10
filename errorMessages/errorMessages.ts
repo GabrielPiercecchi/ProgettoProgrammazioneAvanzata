@@ -33,6 +33,27 @@ export const ErrorMessagesVehicleModel = {
     unknownFetchError: 'Unknown error during Vehicles fetch in the database.'
 };
 
+// Vehicle controller errors
+export const ErrorMessagesVehicleController = {
+    createVehicle: 'Error during Vehicle creation in the database.',
+    deleteVehicle: 'Error during Vehicle deletion in the database.',
+    updateVehicle: 'Error during Vehicle update in the database.',
+    fetchVehicles: 'Error fetching vehicles from the database.',
+    unknownError: 'An unknown error occurred.',
+    vehicleNotFound: 'Vehicle not found.',
+    alreadyExists: 'Vehicle with this type already exists.'
+};
+
+// Vehicle middleware errors
+export const ErrorMessagesVehicleMiddleware = {
+    typeNotNullOrEmpty: 'Type cannot be null or undefined.',
+    limitNotNullOrEmpty: 'Limit cannot be null or undefined.',
+    invalidTypeFormat: 'Invalid Type format. Type must start with a letter and without special characters.',
+    invalidSpeedLimit: 'Invalid speed limit. Speed limit must be an integer between 30 and 150.',
+    typeAndLimitNotNullOrEmpty: 'Type and limit cannot be null or undefined.',
+    newLimitNotNullOrEmpty: 'New limit cannot be null or undefined.'
+};
+
 
 export const ErrorMessagesGateController = {
     USER_NOT_FOUND: 'User does not exist in Users. You have to create it first',
