@@ -5,14 +5,12 @@ import { Ticket, getMinMaxSpeed, getFrequentGates, getAllTickets, getTicketsByPl
 import { v4 as uuidv4 } from 'uuid';
 import { Op } from 'sequelize'; // Importa l'operatore Sequelize
 import { Plate } from '../models/plates';
+import { ErrorMessagesTicketController } from '../errorMessages/errorMessages';
 
 // Funzione per controllare e gestire i ticket
 export async function checkAndHandleTickets(): Promise<void> {
     try {
-        console.log("Inizio del processo...");
-
         const transitCount = await Transit.count();
-        console.log(`Numero totale di transiti: ${transitCount}`);
 
         let transits: any;
         let sections: any;
@@ -21,7 +19,6 @@ export async function checkAndHandleTickets(): Promise<void> {
         let vehicleType: any;
 
         if (transitCount >= 2) {
-            console.log("Ci sono almeno 2 transiti.");
 
             // Step 1: Trova tutti i transiti con used = false e plate diverso da "notFound"
             transits = await Transit.findAll({
@@ -30,7 +27,6 @@ export async function checkAndHandleTickets(): Promise<void> {
                     plate: { [Op.ne]: 'notFound' }
                 }
             });
-            console.log(`Transiti con used = false trovati: ${transits.length}`);
 
             // Step 2: Crea una mappa delle targhe per raggruppare i transiti per targa
             platesMap = new Map<string, any[]>();
@@ -41,11 +37,9 @@ export async function checkAndHandleTickets(): Promise<void> {
                     platesMap.set(transit.plate, [transit]);
                 }
             }
-            console.log("Mappa delle targhe creata:", platesMap);
 
             // Step 3: Recupera tutte le sezioni
             sections = await Section.findAll();
-            console.log(`Sezioni trovate: ${sections.length}`);
 
             // Step 4: Trova transiti che corrispondono a initialGate e finalGate nelle sezioni
             for (const [plate, transits] of platesMap.entries()) {
@@ -69,7 +63,6 @@ export async function checkAndHandleTickets(): Promise<void> {
                                 const timeDifferenceHours = timeDifference / (1000 * 60 * 60); // Converti la differenza in ore
                                 const averageSpeed = section.distance / timeDifferenceHours;
                                 const averageSpeedRounded = parseFloat(averageSpeed.toFixed(2));
-                                console.log(`Velocità media per la targa ${plate} tra i gate ${transit1.gate} e ${transit2.gate}: ${averageSpeedRounded} km/h`);
 
                                 // Recupera il limite di velocità per il tipo di veicolo
                                 vehicleType = await transit1.vehicles_types;
@@ -78,8 +71,6 @@ export async function checkAndHandleTickets(): Promise<void> {
                                     const speedLimit = vehicle.limit;
 
                                     if (averageSpeedRounded > speedLimit) {
-                                        console.log(`Velocità media (${averageSpeedRounded} km/h) supera il limite (${speedLimit} km/h) per la targa ${plate}`);
-
                                         // Calcolo del delta limit
                                         const deltaLimit = parseFloat((averageSpeedRounded - speedLimit).toFixed(2));
 
@@ -95,34 +86,24 @@ export async function checkAndHandleTickets(): Promise<void> {
                                             delta_limit: deltaLimit
                                         });
 
-                                        console.log(`Creato nuovo ticket:`, newTicket);
-
                                         // Aggiornare il campo `used` dei transiti coinvolti
                                         await transit1.update({ used: true });
                                         await transit2.update({ used: true });
-
-                                        console.log(`Aggiornati i transiti: ${transit1.id} e ${transit2.id} a used = true`);
                                     }
                                 }
                             }
                         }
                     }
                 }
-
-                if (matchingTransits.length > 0) {
-                    console.log(`Transiti corrispondenti per la targa ${plate}:`, matchingTransits);
-                }
             }
-        } else {
-            console.log("Non ci sono abbastanza transiti (almeno 2) per eseguire l'operazione.");
         }
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Tickets fetching in the database:', error.message);
-            throw new Error(`Error during Tickets fetching in the database: ${error.message}`);
+            console.error(ErrorMessagesTicketController.fetchingError, error.message);
+            throw new Error(`${ErrorMessagesTicketController.fetchingError} ${error.message}`);
         } else {
-            console.error('Unknown error during Tickets fetching in the database:', error);
-            throw new Error('Unknown error during Tickets updating in the database.');
+            console.error(ErrorMessagesTicketController.unknownError, error);
+            throw new Error(`${ErrorMessagesTicketController.unknownError} ${error}`);
         }
     }
 }
@@ -138,17 +119,17 @@ export const handleGatePairsMethod = async (method: string, startDate?: string, 
             const { maxSpeedGatePairs, minSpeedGatePairs } = await getMinMaxSpeed(startDate, endDate);
             data = { maxSpeedGatePairs, minSpeedGatePairs };
         } else {
-            throw new Error('Invalid method specified: must be either "getFrequentGates" or "getMinMaxSpeed".');
+            throw new Error(`${ErrorMessagesTicketController.invalidMethod} ${method}`);
         }
 
         return data;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Tickets Stats fetching in the database:', error.message);
-            throw new Error(`Error during Tickets Stats fetching in the database: ${error.message}`);
+            console.error(ErrorMessagesTicketController.fetchingError, error.message);
+            throw new Error(`${ErrorMessagesTicketController.fetchingError} ${error.message}`);
         } else {
-            console.error('Unknown error during Tickets Stats fetching in the database:', error);
-            throw new Error('Unknown error during Tickets Stats updating in the database.');
+            console.error(ErrorMessagesTicketController.unknownError, error);
+            throw new Error(`${ErrorMessagesTicketController.unknownError} ${error}`);
         }
     }
 }
@@ -161,7 +142,7 @@ export async function returnAllTickets(req: any, res: any) {
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });
         } else {
-            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: ErrorMessagesTicketController.unknownError });
         }
     }
 
@@ -187,7 +168,7 @@ export async function returnGetTickets(req: any, res: any, plates: string, start
             allPlatesExist = platesArray.every(plate => driverPlates.includes(plate));
 
             if (!allPlatesExist) {
-                return res.status(400).json({ error: 'Some plates are not assigned to the driver' });
+                return res.status(400).json({ error: ErrorMessagesTicketController.platesNotAssigned });
             }
         }
         const tickets = await getTicketsByPlatesAndTime(platesArray, startDate, endDate, format, res);
@@ -195,14 +176,14 @@ export async function returnGetTickets(req: any, res: any, plates: string, start
             if (tickets.length > 0) {
                 res.status(200).json(tickets);
             } else {
-                res.status(404).json({ error: 'Tickets not found' });
+                res.status(404).json({ error: ErrorMessagesTicketController.notFound });
             }
         }
     } catch (error) {
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });
         } else {
-            res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
+            res.status(500).json({ error: ErrorMessagesTicketController.unknownError });
         }
     }
 }
@@ -215,7 +196,7 @@ export async function returnStats(req: any, res: any, method: string, startDate:
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });
         } else {
-            res.status(500).json({ error: 'An unknown error occurred.' });
+            res.status(500).json({ error: ErrorMessagesTicketController.unknownError });
         }
     }
 }

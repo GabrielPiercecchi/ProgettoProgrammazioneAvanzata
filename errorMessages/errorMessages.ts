@@ -85,3 +85,40 @@ export const ErrorMessagesGateMIddleware = {
     newUsernameNotNull: 'New username cannot be null or undefined.',
     locationNotNullOrUndefined: 'Location cannot be null or undefined.',
 };
+
+// Ticket errors
+
+// ticket model errors
+export const ErrorMessagesTicketModel = {
+    fetchingError: 'Error during Tickets fetching in the database:',
+    notFound: 'Tickets not found',
+    unknownFetchingError: 'Unknown error during Tickets fetching in the database.',
+    frequentGatePairsFetchingError: 'Error fetching frequent gate pairs from the database:',
+    frequentGetMinMaxSpeed: 'Error fetching max and min medium_speed from the database:',
+    unknownFrequentGetMinMaxSpeed: 'Unknown max and min medium_speed from the database.',
+    unknownFrequentGatePairsFetchingError: 'Unknown error fetching frequent gate pairs from the database.',
+};
+
+// ticket controller errors
+export const ErrorMessagesTicketController = {
+    fetchingError: 'Error during Tickets fetching in the database: ',
+    updatingError: 'Error during Tickets updating in the database: ',
+    notFound: 'Tickets not found',
+    unknownError: 'An unknown error occurred.',
+    invalidMethod: 'Invalid method specified: must be either "getFrequentGates" or "getMinMaxSpeed".',
+    platesNotAssigned: 'Some plates are not assigned to the driver',
+};
+
+// ticket middleware errors
+export const ErrorMessagesTicketMiddleware = {
+    invalidPlatesFormat: 'Invalid plates format: expected AA123AA. Plates must be separated by a comma and a single space if there are multiple plates.',
+    invalidPlateFormat: 'Invalid plate format: Expected format: 2 letters, 3 numbers, 2 letters.',
+    platesNotNullOrUndefined: 'Plates cannot be null or undefined.',
+    invalidStartDateFormat: 'Invalid start date format: Expected format: YYYY-MM-DDTHH:MM:SS.',
+    invalidEndDateFormat: 'Invalid end date format: Expected format: YYYY-MM-DDTHH:MM:SS.',
+    invalidFormat: 'Invalid format. Format must be either "json" or "pdf".',
+    methodNotNullOrEmpty: 'Method cannot be null or undefined.',
+    startDateNotNullOrEmpty: 'Start date cannot be null or undefined.',
+    endDateNotNullOrEmpty: 'End date cannot be null or undefined.',
+    invalidMethod: 'Invalid method. Method must be either "getFrequentGates" or "getMinMaxSpeed".'
+};

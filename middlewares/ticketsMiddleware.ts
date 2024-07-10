@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateNotNullorEmpty } from './vehiclesMiddleware';
+import { ErrorMessagesTicketMiddleware } from '../errorMessages/errorMessages';
 
 // Funzione di validazione per le targhe
 function validatePlate(plate: string): boolean {
@@ -31,7 +32,7 @@ export function sanitizeGetTicketsInputs(req: Request, res: Response, next: Next
 
     // Validazione della formattazione delle targhe
     if (plates && !validatePlatesFormat(plates)) {
-        return res.status(400).json({ error: 'Invalid plates format: expected AA123AA. Plates must be separated by a comma and a single space if there are multiple plates.' });
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidPlatesFormat });
     }
 
     // Validazione delle targhe
@@ -39,26 +40,26 @@ export function sanitizeGetTicketsInputs(req: Request, res: Response, next: Next
         const platesArray = plates.split(', ');
         for (const plate of platesArray) {
             if (!validatePlate(plate.trim())) {
-                return res.status(400).json({ error: `Invalid plate format: ${plate.trim()}. Expected format: 2 letters, 3 numbers, 2 letters.` });
+                return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidPlateFormat });
             }
         }
     } else {
-        return res.status(400).json({ error: 'Plates cannot be null or undefined.' });
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.platesNotNullOrUndefined });
     }
 
     // Validazione della data di inizio
     if (startDate && !validateDate(startDate)) {
-        return res.status(400).json({ error: `Invalid start date format: ${startDate}. Expected format: YYYY-MM-DDTHH:MM:SS.` });
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidStartDateFormat });
     }
 
     // Validazione della data di fine
     if (endDate && !validateDate(endDate)) {
-        return res.status(400).json({ error: `Invalid end date format: ${endDate}. Expected format: YYYY-MM-DDTHH:MM:SS.` });
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidEndDateFormat });
     }
 
     // Validazione del formato
     if (!format || !validateFormat(format)) {
-        return res.status(400).json({ error: 'Invalid format. Format must be either "json" or "pdf".' });
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidFormat});
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -72,15 +73,15 @@ export function sanitizePostStatisticsInputs(req: Request, res: Response, next: 
 
     // Validazione del metodo
     if (!validateNotNullorEmpty(method) || (method !== 'getFrequentGates' && method !== 'getMinMaxSpeed')) {
-        return res.status(400).json({ error: 'Invalid method. Method must be either "getFrequentGates" or "getMinMaxSpeed".' });
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidMethod });
     }
 
     if (!validateNotNullorEmpty(startDate) || !validateDate(startDate)) {
-        return res.status(400).json({ error: `Invalid start date format: ${startDate}. Expected format: YYYY-MM-DDTHH:MM:SS.` });
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidStartDateFormat });
     }
 
     if (!validateNotNullorEmpty(endDate) || !validateDate(endDate)) {
-        return res.status(400).json({ error: `Invalid end date format: ${endDate}. Expected format: YYYY-MM-DDTHH:MM:SS.` });
+        return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidEndDateFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
