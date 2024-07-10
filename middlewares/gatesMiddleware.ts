@@ -1,6 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
+<<<<<<< HEAD
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // Importing because it's the same.
 import { ErrorMessagesGateMIddleware } from '../errorMessages/errorMessages';
+=======
+import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
+import { User } from '../models/users';
+import { ErrorMessagesGateMIddleware } from '../messages/errorMessages';
+>>>>>>> gabriel
 
 /**
  * Validates if the provided location string matches the format LAT-xx.xxxxxxLON-xx.xxxxxx.

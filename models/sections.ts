@@ -3,6 +3,7 @@ import { DataTypes, Sequelize, Model, BuildOptions } from 'sequelize';
 import { Gate } from './gates'; // Import the Gate model
 // Import functions for coordinate parsing and distance calculation
 import { parseCoordinateString, haversineDistance } from '../other/distanceCalculator';
+import { ErrorMessagesSectionModel } from "../messages/errorMessages";
 
 // Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -59,11 +60,11 @@ export async function getSections(sectionId: number): Promise<any> {
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Sections fetch in the database:', error.message);
-            throw new Error(`Error during Sections fetch in the database: ${error.message}`);
+            console.error(ErrorMessagesSectionModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesSectionModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Sections fetch in the database:', error);
-            throw new Error('Unknown error during Sections fetch in the database.');
+            console.error(ErrorMessagesSectionModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesSectionModel.unknownFetchError} ${error}`);
         }
     }
 }
@@ -76,11 +77,11 @@ export async function getAllSections(): Promise<any> {
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Sections fetch in the database:', error.message);
-            throw new Error(`Error during Sections fetch in the database: ${error.message}`);
+            console.error(ErrorMessagesSectionModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesSectionModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error Sections Gate fetch in the database:', error);
-            throw new Error('Unknown error Sections Gate fetch in the database.');
+            console.error(ErrorMessagesSectionModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesSectionModel.unknownFetchError} ${error}`);
         }
     }
 }

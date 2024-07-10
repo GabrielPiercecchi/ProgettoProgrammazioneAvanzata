@@ -5,7 +5,7 @@ import { Ticket, getMinMaxSpeed, getFrequentGates, getAllTickets, getTicketsByPl
 import { v4 as uuidv4 } from 'uuid';
 import { Op } from 'sequelize';
 import { Plate } from '../models/plates';
-import { ErrorMessagesTicketController } from '../errorMessages/errorMessages';
+import { ErrorMessagesTicketController } from '../messages/errorMessages';
 
 /**
  * Function to check and handle tickets based on transit data and sections.

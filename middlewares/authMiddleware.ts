@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/users';
+import { ErrorMessagesAuth } from '../messages/errorMessages';
+import { error } from 'console';
 
 /**
  * Middleware for user authentication using JWT token.
@@ -16,7 +18,7 @@ export const authentication = (req: Request, res: Response, next: NextFunction) 
         // Check if authorization header is missing
         if (!authorization) {
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: 'Unauthorized' });
+            return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
         }
 
         // Extract token from authorization header
@@ -24,7 +26,7 @@ export const authentication = (req: Request, res: Response, next: NextFunction) 
 
         // Check if PRIVATE_KEY environment variable is missing
         if (!process.env.PRIVATE_KEY) {
-            return res.status(500).send({ message: 'Internal Server Error' });
+            return res.status(500).send({ message: ErrorMessagesAuth.invalidEnvToken });
         }
 
         // Verify JWT token using private key
@@ -34,7 +36,7 @@ export const authentication = (req: Request, res: Response, next: NextFunction) 
         // If token is not decoded properly
         if (!decoded) {
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: 'Failed to decode' });
+            return res.status(401).send({ message: ErrorMessagesAuth.failedToDecode });
         }
 
         // Attach decoded user information to request body
@@ -44,7 +46,7 @@ export const authentication = (req: Request, res: Response, next: NextFunction) 
     } catch (error) {
         console.error('Error in authentication middleware:', error);
         res.header('content-type', 'application/json');
-        return res.status(401).send({ message: 'Internal server error' });
+        return res.status(401).send({ message: ErrorMessagesAuth.internalServerError });
     }
 };
 
@@ -65,7 +67,7 @@ export async function checkOperator(req: Request, res: Response, next: NextFunct
         // If user is not found
         if (!result) {
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: 'User not found' });
+            return res.status(401).send({ message: ErrorMessagesAuth.userNotFound });
         }
 
         // Check if user is an operator and has necessary permissions
@@ -79,12 +81,12 @@ export async function checkOperator(req: Request, res: Response, next: NextFunct
             result.token = 10;
             await result.save();
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: 'You are unauthorized' });
+            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken, token: result.token});
         }
     } catch (error) {
         console.error('Error in checkOperator middleware:', error);
         res.header('content-type', 'application/json');
-        return res.status(500).send({ message: 'Internal Server Error' });
+        return res.status(500).send({ message: ErrorMessagesAuth.internalServerError });
     }
 }
 
@@ -100,7 +102,7 @@ export function checkGate(req: Request, res: Response, next: NextFunction) {
         next();
     } else {
         res.header('content-type', 'application/json');
-        return res.status(401).send({ message: 'Unauthorized' });
+        return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
     }
 }
 
@@ -116,7 +118,7 @@ export function checkDriver(req: Request, res: Response, next: NextFunction) {
         next();
     } else {
         res.header('content-type', 'application/json');
-        return res.status(401).send({ message: 'Unauthorized' });
+        return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
     }
 }
 
@@ -137,7 +139,7 @@ export async function checkOperatororGates(req: Request, res: Response, next: Ne
         // If user is not found
         if (!result) {
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: 'User not found' });
+            return res.status(401).send({ message: ErrorMessagesAuth.userNotFound });
         }
 
         // Check if user is an operator or gate and has necessary permissions
@@ -152,12 +154,12 @@ export async function checkOperatororGates(req: Request, res: Response, next: Ne
             result.token = 10;
             await result.save();
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: 'You are unauthorized. Your token value is:', token: result.token });
+            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken, token: result.token });
         }
     } catch (error) {
         console.error('Error in checkOperatorGate middleware:', error);
         res.header('content-type', 'application/json');
-        return res.status(500).send({ message: 'Internal Server Error' });
+        return res.status(500).send({ message: ErrorMessagesAuth.internalServerError });
     }
 }
 
@@ -179,16 +181,16 @@ export function checkOperatorDriver(req: Request, res: Response, next: NextFunct
             drivers = User.findOne({ where: { username: req.body.user.username } });
             if (drivers.length === 0) {
                 res.header('content-type', 'application/json');
-                return res.status(401).send({ message: 'Unauthorized' });
+                return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
             }
             if (!drivers) {
                 res.header('content-type', 'application/json');
-                return res.status(401).send({ message: 'Unauthorized' });
+                return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
             }
             next();
         } catch (error) {
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: 'Unauthorized' });
+            return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
         }
     } else {
         res.header('content-type', 'application/json');

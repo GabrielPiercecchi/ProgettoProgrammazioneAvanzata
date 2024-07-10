@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { Vehicle, getAllVehicles, getVehicles } from '../models/vehicles';
-import { ErrorMessagesVehicleController } from '../errorMessages/errorMessages';
+import { ErrorMessagesVehicleController } from '../messages/errorMessages';
 
 /**
  * This function creates a new vehicle in the database

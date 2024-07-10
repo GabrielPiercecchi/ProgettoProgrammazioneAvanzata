@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ErrorMessagesVehicleMiddleware } from '../errorMessages/errorMessages';
+import { ErrorMessagesVehicleMiddleware } from '../messages/errorMessages';
 
 // Function to validate the speed limit
 /**

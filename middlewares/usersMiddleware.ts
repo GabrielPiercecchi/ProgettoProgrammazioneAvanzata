@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // Assumo che validateNotNullorEmpty sia definito in vehiclesMiddleware.ts
-import { UserMiddlewareErrors } from '../errorMessages/errorMessages'; // Importa i messaggi di errore
+import { UserMiddlewareErrors } from '../messages/errorMessages'; // Importa i messaggi di errore
 
 // Funzione di validazione per l'username
 function validateUsername(username: string): boolean {
