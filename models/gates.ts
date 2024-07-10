@@ -1,6 +1,7 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize, where } from 'sequelize';
 import { User } from './users';
+import { ErrorMessagesGateModel } from "../errorMessages/errorMessages";
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -47,11 +48,11 @@ export async function getGates(id: number): Promise<any> {
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Gate creation in the database:', error.message);
-            throw new Error(`Error during Gate creation in the database: ${error.message}`);
+            console.error(ErrorMessagesGateModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesGateModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Gate creation in the database:', error);
-            throw new Error('Unknown error during Gate creation in the database.');
+            console.error(ErrorMessagesGateModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesGateModel.unknownFetchError} ${error}`);
         }
     }
 }
@@ -64,11 +65,11 @@ export async function getAllGates(): Promise<any> {
         return gates;
     } catch (error) {
         if (error instanceof Error) {
-            console.error('Error during Gate fetch in the database:', error.message);
-            throw new Error(`Error during Gate fetch in the database: ${error.message}`);
+            console.error(ErrorMessagesGateModel.fetchError, error.message);
+            throw new Error(`${ErrorMessagesGateModel.fetchError} ${error.message}`);
         } else {
-            console.error('Unknown error during Gate fetch in the database:', error);
-            throw new Error('Unknown error during Gate fetch in the database.');
+            console.error(ErrorMessagesGateModel.unknownFetchError, error);
+            throw new Error(`${ErrorMessagesGateModel.unknownFetchError} ${error}`);
         }
     }
 }

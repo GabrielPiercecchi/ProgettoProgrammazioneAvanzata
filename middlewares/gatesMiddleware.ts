@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateNotNullorEmpty } from './vehiclesMiddleware'; // we choose to import it cause its the same
 import { User } from '../models/users';
+import { ErrorMessagesGateMIddleware } from '../errorMessages/errorMessages';
 
 // Funzione di validazione per la location
 export function validateLocation(location: string): boolean {
@@ -24,7 +25,7 @@ export function sanitizeGetGateInputs(req: Request, res: Response, next: NextFun
 
     // Validazione della location
     if (!validateId(Number(id))) {
-        return res.status(400).json({ error: 'Invalid id format. Expected format: Number > 0' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.invalidIdFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -36,17 +37,17 @@ export function sanitizeCreateGateInputs(req: Request, res: Response, next: Next
     const { location, username } = req.body;
 
     if (!validateNotNullorEmpty(location) || !validateNotNullorEmpty(username)) {
-        return res.status(400).json({ error: 'Location, username and password cannot be null or undefined.' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.locationNotNull });
     }
 
     // Validazione della location
     if (!validateLocation(location)) {
-        return res.status(400).json({ error: 'Invalid location format. Expected format: LAT43.615829LON13.518915' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.invalidLocationFormat });
     }
 
     // Validazione dell'username
     if (!validateUsername(username)) {
-        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.invalidUsernameFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -59,17 +60,17 @@ export function sanitizeUpdateGateInputs(req: Request, res: Response, next: Next
     const { newUsername } = req.body;
 
     if (!validateNotNullorEmpty(newUsername)) {
-        return res.status(400).json({ error: 'New username cannot be null or undefined.' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.newUsernameNotNull });
     }
 
     // Validazione della location
     if (!validateId(Number(id))) {
-        return res.status(400).json({ error: 'Invalid id format. Expected format: Number > 0' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.invalidIdFormat });
     }
 
     // Validazione del nuovo username
     if (newUsername && !validateUsername(newUsername)) {
-        return res.status(400).json({ error: 'Invalid username format. Username must start with a letter and without special characters.' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.invalidUsernameFormat });
     }
 
     // Se tutte le validazioni passano, passa al middleware successivo o al controller
@@ -81,12 +82,12 @@ export function sanitizeDeleteGateInputs(req: Request, res: Response, next: Next
     const { id } = req.params;
     console.log(location);
     if (!validateNotNullorEmpty(location)) {
-        return res.status(400).json({ error: 'Location cannot be null or undefined.' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.locationNotNull });
     }
 
     // Validazione del id
     if (!validateId(Number(id))) {
-        return res.status(400).json({ error: 'Invalid id format. Expected format: Number > 0' });
+        return res.status(400).json({ error: ErrorMessagesGateMIddleware.invalidIdFormat });
     }
 
 
