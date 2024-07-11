@@ -70,17 +70,24 @@ export async function checkOperator(req: Request, res: Response, next: NextFunct
         }
 
         // Check if user is an operator and has necessary permissions
-        if (user.role === 'operator' && result.role === 'operator' && result.username === user.username && result.token > 0) {
-            // Decrease token count and save to database
-            result.token = result.token - 1;
-            await result.save();
-            next();
+        if (user.role === 'operator' && result.role === 'operator' && result.username === user.username) {
+            if (result.token > 0) {
+                // Decrease token count and save to database
+                result.token = result.token - 1;
+                await result.save();
+                next();
+            }
+            else {
+                // Handle unauthorized access
+                result.token = 10;
+                await result.save();
+                res.header('content-type', 'application/json');
+                return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
+            }
         } else {
-            // Handle unauthorized access
-            result.token = 10;
-            await result.save();
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
+            return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
+
         }
     } catch (error) {
         console.error('Error in checkOperator middleware:', error);
@@ -111,17 +118,24 @@ export async function checkOperatororGates(req: Request, res: Response, next: Ne
 
         // Check if user is an operator or gate and has necessary permissions
         if ((user.role === 'operator' && result.role === 'operator' && result.username === user.username) ||
-            (user.role === 'gate' && result.role === 'gate' && result.username === user.username) && result.token > 0) {
-            // Decrease token count and save to database
-            result.token = result.token - 1;
-            await result.save();
-            next();
-        } else {
-            // Handle unauthorized access
-            result.token = 10;
-            await result.save();
+            (user.role === 'gate' && result.role === 'gate' && result.username === user.username)) {
+
+            if (result.token > 0) {
+                // Decrease token count and save to database
+                result.token = result.token - 1;
+                await result.save();
+                next();
+            } else {
+                // Handle unauthorized access
+                result.token = 10;
+                await result.save();
+                res.header('content-type', 'application/json');
+                return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
+            }
+        }
+        else {
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
+            return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
         }
     } catch (error) {
         console.error('Error in checkOperatorGate middleware:', error);
@@ -139,23 +153,36 @@ export async function checkOperatororGates(req: Request, res: Response, next: Ne
  */
 export async function checkOperatorDriver(req: Request, res: Response, next: NextFunction) {
     let result: any;
-    result = await User.findByPk(req.body.user.username);
+    try {
+        result = await User.findByPk(req.body.user.username);
 
-    // If user is not found
-    if (!result) {
-        res.header('content-type', 'application/json');
-        return res.status(401).send({ message: ErrorMessagesAuth.userNotFound });
+        // If user is not found
+        if (!result) {
+            res.header('content-type', 'application/json');
+            return res.status(401).send({ message: ErrorMessagesAuth.userNotFound });
+        }
+        // Check if user is an operator or driver and has necessary permissions
+        if ((req.body.user.role === 'operator' && result.role === 'operator') ||
+            (req.body.user.role === 'driver' && result.role === 'driver')) {
+            if (result.token > 0) {
+                result.token = result.token - 1;
+                await result.save();
+                next();
+            } else {
+                result.token = 10;
+                await result.save();
+                res.header('content-type', 'application/json');
+                return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
+            }
+        }
+        else {
+            res.header('content-type', 'application/json');
+            return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
+        }
     }
-    // Check if user is an operator or driver and has necessary permissions
-    if ((req.body.user.role === 'operator' && result.role === 'operator') ||
-    (req.body.user.role === 'driver' && result.role === 'driver') && result.token > 0) {
-        result.token = result.token - 1;
-        await result.save();
-        next();
-    } else {
-        result.token = 10;
-        await result.save();
+    catch (error) {
+        console.error('Error in checkOperatorGate middleware:', error);
         res.header('content-type', 'application/json');
-        return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
+        return res.status(500).send({ message: ErrorMessagesAuth.internalServerError });
     }
 }
