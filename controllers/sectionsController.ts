@@ -1,7 +1,7 @@
 import { DBIsConnected } from '../database/database';
 import { Sequelize } from 'sequelize';
 import { Section, getAllSections, getSections } from '../models/sections';
-import * as distanceCalculator from '../other/distanceCalculator';
+import * as distanceCalculator from '../algorithms/distanceCalculator';
 import { Gate } from "../models/gates";
 import { ErrorMessagesSectionController } from '../messages/errorMessages';
 import { SuccessMessagesSectionController } from '../messages/successMessages';

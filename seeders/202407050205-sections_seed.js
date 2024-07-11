@@ -1,6 +1,6 @@
 'use strict';
 
-const { parseCoordinateString, haversineDistance } = require('../other/distanceCalculator');
+const { parseCoordinateString, haversineDistance } = require('../algorithms/distanceCalculator');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
