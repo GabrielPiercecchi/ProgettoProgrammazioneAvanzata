@@ -1,11 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-<<<<<<< HEAD
-import { validateNotNullorEmpty } from './vehiclesMiddleware'; // Importing because it's the same.
-import { ErrorMessagesTicketMiddleware } from '../errorMessages/errorMessages';
-=======
-import { validateNotNullorEmpty } from './vehiclesMiddleware';
+import { validateNotNullorEmpty } from './vehiclesMiddleware'; // // we choose to import it cause its the same.
 import { ErrorMessagesTicketMiddleware } from '../messages/errorMessages';
->>>>>>> gabriel
 
 // Validation function for plates
 function validatePlate(plate: string): boolean {

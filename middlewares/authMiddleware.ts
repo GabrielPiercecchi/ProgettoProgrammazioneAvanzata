@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/users';
 import { ErrorMessagesAuth } from '../messages/errorMessages';
-import { error } from 'console';
 
 /**
  * Middleware for user authentication using JWT token.

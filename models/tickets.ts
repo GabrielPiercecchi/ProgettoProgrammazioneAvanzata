@@ -1,13 +1,12 @@
 import { DBIsConnected } from '../database/database';
 import { DataTypes, Sequelize } from 'sequelize';
-import { Gate } from './gates';
 import { Op } from 'sequelize';
 import { fn, literal } from 'sequelize';
-import PDFDocument from 'pdfkit';
-
-import dotenv from 'dotenv';
 import { Response } from 'express';
-import { ErrorMessagesTicketModel } from '../errorMessages/errorMessages';
+import PDFDocument from 'pdfkit';
+import dotenv from 'dotenv';
+import { Gate } from './gates';
+import { ErrorMessagesTicketModel } from '../messages/errorMessages';
 
 dotenv.config();
 

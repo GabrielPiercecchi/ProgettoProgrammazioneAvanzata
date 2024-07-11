@@ -1,6 +1,6 @@
 import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize } from 'sequelize';
-import { ErrorMessagesVehicleModel } from "../errorMessages/errorMessages";
+import { ErrorMessagesVehicleModel } from "../messages/errorMessages";
 
 // Connection to the database
 const sequelize: Sequelize = DBIsConnected.getInstance();

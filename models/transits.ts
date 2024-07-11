@@ -2,7 +2,7 @@ import { DBIsConnected } from "../database/database";
 import { DataTypes, Sequelize } from 'sequelize';
 import { Vehicle } from './vehicles';
 import { Gate } from './gates';
-import { ErrorMessagesTransitModel } from "../errorMessages/errorMessages";
+import { ErrorMessagesTransitModel } from "../messages/errorMessages";
 
 /**
  * Get the Sequelize instance from the connected database.
@@ -23,12 +23,10 @@ export const Transit = sequelize.define('transits', {
     plate: {
         type: DataTypes.STRING,
         allowNull: false,
-        // primaryKey: true (commented out because 'id' is used as primary key)
     },
     transit_date: {
         type: DataTypes.DATE,
         allowNull: false,
-        // primaryKey: true (commented out because 'id' is used as primary key)
     },
     speed: {
         type: DataTypes.INTEGER,

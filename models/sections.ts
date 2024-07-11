@@ -1,8 +1,6 @@
 import { DBIsConnected } from "../database/database";
-import { DataTypes, Sequelize, Model, BuildOptions } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import { Gate } from './gates'; // Import the Gate model
-// Import functions for coordinate parsing and distance calculation
-import { parseCoordinateString, haversineDistance } from '../other/distanceCalculator';
 import { ErrorMessagesSectionModel } from "../messages/errorMessages";
 
 // Connection to DataBase
@@ -50,12 +48,15 @@ export const Section = sequelize.define('sections', {
     ],
 });
 
-// Verify if the Section is in the database
-//GET
+/**
+ * Function to retrieve a Section by ID
+ * @param sectionId - The ID of the section to retrieve
+ * @returns The section data or null if not found
+ */
 export async function getSections(sectionId: number): Promise<any> {
     let result: any;
     try {
-        // Use `findOne` with `where` for searching the Section with `initialGate` e `finalGate`
+        // Use `findByPk` to search for the Section by its primary key
         result = await Section.findByPk(sectionId, { raw: true });
         return result;
     } catch (error) {
@@ -69,7 +70,10 @@ export async function getSections(sectionId: number): Promise<any> {
     }
 }
 
-//GET ALL
+/**
+ * Function to retrieve all Sections
+ * @returns A list of all sections
+ */
 export async function getAllSections(): Promise<any> {
     let result: any;
     try {

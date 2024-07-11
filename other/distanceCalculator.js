@@ -26,17 +26,3 @@ function haversineDistance(coord1, coord2) {
     const distance = R * c; // Distanza in chilometri
     return parseFloat(distance.toFixed(2)); // Ritorna la distanza come numero con due cifre decimali
 }
-/*
-// Esempio di utilizzo
-const coordString1 = 'LAT43.6158299LON13.518915';
-const coordString2 = 'LAT44.494887LON11.3426163';
-
-const coord1 = parseCoordinateString(coordString1);
-const coord2 = parseCoordinateString(coordString2);
-
-console.log(`Distanza: ${haversineDistance(coord1, coord2)} km`);
-*/
-// module.exports = {
-//     parseCoordinateString,
-//     haversineDistance
-// };

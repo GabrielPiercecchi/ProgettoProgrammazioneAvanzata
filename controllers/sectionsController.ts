@@ -1,12 +1,12 @@
-import { DBIsConnected } from "../database/database";
+import { DBIsConnected } from '../database/database';
 import { Sequelize } from 'sequelize';
 import { Section, getAllSections, getSections } from '../models/sections';
 import * as distanceCalculator from '../other/distanceCalculator';
 import { Gate } from "../models/gates";
-import { ErrorMessagesSectionController } from "../messages/errorMessages";
-import { SuccessMessagesSectionController } from "../messages/successMessages";
+import { ErrorMessagesSectionController } from '../messages/errorMessages';
+import { SuccessMessagesSectionController } from '../messages/successMessages';
 
-const SALT_ROUNDS = 10;
+// const SALT_ROUNDS = 10;
 
 //Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance(); // we dont need it i think @FRANCESCO
