@@ -1,5 +1,4 @@
 import express from 'express';
-import * as transitsModel from './models/transits';
 import * as gatesController from './controllers/gatesController';
 import * as sectionsController from './controllers/sectionsController';
 import * as vehiclesController from './controllers/vehiclesController';
@@ -7,7 +6,6 @@ import * as transitsController from './controllers/transitsController';
 import * as ticketsController from './controllers/ticketsController';
 import * as usersController from './controllers/usersController';
 import * as pipe from './middlewares/pipeline';
-
 
 const app = express();
 
@@ -166,16 +164,7 @@ app.get('/transits/:id', pipe.getTransit, async (req: any, res: any) => {
 
 // Route to get all transits with plate "notFound" TODO check if the pipe works 
 app.get('/notFoundTransits', async (req, res) => {
-  try {
-    const tickets = await transitsModel.getAllNotFoundTickets();
-    res.status(200).json(tickets);
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({ error: error.message });
-    } else {
-      res.status(500).json({ error: "Si è verificato un errore sconosciuto." });
-    }
-  }
+  transitsController.returnAllNotFoundTransits(req, res);
 });
 
 // Create a new transit

@@ -98,7 +98,7 @@ export async function getAllTransits(): Promise<any[]> {
  * @returns {Promise<any[]>} A promise that resolves to an array of transits with plate 'notFound'.
  * @throws {Error} If no transits with plate 'notFound' are found or if an error occurs during the fetch operation.
  */
-export async function getAllNotFoundTickets(): Promise<any[]> {
+export async function getAllNotFoundTransits(): Promise<any[]> {
     try {
         const tickets = await Transit.findAll({ where: { plate: 'notFound' } });
 

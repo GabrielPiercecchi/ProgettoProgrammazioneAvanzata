@@ -1,6 +1,6 @@
 import { ErrorMessagesTransitController } from '../messages/errorMessages';
-import { SuccessMessagesGateController, SuccessMessagesTransitController } from '../messages/successMessages';
-import { Transit, getAllTransits, getTransit, getAllNotFoundTickets } from '../models/transits';
+import { SuccessMessagesTransitController } from '../messages/successMessages';
+import { Transit, getAllTransits, getTransit, getAllNotFoundTransits } from '../models/transits';
 import * as ticketController from './ticketsController';
 
 /**
@@ -64,7 +64,7 @@ export async function updateTransit(transitId: number, newPlate: string, newSpee
             ticketController.checkAndHandleTickets();
             return result;
         } else {
-            throw new Error('Transit not found.');
+            throw new Error(`${ErrorMessagesTransitController.transitNotFound}`);
         }
     } catch (error) {
         if (error instanceof Error) {
@@ -148,6 +148,35 @@ export async function returnTransit(req: any, res: any, id: string): Promise<any
             res.status(500).json({ error: error.message });
         } else {
             res.status(500).json({ error: ErrorMessagesTransitController.unknownError });
+        }
+    }
+}
+
+/**
+ * Controller function to handle the request for retrieving all transits with the plate 'notFound'.
+ * 
+ * This function makes use of the `getAllNotFoundTransits` service to fetch all transits where the plate is 'notFound'.
+ * It sends back a JSON response with the retrieved transits or an error message if something goes wrong.
+ * 
+ * @param {any} req - The request object from Express.
+ * @param {any} res - The response object from Express.
+ * @returns {Promise<any>} The JSON response with the transits or an error message.
+ */
+export async function returnAllNotFoundTransits(req: any, res: any): Promise<any> {
+    try {
+        // Call the service function to get all transits with plate 'notFound'
+        const tickets = await getAllNotFoundTransits();
+
+        // If successful, send a 200 status with the retrieved tickets
+        return res.status(200).json(tickets);
+    } catch (error) {
+        // If an error occurs, send a 500 status with the error message
+        if (error instanceof Error) {
+            // Known error with a message property
+            return res.status(500).json({ error: error.message });
+        } else {
+            // Unknown error without a message property
+            return res.status(500).json({ error: ErrorMessagesTransitController.unknownError });
         }
     }
 }
