@@ -89,7 +89,7 @@ export async function deleteGate(id: number): Promise<any> {
         if (result) {
             // Cancella il gate
             await result.destroy();
-            return SuccessMessagesGateController.deleteSuccess;
+            return `${SuccessMessagesGateController.deleteSuccess} ${id}`;
         } else {
           throw new Error(`${ErrorMessagesGateController.gateNotFound} ${id}`);
         }
