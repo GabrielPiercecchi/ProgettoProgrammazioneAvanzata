@@ -7,7 +7,6 @@ import * as ticketsController from './controllers/ticketsController';
 import * as usersController from './controllers/usersController';
 import * as pipe from './middlewares/pipeline';
 
-
 const app = express();
 
 app.use(express.json());
