@@ -80,7 +80,7 @@ export async function checkOperator(req: Request, res: Response, next: NextFunct
             result.token = 10;
             await result.save();
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken, token: result.token });
+            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
         }
     } catch (error) {
         console.error('Error in checkOperator middleware:', error);
@@ -121,7 +121,7 @@ export async function checkOperatororGates(req: Request, res: Response, next: Ne
             result.token = 10;
             await result.save();
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken, token: result.token });
+            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
         }
     } catch (error) {
         console.error('Error in checkOperatorGate middleware:', error);
@@ -156,6 +156,6 @@ export async function checkOperatorDriver(req: Request, res: Response, next: Nex
         result.token = 10;
         await result.save();
         res.header('content-type', 'application/json');
-        return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken, token: result.token });
+        return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken + "0", token: result.token });
     }
 }
