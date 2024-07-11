@@ -64,7 +64,7 @@ export async function updateTransit(transitId: number, newPlate: string, newSpee
             ticketController.checkAndHandleTickets();
             return result;
         } else {
-            throw new Error('Transit not found.');
+            throw new Error(`${ErrorMessagesTransitController.transitNotFound}`);
         }
     } catch (error) {
         if (error instanceof Error) {
