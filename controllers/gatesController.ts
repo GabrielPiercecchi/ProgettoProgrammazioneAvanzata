@@ -2,7 +2,8 @@ import { DBIsConnected } from '../database/database';
 import { Sequelize } from 'sequelize';
 import { Gate, getAllGates, getGates } from '../models/gates';
 import { User } from '../models/users';
-import { ErrorMessagesGateController } from '../errorMessages/errorMessages';
+import { ErrorMessagesGateController } from '../messages/errorMessages';
+import { SuccessMessagesGateController } from '../messages/successMessages';
 
 // CONNECTION TO DATABASE
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -82,25 +83,25 @@ export async function updateGate(id: number, newUsername: string): Promise<any> 
  * @throws {Error} - Throws an error if there is an issue deleting the gate or if the gate is not found
  */
 export async function deleteGate(id: number): Promise<any> {
-  let result: any;
-  try {
-    result = await Gate.findByPk(id);
-    if (result) {
-      // Delete the gate
-      await result.destroy();
-      return `Gate with ID ${id} was deleted successfully.`;
-    } else {
-      throw new Error(`${ErrorMessagesGateController.gateNotFound} ${id}`);
+    let result: any;
+    try {
+        result = await Gate.findByPk(id);
+        if (result) {
+            // Cancella il gate
+            await result.destroy();
+            return `Gate with location ${location} was deleted successfully.`;
+        } else {
+          throw new Error(`${ErrorMessagesGateController.gateNotFound} ${id}`);
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(ErrorMessagesGateController.deletionError, error.message);
+            throw new Error(`${ErrorMessagesGateController.deletionError} ${error.message}`);
+        } else {
+            console.error(ErrorMessagesGateController.unknownDeletionError, error);
+            throw new Error(`${ErrorMessagesGateController.unknownDeletionError} ${error}`);
+        }
     }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(ErrorMessagesGateController.deletionError, error.message);
-      throw new Error(`${ErrorMessagesGateController.deletionError} ${error.message}`);
-    } else {
-      console.error(ErrorMessagesGateController.unknownDeletionError, error);
-      throw new Error(`${ErrorMessagesGateController.unknownDeletionError} ${error}`);
-    }
-  }
 }
 
 /**

@@ -1,15 +1,9 @@
 import { Op } from 'sequelize';
 import { Vehicle, getAllVehicles, getVehicles } from '../models/vehicles';
 import { ErrorMessagesVehicleController } from '../messages/errorMessages';
+import { SuccessMessagesVehicleController } from '../messages/successMessages';
 
-/**
- * This function creates a new vehicle in the database
- * 
- * @param {string} type - The type of the vehicle to create
- * @param {number} limit - The limit value for the vehicle
- * @returns {Promise<any>} - A promise that resolves to the created vehicle data
- * @throws {Error} - Throws an error if there is an issue creating the vehicle
- */
+// CREATE
 export async function createVehicle(type: string, limit: number): Promise<any> {
   let result: any;
   try {
@@ -90,32 +84,32 @@ export async function updateVehicle(type: string, newLimit: number): Promise<any
  * @throws {Error} - Throws an error if there is an issue deleting the vehicle
  */
 export async function deleteVehicle(type: string): Promise<any> {
-  let result: any;
-  try {
-    // Find the vehicle with type case-insensitive
-    result = await Vehicle.findOne({
-      where: {
-        [Op.or]: [
-          { type: type.toLowerCase() },
-          { type: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase() }
-        ]
-      }
-    });
-    if (result) {
-      await result.destroy();
-      return `Vehicle with type ${type} was deleted successfully.`;
-    } else {
-      throw new Error(`${ErrorMessagesVehicleController.vehicleNotFound} ${type}`);
+    let result: any;
+    try {
+        // Trova il veicolo con type case-insensitive
+        result = await Vehicle.findOne({
+            where: {
+                [Op.or]: [
+                    { type: type.toLowerCase() },
+                    { type: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase() }
+                ]
+            }
+        });
+        if (result) {
+            await result.destroy();
+            return `${SuccessMessagesVehicleController.deleteSuccess} ${type}`;
+        } else {
+            throw new Error(`${ErrorMessagesVehicleController.vehicleNotFound} ${type}`);
+        }
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(ErrorMessagesVehicleController.deleteVehicle, error.message);
+            throw new Error(`${ErrorMessagesVehicleController.deleteVehicle} ${error.message}`);
+        } else {
+            console.error(ErrorMessagesVehicleController.unknownError, error);
+            throw new Error(`${ErrorMessagesVehicleController.unknownError} ${error}`);
+        }
     }
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(ErrorMessagesVehicleController.deleteVehicle, error.message);
-      throw new Error(`${ErrorMessagesVehicleController.deleteVehicle} ${error.message}`);
-    } else {
-      console.error(ErrorMessagesVehicleController.unknownError, error);
-      throw new Error(`${ErrorMessagesVehicleController.unknownError} ${error}`);
-    }
-  }
 }
 
 /**

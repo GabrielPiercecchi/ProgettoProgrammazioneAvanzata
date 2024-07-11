@@ -4,6 +4,7 @@ import { Section, getAllSections, getSections } from '../models/sections';
 import * as distanceCalculator from '../other/distanceCalculator';
 import { Gate } from "../models/gates";
 import { ErrorMessagesSectionController } from "../messages/errorMessages";
+import { SuccessMessagesSectionController } from "../messages/successMessages";
 
 const SALT_ROUNDS = 10;
 
@@ -90,7 +91,7 @@ export async function deleteSection(sectionId: number): Promise<string> {
 
     if (result) {
       await result.destroy();
-      return `Section with ID ${sectionId} was deleted successfully.`;
+      return `${SuccessMessagesSectionController.deleteSuccess} ${sectionId}`;
     } else {
       throw new Error(`${ErrorMessagesSectionController.sectionNotFound} ${sectionId}`);
     }

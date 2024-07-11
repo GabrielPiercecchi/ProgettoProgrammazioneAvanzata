@@ -1,5 +1,6 @@
-import { ErrorMessagesTransitController } from '../errorMessages/errorMessages';
-import { Transit, getAllTransits, getTransit } from '../models/transits';
+import { ErrorMessagesTransitController } from '../messages/errorMessages';
+import { SuccessMessagesGateController, SuccessMessagesTransitController } from '../messages/successMessages';
+import { Transit, getAllTransits, getTransit, getAllNotFoundTickets } from '../models/transits';
 import * as ticketController from './ticketsController';
 
 /**
@@ -88,7 +89,7 @@ export async function deleteTransit(transitId: number): Promise<any> {
         const result = await Transit.findByPk(transitId);
         if (result) {
             await result.destroy();
-            return `Transit with ID ${transitId} was deleted successfully.`;
+            return `${SuccessMessagesTransitController.deleteSuccess} ${transitId}`;
         } else {
             throw new Error(`${ErrorMessagesTransitController.notFound}`);
         }

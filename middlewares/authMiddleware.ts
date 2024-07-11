@@ -81,44 +81,12 @@ export async function checkOperator(req: Request, res: Response, next: NextFunct
             result.token = 10;
             await result.save();
             res.header('content-type', 'application/json');
-            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken, token: result.token});
+            return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken, token: result.token });
         }
     } catch (error) {
         console.error('Error in checkOperator middleware:', error);
         res.header('content-type', 'application/json');
         return res.status(500).send({ message: ErrorMessagesAuth.internalServerError });
-    }
-}
-
-/**
- * Middleware to check if the user has the role 'gate'.
- * 
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Next middleware function
- */
-export function checkGate(req: Request, res: Response, next: NextFunction) {
-    if (req.body.user.role === 'gate') {
-        next();
-    } else {
-        res.header('content-type', 'application/json');
-        return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
-    }
-}
-
-/**
- * Middleware to check if the user has the role 'driver'.
- * 
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- * @param {NextFunction} next - Next middleware function
- */
-export function checkDriver(req: Request, res: Response, next: NextFunction) {
-    if (req.body.user.role === 'driver') {
-        next();
-    } else {
-        res.header('content-type', 'application/json');
-        return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
     }
 }
 
@@ -143,8 +111,8 @@ export async function checkOperatororGates(req: Request, res: Response, next: Ne
         }
 
         // Check if user is an operator or gate and has necessary permissions
-        if ((user.role === 'operator' && result.role === 'operator' && result.username === user.username) || 
-            (user.role === 'gate' && result.role === 'gate' && result.username === user.username && result.token > 0)) {
+        if ((user.role === 'operator' && result.role === 'operator' && result.username === user.username) ||
+            (user.role === 'gate' && result.role === 'gate' && result.username === user.username) && result.token > 0) {
             // Decrease token count and save to database
             result.token = result.token - 1;
             await result.save();
@@ -170,30 +138,25 @@ export async function checkOperatororGates(req: Request, res: Response, next: Ne
  * @param {Response} res - Express response object
  * @param {NextFunction} next - Next middleware function
  */
-export function checkOperatorDriver(req: Request, res: Response, next: NextFunction) {
-    if (req.body.user.role === 'operator') {
-        next();
-    }
-    if (req.body.user.role === 'driver') {
-        // Check if user is a driver
-        let drivers: any;
-        try {
-            drivers = User.findOne({ where: { username: req.body.user.username } });
-            if (drivers.length === 0) {
-                res.header('content-type', 'application/json');
-                return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
-            }
-            if (!drivers) {
-                res.header('content-type', 'application/json');
-                return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
-            }
-            next();
-        } catch (error) {
-            res.header('content-type', 'application/json');
-            return res.status(401).send({ message: ErrorMessagesAuth.unauthorized });
-        }
-    } else {
+export async function checkOperatorDriver(req: Request, res: Response, next: NextFunction) {
+    let result: any;
+    result = await User.findByPk(req.body.user.username);
+
+    // If user is not found
+    if (!result) {
         res.header('content-type', 'application/json');
-        return res.status(401).send({ message: 'Unauthorized' });
+        return res.status(401).send({ message: ErrorMessagesAuth.userNotFound });
+    }
+    // Check if user is an operator or driver and has necessary permissions
+    if ((req.body.user.role === 'operator' && result.role === 'operator') ||
+    (req.body.user.role === 'driver' && result.role === 'driver') && result.token > 0) {
+        result.token = result.token - 1;
+        await result.save();
+        next();
+    } else {
+        result.token = 10;
+        await result.save();
+        res.header('content-type', 'application/json');
+        return res.status(401).send({ message: ErrorMessagesAuth.terminatedToken, token: result.token });
     }
 }

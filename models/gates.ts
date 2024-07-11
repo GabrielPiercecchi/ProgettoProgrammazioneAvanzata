@@ -1,7 +1,7 @@
 import { DBIsConnected } from '../database/database';
 import { DataTypes, Sequelize } from 'sequelize';
 import { User } from './users';
-import { ErrorMessagesGateModel } from '../errorMessages/errorMessages';
+import { ErrorMessagesGateModel } from '../messages/errorMessages';
 
 // Connection to DataBase
 const sequelize: Sequelize = DBIsConnected.getInstance();
@@ -47,7 +47,6 @@ export const Gate = sequelize.define('gates', {
 export async function getGates(id: number): Promise<any> {
     let result: any;
     try {
-        // Convert the parameter type to lowercase for the search
         result = await Gate.findByPk(id);
 
         return result;
