@@ -25,6 +25,7 @@ export const Gate = sequelize.define('gates', {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         references: {
             model: User,
             key: 'username'

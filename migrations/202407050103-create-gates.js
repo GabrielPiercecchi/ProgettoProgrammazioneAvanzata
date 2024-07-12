@@ -29,6 +29,13 @@ module.exports = {
             type: 'unique',
             name: 'unique_gate_location'
         });
+
+        // Adding the unique constraint on username
+        await queryInterface.addConstraint('gates', {
+            fields: ['username'],
+            type: 'unique',
+            name: 'unique_gate_username'
+        });
     },
 
     down: async (queryInterface, Sequelize) => {

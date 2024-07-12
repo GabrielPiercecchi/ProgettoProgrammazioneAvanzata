@@ -9,7 +9,7 @@ module.exports = {
       },
       {
         location: 'LAT44.494887LON11.342616',
-        username: 'gate',
+        username: 'gate1',
       }
     ]);
   },

@@ -14,6 +14,11 @@ module.exports = {
                 token: 10,
             },
             {
+                role: 'gate',
+                username: 'gate1',
+                token: 10,
+            },
+            {
                 role: 'driver',
                 username: 'driver',
                 token: 10,
