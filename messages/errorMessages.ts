@@ -115,7 +115,7 @@ export const ErrorMessagesTicketController = {
     updatingError: 'Error during Tickets updating in the database: ',
     notFound: 'Tickets not found',
     unknownError: 'An unknown error occurred.',
-    invalidMethod: 'Invalid method specified: must be either "getFrequentGates" or "getMinMaxSpeed".',
+    invalidMethod: 'Invalid method specified: must be either "getFrequentSections" or "getMinMaxSpeed". Error',
     platesNotAssigned: 'Some plates are not assigned to the driver',
 };
 
@@ -130,7 +130,7 @@ export const ErrorMessagesTicketMiddleware = {
     methodNotNullOrEmpty: 'Method cannot be null or undefined.',
     startDateNotNullOrEmpty: 'Start date cannot be null or undefined.',
     endDateNotNullOrEmpty: 'End date cannot be null or undefined.',
-    invalidMethod: 'Invalid method. Method must be either "getFrequentGates" or "getMinMaxSpeed".'
+    invalidMethod: 'Invalid method. Method must be either "getFrequentSections" or "getMinMaxSpeed". Error'
 };
 
 // Transit errors
@@ -154,7 +154,8 @@ export const ErrorMessagesTransitController = {
     unknownFetchError: 'Unknown error during Transit fetch in the database.',
     transitNotFound: 'Transit not found.',
     unknownError: 'An unknown error occurred.',
-    notFound: 'No Transits found with plate "notFound"'
+    notFound: 'No Transits found with plate "notFound"',
+    vehiclesTypesMismatch: 'Vehicles types mismatch with the plate',
 };
 
 // transit middleware errors

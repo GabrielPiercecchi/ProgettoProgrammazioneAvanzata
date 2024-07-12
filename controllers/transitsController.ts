@@ -16,7 +16,19 @@ import * as ticketController from './ticketsController';
  */
 export const createTransit = async (plate: string, speed: number, weather: string, vehicles_types: string, gate: number): Promise<void> => {
     let result: any;
+    let transits: any;
     try {
+        // Check if the plate and the vehicles_types are the same
+        transits = await Transit.findAll({ where: { plate: plate } });
+        if (transits) {
+            if (transits.length > 1) {
+                for (let i = 0; i < transits.length; i++) {
+                    if (transits[i].vehicles_types !== vehicles_types) {
+                        throw new Error(`${ErrorMessagesTransitController.vehiclesTypesMismatch}`);
+                    }
+                }
+            }
+        }
         const transit_date = new Date();
         result = await Transit.create({ plate, transit_date, speed, weather, vehicles_types, gate });
         // Invoke function to check and handle tickets
@@ -48,9 +60,21 @@ export const createTransit = async (plate: string, speed: number, weather: strin
  */
 export async function updateTransit(transitId: number, newPlate: string, newSpeed: number, newWeather: string, newVehicles_types: string, newGate: number): Promise<any> {
     let result: any;
+    let transits: any;
     try {
         result = await Transit.findByPk(transitId);
         if (result) {
+            // Check if the plate and the vehicles_types are the same
+            transits = await Transit.findAll({ where: { plate: newPlate } });
+            if (transits) {
+                if (transits.length > 1) {
+                    for (let i = 0; i < transits.length; i++) {
+                        if (transits[i].vehicles_types !== newVehicles_types) {
+                            throw new Error(`${ErrorMessagesTransitController.vehiclesTypesMismatch}`);
+                        }
+                    }
+                }
+            }
             // Check if constraints are respected
             result.plate = newPlate;
             result.transit_date = new Date();

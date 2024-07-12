@@ -1,12 +1,7 @@
-import { DBIsConnected } from '../database/database';
-import { Sequelize } from 'sequelize';
 import { Gate, getAllGates, getGates } from '../models/gates';
 import { User } from '../models/users';
 import { ErrorMessagesGateController } from '../messages/errorMessages';
 import { SuccessMessagesGateController } from '../messages/successMessages';
-
-// CONNECTION TO DATABASE
-const sequelize: Sequelize = DBIsConnected.getInstance();
 
 /**
  * This function creates a new gate in the database

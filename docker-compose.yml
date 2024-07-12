@@ -4,6 +4,7 @@ services:
     # restart: unless-stopped
     ports:
       - "${SERVICE_HOST}:${SERVICE_PORT}"
+    container_name: backendTutor
     env_file:
       .env
     environment:
@@ -22,6 +23,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+    container_name: postgresTutor
     env_file:
       .env
     ports:

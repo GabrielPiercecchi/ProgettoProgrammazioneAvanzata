@@ -166,7 +166,7 @@ export async function getTicketsByPlatesAndTime(plates: string[], startDate: str
  * @returns {Promise<any>} - A promise that resolves to an array of objects representing frequent gate pairs
  * @throws {Error} - Throws an error if there's an issue fetching frequent gate pairs
  */
-export async function getFrequentGates(startDate?: string, endDate?: string): Promise<any> {
+export async function getFrequentSections(startDate?: string, endDate?: string): Promise<any> {
     let whereClause: any = {};
     let ticketDates: any;
     let tickets: any;

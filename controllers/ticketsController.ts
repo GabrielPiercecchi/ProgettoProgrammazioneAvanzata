@@ -1,7 +1,7 @@
 import { Transit } from '../models/transits';
 import { Section } from '../models/sections';
 import { Vehicle } from '../models/vehicles';
-import { Ticket, getMinMaxSpeed, getFrequentGates, getAllTickets, getTicketsByPlatesAndTime } from '../models/tickets';
+import { Ticket, getMinMaxSpeed, getFrequentSections, getAllTickets, getTicketsByPlatesAndTime } from '../models/tickets';
 import { v4 as uuidv4 } from 'uuid';
 import { Op } from 'sequelize';
 import { Plate } from '../models/plates';
@@ -133,8 +133,8 @@ export const handleGatePairsMethod = async (method: string, startDate?: string, 
     try {
         let data;
 
-        if (method === 'getFrequentGates') {
-            data = await getFrequentGates(startDate, endDate);
+        if (method === 'getFrequentSections') {
+            data = await getFrequentSections(startDate, endDate);
         } else if (method === 'getMinMaxSpeed') {
             const { maxSpeedGatePairs, minSpeedGatePairs } = await getMinMaxSpeed(startDate, endDate);
             data = { maxSpeedGatePairs, minSpeedGatePairs };
