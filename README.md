@@ -173,6 +173,8 @@ Project for the Programmazione Avanzata course - UnivPM 2023/2024
 				- [BODY](#body-14)
 				- [RESPONSE](#response-31)
 	- [📮 Demo](#-demo)
+		- [Settings pre-Demo](#settings-pre-demo)
+		- [Demo File](#demo-file)
 	- [👯‍♂️ Contributors](#️-contributors)
 
 ## 🗂️ Project specification and goals
@@ -1570,6 +1572,19 @@ bike
 ```
 
 ## 📮 Demo
+
+### Settings pre-Demo
+
+Thid demo creates and shows new Tickets. If you want to try it save this file as `.json` (`example.json`) and use the button `import` in you Directory in Postman.
+
+**<mark>In this Demo the auth key isn't initialized. You have to generate a new one and save it in every "value" of "key":</mark>**
+
+```
+"key": "privateKey",
+"value": "yourPrivateKey",
+
+```
+### Demo File
 
 ```
 {
