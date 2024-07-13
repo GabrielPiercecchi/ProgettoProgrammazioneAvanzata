@@ -333,7 +333,7 @@ In our project, the Chain of Responsibility model is implemented using middlewar
 
 ## 🦽 Routes
 
-### Route /users
+### Routes /users
 
 All of this routes handle the CRUD operation for Users. Users with the Operator, Gate and Driver role already exists in **<b>ticket_db</b>** thanks to their seed.
 
