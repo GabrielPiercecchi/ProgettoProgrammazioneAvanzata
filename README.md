@@ -28,7 +28,7 @@ Project for the Programmazione Avanzata course - UnivPM 2023/2024
 		- [DAO](#dao)
 		- [Chain of Responsibility](#chain-of-responsibility)
 	- [🦽 Routes](#-routes)
-		- [Route /users](#route-users)
+		- [Routes /users](#routes-users)
 			- [Route GET: /users](#route-get-users)
 			- [Route GET: /users/:username](#route-get-usersusername)
 			- [Route POST: /users](#route-post-users)
