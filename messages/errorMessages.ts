@@ -160,7 +160,7 @@ export const ErrorMessagesTransitController = {
 
 // transit middleware errors
 export const ErrorMessagesTransitMiddleware = {
-    invalidPlateFormat: 'Invalid plate format. Expected format: 2 letters, 3 numbers, 2 letters.',
+    invalidPlateFormat: 'Invalid plate format. Expected format: 2 letters, 3 numbers, 2 letters or "notFound".',
     invalidSpeedFormat: 'Invalid speed format. Expected format: Number > 0.',
     invalidWeatherFormat: 'Invalid weather format. Expected format: String',
     invalidVehiclesTypesFormat: 'Invalid vehicles_types format. Expected format: String',

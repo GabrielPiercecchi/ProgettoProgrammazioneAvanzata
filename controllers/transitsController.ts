@@ -21,7 +21,7 @@ export const createTransit = async (plate: string, speed: number, weather: strin
         // Check if the plate and the vehicles_types are the same
         transits = await Transit.findAll({ where: { plate: plate } });
         if (transits) {
-            if (transits.length > 1) {
+            if (transits.length >= 1) {
                 for (let i = 0; i < transits.length; i++) {
                     if (transits[i].vehicles_types !== vehicles_types) {
                         throw new Error(`${ErrorMessagesTransitController.vehiclesTypesMismatch}`);
@@ -67,7 +67,7 @@ export async function updateTransit(transitId: number, newPlate: string, newSpee
             // Check if the plate and the vehicles_types are the same
             transits = await Transit.findAll({ where: { plate: newPlate } });
             if (transits) {
-                if (transits.length > 1) {
+                if (transits.length >= 1) {
                     for (let i = 0; i < transits.length; i++) {
                         if (transits[i].vehicles_types !== newVehicles_types) {
                             throw new Error(`${ErrorMessagesTransitController.vehiclesTypesMismatch}`);

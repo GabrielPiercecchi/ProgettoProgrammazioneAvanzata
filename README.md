@@ -5,97 +5,175 @@ Project for the Programmazione Avanzata course - UnivPM 2023/2024
 ## Table of Contents
 
 - [ProgettoProgrammazioneAvanzata](#progettoprogrammazioneavanzata)
-  - [Table of Contents](#table-of-contents)
-  - [🗂️ Project specification and goals](#️-project-specification-and-goals)
-  - [🕹️ Technologies Used](#️-technologies-used)
-  - [📊 UML diagrams](#-uml-diagrams)
-    - [💼 UML Use-case diagrams](#-uml-use-case-diagrams)
-      - [UML Actors](#uml-actors)
-      - [UML Use-case Gate](#uml-use-case-gate)
-      - [UML Use-case Section](#uml-use-case-section)
-      - [UML Use-case Transit](#uml-use-case-transit)
-      - [UML Use-case Ticket](#uml-use-case-ticket)
-      - [UML Use-case Stats](#uml-use-case-stats)
-    - [⌛ UML Sequence Diagram](#-uml-sequence-diagram)
-      - [UML CRUD Gate](#uml-crud-gate)
-      - [UML findGate](#uml-findgate)
-      - [UML CRUD Transit](#uml-crud-transit)
-      - [UML errorTransit](#uml-errortransit)
-      - [UML sdTickets](#uml-sdtickets)
-  - [🧮 Patterns used](#-patterns-used)
-    - [Model-Controller](#model-controller)
-    - [Singleton](#singleton)
-    - [DAO](#dao)
-    - [Chain of Responsibility](#chain-of-responsibility)
-  - [🦽 Routes](#-routes)
-    - [Route /users](#route-users)
-      - [Route GET: /users](#route-get-users)
-      - [Route GET: /users/:username](#route-get-usersusername)
-      - [Route POST: /users](#route-post-users)
-      - [Route PUT: /users/:username](#route-put-usersusername)
-      - [Route DELETE: /users/:username](#route-delete-usersusername)
-    - [Routes /vehicles](#routes-vehicles)
-      - [Route GET: /vehicles](#route-get-vehicles)
-      - [Route GET: /vehicles/:type](#route-get-vehiclestype)
-      - [Route POST: /vehicles](#route-post-vehicles)
-      - [Route PUT: /vehicles/:type](#route-put-vehiclestype)
-      - [Route DELETE: /vehicles/:type](#route-delete-vehiclestype)
-    - [Routes /gates](#routes-gates)
-      - [Route GET: /gates](#route-get-gates)
-      - [Route GET: /gates/:id](#route-get-gatesid)
-      - [Route POST: /gates](#route-post-gates)
-      - [Route PUT: /gates/:id](#route-put-gatesid)
-      - [Route DELETE: /gates/:id](#route-delete-gatesid)
-    - [Routes /sections](#routes-sections)
-      - [Route GET: /sections](#route-get-sections)
-      - [Route GET: /sections/:id](#route-get-sectionsid)
-      - [Route POST: /sections](#route-post-sections)
-      - [Route PUT: /sections/:id](#route-put-sectionsid)
-      - [Route DELETE: /sections/:id](#route-delete-sectionsid)
-    - [Routes /transits](#routes-transits)
-      - [Route GET: /transits](#route-get-transits)
-      - [Route GET: /transits/:id](#route-get-transitsid)
-      - [Route GET: /notFoundTransits](#route-get-notfoundtransits)
-      - [Route POST: /transits](#route-post-transits)
-      - [Route PUT: /transits/:id](#route-put-transitsid)
-      - [Route DELETE: /transits/:id](#route-delete-transitsid)
-    - [Routes /tickets](#routes-tickets)
-      - [Route GET: /tickets](#route-get-tickets)
-      - [Route POST: /tickets](#route-post-tickets)
-    - [Routes /stats](#routes-stats)
-      - [Route get: /stats/:method](#route-get-statsmethod)
-  - [🧭 Routes](#-routes-1)
-  - [🔧 How to use the project](#-how-to-use-the-project)
-  - [💻 Test](#-test)
-    - [Users](#users)
-      - [GET **/users**](#get-users)
-        - [RESPONSE](#response)
-      - [GET **/users/:username**](#get-usersusername)
-        - [PARAMS](#params)
-        - [RESPONSE](#response-1)
-      - [POST **/users**](#post-users)
-        - [BODY](#body)
-        - [RESPONSE](#response-2)
-      - [PUT **/users/:username**](#put-usersusername)
-        - [PARAMS](#params-1)
-        - [BODY](#body-1)
-        - [RESPONSE](#response-3)
-      - [DELETE **/users/:username**](#delete-usersusername)
-        - [PARAMS](#params-2)
-        - [RESPONSE](#response-4)
-      - [GET **/vehicles**](#get-vehicles)
-        - [RESPONSE](#response-5)
-      - [POST **/vehicles**](#post-vehicles)
-      - [BODY](#body-2)
-        - [RESPONSE](#response-6)
-      - [PUT **/vehicles/:type**](#put-vehiclestype)
-      - [PARAMS](#params-3)
-      - [BODY](#body-3)
-        - [RESPONSE](#response-7)
-      - [DELETE **/vehicles/:type**](#delete-vehiclestype)
-      - [PARAMS](#params-4)
-        - [RESPONSE](#response-8)
-  - [👯‍♂️ Contributors](#️-contributors)
+	- [Table of Contents](#table-of-contents)
+	- [🗂️ Project specification and goals](#️-project-specification-and-goals)
+	- [🕹️ Technologies Used](#️-technologies-used)
+	- [📊 UML diagrams](#-uml-diagrams)
+		- [💼 UML Use-case diagrams](#-uml-use-case-diagrams)
+			- [UML Actors](#uml-actors)
+			- [UML Use-case Gate](#uml-use-case-gate)
+			- [UML Use-case Section](#uml-use-case-section)
+			- [UML Use-case Transit](#uml-use-case-transit)
+			- [UML Use-case Ticket](#uml-use-case-ticket)
+			- [UML Use-case Stats](#uml-use-case-stats)
+		- [⌛ UML Sequence Diagram](#-uml-sequence-diagram)
+			- [UML CRUD Gate](#uml-crud-gate)
+			- [UML findGate](#uml-findgate)
+			- [UML CRUD Transit](#uml-crud-transit)
+			- [UML errorTransit](#uml-errortransit)
+			- [UML sdTickets](#uml-sdtickets)
+	- [🧮 Patterns used](#-patterns-used)
+		- [Model-Controller](#model-controller)
+		- [Singleton](#singleton)
+		- [DAO](#dao)
+		- [Chain of Responsibility](#chain-of-responsibility)
+	- [🦽 Routes](#-routes)
+		- [Route /users](#route-users)
+			- [Route GET: /users](#route-get-users)
+			- [Route GET: /users/:username](#route-get-usersusername)
+			- [Route POST: /users](#route-post-users)
+			- [Route PUT: /users/:username](#route-put-usersusername)
+			- [Route DELETE: /users/:username](#route-delete-usersusername)
+		- [Routes /vehicles](#routes-vehicles)
+			- [Route GET: /vehicles](#route-get-vehicles)
+			- [Route GET: /vehicles/:type](#route-get-vehiclestype)
+			- [Route POST: /vehicles](#route-post-vehicles)
+			- [Route PUT: /vehicles/:type](#route-put-vehiclestype)
+			- [Route DELETE: /vehicles/:type](#route-delete-vehiclestype)
+		- [Routes /gates](#routes-gates)
+			- [Route GET: /gates](#route-get-gates)
+			- [Route GET: /gates/:id](#route-get-gatesid)
+			- [Route POST: /gates](#route-post-gates)
+			- [Route PUT: /gates/:id](#route-put-gatesid)
+			- [Route DELETE: /gates/:id](#route-delete-gatesid)
+		- [Routes /sections](#routes-sections)
+			- [Route GET: /sections](#route-get-sections)
+			- [Route GET: /sections/:id](#route-get-sectionsid)
+			- [Route POST: /sections](#route-post-sections)
+			- [Route PUT: /sections/:id](#route-put-sectionsid)
+			- [Route DELETE: /sections/:id](#route-delete-sectionsid)
+		- [Routes /transits](#routes-transits)
+			- [Route GET: /transits](#route-get-transits)
+			- [Route GET: /transits/:id](#route-get-transitsid)
+			- [Route GET: /notFoundTransits](#route-get-notfoundtransits)
+			- [Route POST: /transits](#route-post-transits)
+			- [Route PUT: /transits/:id](#route-put-transitsid)
+			- [Route DELETE: /transits/:id](#route-delete-transitsid)
+		- [Routes /tickets](#routes-tickets)
+			- [Route GET: /tickets](#route-get-tickets)
+			- [Route POST: /tickets](#route-post-tickets)
+		- [Routes /stats](#routes-stats)
+			- [Route get: /stats/:method](#route-get-statsmethod)
+	- [🧭 Routes](#-routes-1)
+	- [🔧 How to use the project](#-how-to-use-the-project)
+	- [💻 Test](#-test)
+		- [Users](#users)
+			- [GET **/users**](#get-users)
+				- [RESPONSE](#response)
+			- [GET **/users/:username**](#get-usersusername)
+				- [PARAMS](#params)
+				- [RESPONSE](#response-1)
+			- [POST **/users**](#post-users)
+				- [BODY](#body)
+				- [RESPONSE](#response-2)
+			- [PUT **/users/:username**](#put-usersusername)
+				- [PARAMS](#params-1)
+				- [BODY](#body-1)
+				- [RESPONSE](#response-3)
+			- [DELETE **/users/:username**](#delete-usersusername)
+				- [PARAMS](#params-2)
+				- [RESPONSE](#response-4)
+		- [Vehicles](#vehicles)
+			- [GET **/vehicles**](#get-vehicles)
+				- [RESPONSE](#response-5)
+			- [GET **/vehicles/:type**](#get-vehiclestype)
+				- [PARAMS](#params-3)
+				- [RESPONSE](#response-6)
+			- [POST **/vehicles**](#post-vehicles)
+				- [BODY](#body-2)
+				- [RESPONSE](#response-7)
+			- [PUT **/vehicles/:type**](#put-vehiclestype)
+				- [PARAMS](#params-4)
+				- [BODY](#body-3)
+				- [RESPONSE](#response-8)
+			- [DELETE **/vehicles/:type**](#delete-vehiclestype)
+				- [PARAMS](#params-5)
+				- [RESPONSE](#response-9)
+		- [Gates](#gates)
+			- [GET **/gates**](#get-gates)
+				- [RESPONSE](#response-10)
+			- [GET **/gates/:id**](#get-gatesid)
+				- [PARAMS](#params-6)
+				- [RESPONSE](#response-11)
+			- [POST **/gates**](#post-gates)
+				- [BODY](#body-4)
+				- [RESPONSE](#response-12)
+			- [PUT **/gates/:id**](#put-gatesid)
+				- [PARAMS](#params-7)
+				- [BODY](#body-5)
+				- [RESPONSE](#response-13)
+			- [DELETE **/gates/:id**](#delete-gatesid)
+				- [PARAMS](#params-8)
+				- [RESPONSE](#response-14)
+		- [Sections](#sections)
+			- [GET **/sections**](#get-sections)
+				- [RESPONSE](#response-15)
+			- [GET **/sactions/:id**](#get-sactionsid)
+				- [PARAMS](#params-9)
+				- [RESPONSE](#response-16)
+			- [POST **/sections**](#post-sections)
+				- [BODY](#body-6)
+				- [RESPONSE](#response-17)
+			- [PUT **/sections/:id**](#put-sectionsid)
+				- [PARAMS](#params-10)
+				- [BODY](#body-7)
+				- [RESPONSE](#response-18)
+			- [DELETE **/sections/:id**](#delete-sectionsid)
+				- [PARAMS](#params-11)
+				- [RESPONSE](#response-19)
+		- [Transits](#transits)
+			- [GET **/transits**](#get-transits)
+				- [RESPONSE](#response-20)
+			- [GET **/transits/:id**](#get-transitsid)
+				- [PARAMS](#params-12)
+				- [RESPONSE](#response-21)
+			- [POST **/transits**](#post-transits)
+				- [BODY](#body-8)
+				- [RESPONSE](#response-22)
+			- [GET **/notFoundTransits**](#get-notfoundtransits)
+				- [RESPONSE](#response-23)
+			- [PUT **/transits/:id**](#put-transitsid)
+				- [PARAMS](#params-13)
+				- [BODY](#body-9)
+				- [RESPONSE](#response-24)
+			- [DELETE **/transits/:id**](#delete-transitsid)
+				- [PARAMS](#params-14)
+				- [RESPONSE](#response-25)
+		- [Tickets](#tickets)
+			- [GET **/tickets**](#get-tickets)
+				- [RESPONSE](#response-26)
+			- [POST **/tickets**](#post-tickets)
+				- [Case 1](#case-1)
+					- [PAYLOAD](#payload)
+					- [BODY](#body-10)
+					- [RESPONSE](#response-27)
+				- [Case 2](#case-2)
+					- [PAYLOAD](#payload-1)
+					- [BODY](#body-11)
+					- [RESPONSE](#response-28)
+				- [Case 3](#case-3)
+					- [PAYLOAD](#payload-2)
+					- [BODY](#body-12)
+					- [RESPONSE](#response-29)
+		- [Stats](#stats)
+			- [POST **/stats/getFrequentSections**](#post-statsgetfrequentsections)
+				- [BODY](#body-13)
+				- [RESPONSE](#response-30)
+			- [POST **/stats/getMinMaxSpeed**](#post-statsgetminmaxspeed)
+				- [BODY](#body-14)
+				- [RESPONSE](#response-31)
+	- [📮 Demo](#-demo)
+	- [👯‍♂️ Contributors](#️-contributors)
 
 ## 🗂️ Project specification and goals
 
@@ -596,6 +674,7 @@ Here an example of the body:
 | /sections/:id    | DELETE | Delete a single Section                           | Yes                |
 | /transits        | GET    | Get all the Transits                              | Yes                |
 | /transits/:id    | GET    | Retrieve a single Transit                         | Yes                |
+| /notFoundTransits    | GET    | Get all Transits with Plate **<i>"notFound"</i>**                         | Yes                |
 | /transits        | POST   | Create a new Transit                              | Yes                |
 | /transits/:id    | PUT    | Update a single Transit                           | Yes                |
 | /transits/:id    | DELETE | Delete a single Transit                           | Yes                |
@@ -673,7 +752,14 @@ This will create and seed all the Tables you need.This commands will give you ac
 - "gate2": an User with the gate role with 10 Token left;
 - "driver": an User with the driveer role with 10 Token left;
 
-**<mark>Every time the Token runs out it will be restored to 10 after a custom error message</mark>**
+**<mark>Every time the Token runs out it will be restored to 10 after a custom error message:</mark>**
+
+```
+{
+  "message": "Unauthorized. Token remained:0",
+  "token": 10
+}
+```
 
 Once everything is set up, you can proceed to make requests using [Postman](https://www.postman.com/).
 
@@ -692,7 +778,7 @@ With `operator` as `username` and  `operator` as  `role` you should be able to d
 After that we can go on to test all the routes.
 Each request made to a route should include a JSON-formatted payload in its body.
 
-**<i>Because there are many routes it will be reported only successful responses</i>**
+**<i>Because there are many routes it will be reported only one test for each</i>**
 
 ### Users
 
@@ -808,6 +894,8 @@ gate34
 "User with this username deleted successfully: gate34"
 ```
 
+### Vehicles
+
 #### GET **<mark>/vehicles</mark>**
 
 ##### RESPONSE
@@ -829,9 +917,26 @@ gate34
 ]
 ```
 
+#### GET **<mark>/vehicles/:type</mark>**
+
+##### PARAMS
+
+```
+car
+```
+
+##### RESPONSE
+
+```
+{
+  "type": "Car",
+  "limit": 150
+}
+```
+
 #### POST **<mark>/vehicles</mark>**
 
-#### BODY
+##### BODY
 
 ```
 {
@@ -851,13 +956,13 @@ gate34
 
 #### PUT **<mark>/vehicles/:type</mark>**
 
-#### PARAMS
+##### PARAMS
 
 ```
 bike
 ```
 
-#### BODY
+##### BODY
 
 ```
 {
@@ -876,7 +981,7 @@ bike
 
 #### DELETE **<mark>/vehicles/:type</mark>**
 
-#### PARAMS
+##### PARAMS
 
 ```
 bike
@@ -888,12 +993,1344 @@ bike
 "Vehicle with this type deleted successfully: bike"
 ```
 
+### Gates
+
+#### GET **<mark>/gates</mark>**
+
+##### RESPONSE
+
+```
+[
+  {
+    "id": 1,
+    "location": "LAT43.615829LON13.518915",
+    "username": "gate"
+  },
+  {
+    "id": 2,
+    "location": "LAT44.494887LON11.342616",
+    "username": "gate1"
+}
+]
+```
+
+#### GET **<mark>/gates/:id</mark>**
+
+##### PARAMS
+
+```
+1
+```
+
+##### RESPONSE
+
+```
+{
+  "id": 1,
+  "location": "LAT43.615829LON13.518915",
+  "username": "gate"
+}
+```
+
+#### POST **<mark>/gates</mark>**
+
+##### BODY
+
+```
+{
+  "location": "LAT56.494887LON21.342644",
+  "username": "gate2"
+}
+```
+
+##### RESPONSE
+
+```
+{
+  "id": 5,
+  "location": "LAT56.494887LON21.342644",
+  "username": "gate2"
+}
+```
+
+#### PUT **<mark>/gates/:id</mark>**
+
+##### PARAMS
+
+```
+5
+```
+
+##### BODY
+
+```
+{
+  "newUsername" : "gate3"
+}
+```
+
+##### RESPONSE
+
+```
+{
+  "error": "Error during Gate updating in the database: User does not exist in Users. You have to create it first. gate3"
+}
+```
+
+#### DELETE **<mark>/gates/:id</mark>**
+
+##### PARAMS
+
+```
+5
+```
+
+##### RESPONSE
+
+```
+"Gate with this Id deleted successfully: 5"
+```
+
+### Sections
+
+#### GET **<mark>/sections</mark>**
+
+##### RESPONSE
+
+```
+[
+  {
+    "id": 1,
+    "initialGate": 1,
+    "finalGate": 2,
+    "distance": 199.49
+  }
+]
+```
+
+#### GET **<mark>/sactions/:id</mark>**
+
+##### PARAMS
+
+```
+1
+```
+
+##### RESPONSE
+
+```
+{
+  "id": 1,
+  "initialGate": 1,
+  "finalGate": 2,
+  "distance": 199.49
+}
+```
+
+#### POST **<mark>/sections</mark>**
+
+##### BODY
+
+```
+{
+  "initialGate" : 2,
+  "finalGate" : 1
+}
+```
+
+##### RESPONSE
+
+```
+{
+  "id": 2,
+  "initialGate": 2,
+  "finalGate": 1,
+  "distance": 199.49
+}
+```
+
+#### PUT **<mark>/sections/:id</mark>**
+
+##### PARAMS
+
+```
+2
+```
+
+##### BODY
+
+```
+{
+  "newInitialGate" : 1,
+  "newFinalGate" : 2
+}
+```
+
+##### RESPONSE
+
+```
+{
+  "error": "Error during Section updating in the database: Validation error"
+}
+```
+
+#### DELETE **<mark>/sections/:id</mark>**
+
+##### PARAMS
+
+```
+2
+```
+
+##### RESPONSE
+
+```
+"Section with this id deleted successfully: 2"
+```
+
+### Transits
+
+#### GET **<mark>/transits</mark>**
+
+##### RESPONSE
+
+```
+[
+  {
+    "id": 1,
+    "plate": "AB123CD",
+    "transit_date": "2024-07-12T16:32:33.477Z",
+    "speed": 160,
+    "weather": "good weather",
+    "vehicles_types": "Car",
+    "gate": 1,
+    "used": false
+  },
+  {
+    "id": 2,
+    "plate": "XY987ZT",
+    "transit_date": "2024-07-12T16:32:33.477Z",
+    "speed": 60,
+    "weather": "bad weather",
+    "vehicles_types": "Truck",
+    "gate": 2,
+    "used": false
+  }
+]
+```
+
+#### GET **<mark>/transits/:id</mark>**
+
+##### PARAMS
+
+```
+1
+```
+
+##### RESPONSE
+
+```
+{
+  "id": 1,
+  "plate": "AB123CD",
+  "transit_date": "2024-07-12T16:32:33.477Z",
+  "speed": 160,
+  "weather": "good weather",
+  "vehicles_types": "Car",
+  "gate": 1,
+  "used": false
+}
+```
+
+#### POST **<mark>/transits</mark>**
+
+##### BODY
+
+```
+{
+  "plate": "notFound",
+  "speed": 45,
+  "weather": "bad weather",
+  "vehicles_types": "Car",
+  "gate": 1
+}
+```
+
+##### RESPONSE
+
+```
+{
+  "used": false,
+  "id": 3,
+  "plate": "notFound",
+  "transit_date": "2024-07-13T08:45:30.465Z",
+  "speed": 45,
+  "weather": "bad weather",
+  "vehicles_types": "Car",
+  "gate": 1
+}
+```
+
+#### GET **<mark>/notFoundTransits</mark>**
+
+##### RESPONSE
+
+```
+[
+  {
+    "id": 3,
+    "plate": "notFound",
+    "transit_date": "2024-07-13T08:45:30.465Z",
+    "speed": 45,
+    "weather": "bad weather",
+    "vehicles_types": "Car",
+    "gate": 1,
+    "used": false
+  }
+]
+```
+
+#### PUT **<mark>/transits/:id</mark>**
+
+##### PARAMS
+
+```
+3
+```
+
+##### BODY
+
+```
+{
+  "newPlate": "AB123CD",
+  "newWeather": "bad weather",
+  "newVehicles_types": "Car",
+  "newGate": 2,
+  "newSpeed": 702
+}
+```
+
+##### RESPONSE
+
+```
+{
+  "id": 3,
+  "plate": "AB123CD",
+  "transit_date": "2024-07-13T08:49:16.648Z",
+  "speed": 702,
+  "weather": "bad weather",
+  "vehicles_types": "Car",
+  "gate": 2,
+  "used": false
+}
+```
+
+#### DELETE **<mark>/transits/:id</mark>**
+
+##### PARAMS
+
+```
+3
+```
+
+##### RESPONSE
+
+```
+"Transit with this id deleted successfully: 3"
+```
+
+### Tickets
+
+#### GET **<mark>/tickets</mark>**
+
+##### RESPONSE
+
+```
+[
+  {
+    "id_ticket": "Ticket_1",
+    "weather": "good weather",
+    "plate": "AB123CD",
+    "ticket_date": "2024-07-13T09:11:41.306Z",
+    "initial_gate": 1,
+    "final_gate": 2,
+    "medium_speed": 50.5,
+    "delta_limit": 5
+  },
+  {
+    "id_ticket": "Ticket_2",
+    "weather": "good weather",
+    "plate": "XY123XY",
+    "ticket_date": "2024-07-13T09:11:41.307Z",
+    "initial_gate": 1,
+    "final_gate": 2,
+    "medium_speed": 150.5,
+    "delta_limit": 5
+  },
+  {
+    "id_ticket": "Ticket_3",
+    "weather": "good weather",
+    "plate": "XY123XY",
+    "ticket_date": "2024-07-13T09:11:41.307Z",
+    "initial_gate": 1,
+    "final_gate": 2,
+    "medium_speed": 350.5,
+    "delta_limit": 5
+  }
+]
+```
+
+#### POST **<mark>/tickets</mark>**
+
+##### Case 1
+
+###### PAYLOAD
+
+```
+{
+  "username" : "operator",
+  "role" : "operator"
+}
+```
+
+###### BODY
+
+```
+{
+  "plates": "XY123XY, AB123CD, XZ456EX",
+  "startDate": "2023-07-01T14:00:00",
+  "endDate": "2025-07-07T16:30:00",
+  "format" : "pdf"
+}
+```
+
+###### RESPONSE
+
+![Response Postman Tickets](assets/tickets-1.png)
+
+##### Case 2
+
+###### PAYLOAD
+
+```
+{
+  "username" : "driver",
+  "role" : "driver"
+}
+```
+
+###### BODY
+
+```
+{
+  "plates": "YX987ZT, AB123CD, XZ456EX",
+  "startDate": "2023-07-01T14:00:00",
+  "endDate": "2025-07-07T16:30:00",
+  "format" : "pdf"
+}
+```
+
+###### RESPONSE
+
+```
+{
+  "error": "Some plates are not assigned to the driver"
+}
+```
+
+##### Case 3
+
+###### PAYLOAD
+
+```
+{
+  "username" : "driver",
+  "role" : "driver"
+}
+```
+
+###### BODY
+
+```
+{
+  "plates": "XY123XY, AB123CD",
+  "startDate": "2023-07-01T14:00:00",
+  "endDate": "2025-07-07T16:30:00",
+  "format" : "json"
+}
+```
+
+###### RESPONSE
+
+```
+[
+  {
+    "id_ticket": "Ticket_1",
+    "weather": "good weather",
+    "plate": "AB123CD",
+    "ticket_date": "2024-07-13T09:11:41.306Z",
+    "initial_gate": 1,
+    "final_gate": 2,
+    "medium_speed": 50.5,
+    "delta_limit": 5
+  },
+  {
+    "id_ticket": "Ticket_2",
+    "weather": "good weather",
+    "plate": "XY123XY",
+    "ticket_date": "2024-07-13T09:11:41.307Z",
+    "initial_gate": 1,
+    "final_gate": 2,
+    "medium_speed": 150.5,
+    "delta_limit": 5
+  },
+  {
+    "id_ticket": "Ticket_3",
+    "weather": "good weather",
+    "plate": "XY123XY",
+    "ticket_date": "2024-07-13T09:11:41.307Z",
+    "initial_gate": 1,
+    "final_gate": 2,
+    "medium_speed": 350.5,
+    "delta_limit": 5
+  }
+]
+```
+
+### Stats
+
+#### POST **<mark>/stats/getFrequentSections</mark>**
+
+##### BODY
+
+```
+{
+  "startDate" : "2023-07-09T10:06:02",
+  "endDate" : "2025-07-09T10:06:02"
+}
+```
+
+##### RESPONSE
+
+```
+[
+  {
+    "initial_gate": 1,
+    "final_gate": 2,
+    "count": "3",
+    "ticket_dates": [
+      "2024-07-13T09:11:41.306Z",
+      "2024-07-13T09:11:41.307Z",
+      "2024-07-13T09:11:41.307Z"
+    ]
+  }
+]
+```
+
+#### POST **<mark>/stats/getMinMaxSpeed</mark>**
+
+##### BODY
+
+```
+{
+  "startDate" : "2023-07-09T10:06:02",
+  "endDate" : "2025-07-09T10:06:02"
+}
+```
+
+##### RESPONSE
+
+```
+{
+  "maxSpeedGatePairs": [
+    {
+      "id_ticket": "Ticket_3",
+      "weather": "good weather",
+      "plate": "XY123XY",
+      "ticket_date": "2024-07-13T09:11:41.307Z",
+      "initial_gate": 1,
+      "final_gate": 2,
+      "medium_speed": 350.5,
+      "delta_limit": 5
+    }
+  ],
+  "minSpeedGatePairs": [
+    {
+      "id_ticket": "Ticket_1",
+      "weather": "good weather",
+      "plate": "AB123CD",
+      "ticket_date": "2024-07-13T09:11:41.306Z",
+      "initial_gate": 1,
+      "final_gate": 2,
+      "medium_speed": 50.5,
+      "delta_limit": 5
+    }
+  ]
+}
+```
+
+## 📮 Demo
+
+```
+{
+	"info": {
+		"_postman_id": "9cc3b263-c379-4bea-abf5-177a1acdf3e9",
+		"name": "CreateTicketsDemo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18656547",
+		"_collection_link": "https://lunar-satellite-635682.postman.co/workspace/New-Team-Workspace~3662eaaa-2f17-4ceb-93a9-22cb01b7f819/collection/18656547-9cc3b263-c379-4bea-abf5-177a1acdf3e9?action=share&source=collection_link&creator=18656547"
+	},
+	"item": [
+		{
+			"name": "getAllUsers Copy",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createGates Copy",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"location\": \"LAT96.494887LON41.342644\",\n  \"username\": \"gate2\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/gates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"gates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllGates Copy",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/gates",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"gates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllSections Copy",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/sections",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"sections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createSections Copy",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"initialGate\" : 1,\n    \"finalGate\" : 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/sections",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"sections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllSections Copy2",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/sections",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"sections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllTransits Copy",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/transits",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createTransits Copy",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"plate\": \"XY987ZT\",\n    \"speed\": 300,\n    \"weather\": \"bad weather\",\n    \"vehicles_types\": \"Truck\",\n    \"gate\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/transits",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createTransits Copy2",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"plate\": \"XY987ZT\",\n    \"speed\": 100,\n    \"weather\": \"bad weather\",\n    \"vehicles_types\": \"Truck\",\n    \"gate\": 3\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/transits",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllTransits Copy2",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/transits",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"transits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllTickets Copy",
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "privateKey",
+							"value": "yourPrivateKey",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "{\n    \"username\" : \"operator\",\n    \"role\" : \"operator\"\n}",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "RS256",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/tickets",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tickets"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
+```
+
 ## 👯‍♂️ Contributors
 
 [Gabriel Piercecchi](https://github.com/GabrielPiercecchi) (1120541)
 
-Contributed to controllers (game logic), error messages, miscellanous and game validation middleware.
+Contributed to Database, models, controllers, migrations, seeders, messages, middlewares, algorithms, README, Postman collections.
 
 [Francesco Romeo Parisi](hhttps://github.com/FrancescoParisi02) (1120042)
 
-Contributed to models, migrations, seeders, success messages and authentication validation middleware.
+Contributed to Docker, models, controllers, migrations, seeders, routes,  middlewares, README, Postman collections.
