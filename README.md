@@ -2346,6 +2346,6 @@ Thid demo creates and shows new Tickets. If you want to try it save this file as
 
 Contributed to Database, models, controllers, migrations, seeders, messages, middlewares, algorithms, README, Postman collections.
 
-[Francesco Romeo Parisi](hhttps://github.com/FrancescoParisi02) (1120042)
+[Francesco Romeo Parisi](https://github.com/FrancescoParisi02) (1120042)
 
 Contributed to Docker, models, controllers, migrations, seeders, routes,  middlewares, README, Postman collections.
