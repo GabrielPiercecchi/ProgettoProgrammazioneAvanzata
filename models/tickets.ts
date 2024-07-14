@@ -223,11 +223,11 @@ export async function getFrequentSections(startDate?: string, endDate?: string):
         return result;
     } catch (error) {
         if (error instanceof Error) {
-            console.error(ErrorMessagesTicketModel.frequentGatePairsFetchingError, error.message);
-            throw new Error(`${ErrorMessagesTicketModel.frequentGatePairsFetchingError} ${error.message}`);
+            console.error(ErrorMessagesTicketModel.frequentSectionsFetchingError, error.message);
+            throw new Error(`${ErrorMessagesTicketModel.frequentSectionsFetchingError} ${error.message}`);
         } else {
-            console.error(ErrorMessagesTicketModel.unknownFrequentGatePairsFetchingError, error);
-            throw new Error(`${ErrorMessagesTicketModel.unknownFrequentGatePairsFetchingError} ${error}`);
+            console.error(ErrorMessagesTicketModel.unknownFrequentSectionsFetchingError, error);
+            throw new Error(`${ErrorMessagesTicketModel.unknownFrequentSectionsFetchingError} ${error}`);
         }
     }
 }

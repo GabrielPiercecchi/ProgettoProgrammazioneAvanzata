@@ -103,10 +103,10 @@ export const ErrorMessagesTicketModel = {
     fetchingError: 'Error during Tickets fetching in the database:',
     notFound: 'Tickets not found',
     unknownFetchingError: 'Unknown error during Tickets fetching in the database.',
-    frequentGatePairsFetchingError: 'Error fetching frequent gate pairs from the database:',
+    frequentSectionsFetchingError: 'Error fetching frequent sections from the database:',
     frequentGetMinMaxSpeed: 'Error fetching max and min medium_speed from the database:',
     unknownFrequentGetMinMaxSpeed: 'Unknown max and min medium_speed from the database.',
-    unknownFrequentGatePairsFetchingError: 'Unknown error fetching frequent gate pairs from the database.',
+    unknownFrequentSectionsFetchingError: 'Unknown error fetching frequent sections from the database.',
 };
 
 // ticket controller errors

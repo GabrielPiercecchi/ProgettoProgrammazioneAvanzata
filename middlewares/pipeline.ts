@@ -161,3 +161,10 @@ export const getTicket = [
     ticketsMiddleware.sanitizeGetTicketsInputs, // Sanitize inputs specific to getting tickets
 ];
 
+// Middleware chain for ticket Stats
+export const getTicketStats = [
+    authMiddleware.authentication, // Ensure user is authenticated
+    authMiddleware.checkOperator, // Check if user is an operator
+    ticketsMiddleware.sanitizePostStatisticsInputs, // Sanitize inputs specific to getting ticket stats
+];
+

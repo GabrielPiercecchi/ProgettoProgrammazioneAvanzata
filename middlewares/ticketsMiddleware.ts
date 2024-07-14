@@ -82,7 +82,7 @@ export function sanitizePostStatisticsInputs(req: Request, res: Response, next: 
     const { startDate, endDate } = req.body;
 
     // Validate method
-    if (!validateNotNullorEmpty(method) || (method !== 'getFrequentGates' && method !== 'getMinMaxSpeed')) {
+    if (!validateNotNullorEmpty(method) || (method !== 'getFrequentSections' && method !== 'getMinMaxSpeed')) {
         return res.status(400).json({ error: ErrorMessagesTicketMiddleware.invalidMethod });
     }
 

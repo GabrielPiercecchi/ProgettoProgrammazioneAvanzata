@@ -203,7 +203,7 @@ app.post('/tickets', pipe.getTicket, async (req: any, res: any) => {
 });
 
 // Get stats by method
-app.get('/stats/:method', pipe.getAll, async (req: any, res: any) => {
+app.get('/stats/:method', pipe.getTicketStats, async (req: any, res: any) => {
   const { method } = req.params;
   const { startDate, endDate } = req.body;
   ticketsController.returnStats(req, res, method, startDate, endDate);

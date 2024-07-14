@@ -99,7 +99,7 @@ export function sanitizeUpdateTransitInputs(req: Request, res: Response, next: N
     const { newPlate, newSpeed, newWeather, newVehicles_types, newGate } = req.body;
 
     if (!validateId(Number(id))) {
-        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidPlateFormat });
+        return res.status(400).json({ error: ErrorMessagesTransitMiddleware.invalidId });
     }
 
     if (!validateNotNullorEmpty(newPlate) || !validateNotNullorEmpty(newSpeed) || !validateNotNullorEmpty(newWeather) || !validateNotNullorEmpty(newVehicles_types) || !validateNotNullorEmpty(newGate)) {
