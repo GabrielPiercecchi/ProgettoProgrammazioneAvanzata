@@ -187,7 +187,7 @@ The system, through the data provided by users with the role of operator and gat
 
 The operator, through the system, can filter the list of all tickets, by time slot, in order to know the section that contains the most tickets and which tickets have the highest and lowest average speed.
 
-Finally, every User has a Token that decrease every time he exeute an authorized operation. When this Token reach 0 the system throw a costum error and reset the User's Token.
+Finally, every User has a Token that decrease every time he execute an authorized operation. When this Token reach 0 the system throw a costum error and reset the User's Token.
 
 ## 🕹️ Technologies Used
 
@@ -347,10 +347,9 @@ This route can only be used by an User with role operator (JWT Token Required). 
 
 #### Route POST: /users
 
-This route can only be used by an User with role operator (JWT Token Required). By typing in the **<mark>body</mark>** of the request in postman the data of the new User (**<i>Username</i>**) the system creates him. Can only be created Users with gate role.
+This route can only be used by an User with role operator (JWT Token Required). By typing in the **<mark>body</mark>** of the request in Postman the data of the new User (**<i>Username</i>**) the system creates him. Can only be created Users with gate role.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "username": "User4"
@@ -360,10 +359,9 @@ Here an example of the body:
 #### Route PUT: /users/:username
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** the current User's username and in  the **<mark>body</mark>** of the request in postman the new data of the User (**<i>Username</i>**) the system updates him.
+**<mark>param</mark>** the current User's username and in  the **<mark>body</mark>** of the request in Postman the new data of the User (**<i>Username</i>**) the system updates him.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "newUsername" : "operator123"
@@ -381,11 +379,11 @@ Here an example of the body:
 #### Route DELETE: /users/:username
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** an existing User's username of the request in postman the system deletes him.
+**<mark>param</mark>** an existing User's username of the request in Postman the system deletes him.
 
 ### Routes /vehicles
 
-All of this routes handle the CRUD operation for Vehicles. Some instances alreay exists in the DB **<b>ticket_db</b>** thanks to the seed.
+All of this routes handle the CRUD operation for Vehicles. Some instances already exists in the DB **<b>ticket_db</b>** thanks to the seed.
 
 #### Route GET: /vehicles
 
@@ -393,14 +391,13 @@ This route can only be used by an User with role operator (JWT Token Required) a
 
 #### Route GET: /vehicles/:type
 
-This route can only be used by an User with role operator (JWT Token Required). By typing an existing username of a User in the **<mark>param</mark>** of the request in postman it shows his data (**<i>Type, Limit</i>**) in the table Vehicles.
+This route can only be used by an User with role operator (JWT Token Required). By typing an existing username of a User in the **<mark>param</mark>** of the request in Postman it shows his data (**<i>Type, Limit</i>**) in the table Vehicles.
 
 #### Route POST: /vehicles
 
-This route can only be used by an User with role operator (JWT Token Required). By typing in the **<mark>body</mark>** of the request in postman the data of the new Vehicles (**<i>Type, Limit</i>**) the system creates it.
+This route can only be used by an User with role operator (JWT Token Required). By typing in the **<mark>body</mark>** of the request in Postman the data of the new Vehicles (**<i>Type, Limit</i>**) the system creates it.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "type":"bike",
@@ -411,10 +408,9 @@ Here an example of the body:
 #### Route PUT: /vehicles/:type
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** the current Vehicles's type and in  the **<mark>body</mark>** of the request in postman the new data of the User (**<i>Limit</i>**) the system updates it.
+**<mark>param</mark>** the current Vehicles's type and in  the **<mark>body</mark>** of the request in Postman the new data of the User (**<i>Limit</i>**) the system updates it.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "newLimit": 32
@@ -426,13 +422,13 @@ Here an example of the body:
 #### Route DELETE: /vehicles/:type
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** an existing Vehicle's type of the request in postman the system deletes it.
+**<mark>param</mark>** an existing Vehicle's type of the request in Postman the system deletes it.
 
 ### Routes /gates
 
-All of this routes handle the CRUD operation for the Location of the User with the role Gate. Some instances alreay exists in the DB **<b>ticket_db</b>** thanks to the seed.
+All of this routes handle the CRUD operation for the Location of the User with the role Gate. Some instances already exists in the DB **<b>ticket_db</b>** thanks to the seed.
 
-**<mark>This Gate Table is linked to the User Table through the Foreign Key username and his only porpuse is to storage the Location of the Gates. Only Users with the role Gate can exist in this Table.</mark>**
+**<mark>This Gate Table is linked to the User Table through the Foreign Key username and his only purpose is to storage the Location of the Gates. Only Users with the role Gate can exist in this Table.</mark>**
 
 #### Route GET: /gates
 
@@ -440,16 +436,15 @@ This route can only be used by an User with role operator (JWT Token Required) a
 
 #### Route GET: /gates/:id
 
-This route can only be used by an User with role operator (JWT Token Required). By typing an existing id of a Gate in the **<mark>param</mark>** of the request in postman it shows his data (**<i>Username, Location</i>**) in the table Gates.
+This route can only be used by an User with role operator (JWT Token Required). By typing an existing id of a Gate in the **<mark>param</mark>** of the request in Postman it shows his data (**<i>Username, Location</i>**) in the table Gates.
 
 #### Route POST: /gates
 
-This route can only be used by an User with role operator (JWT Token Required). By typing in the **<mark>body</mark>** of the request in postman the data of the new Gates (**<i>Username, Location</i>**) the system creates him.
+This route can only be used by an User with role operator (JWT Token Required). By typing in the **<mark>body</mark>** of the request in Postman the data of the new Gates (**<i>Username, Location</i>**) the system creates him.
 
 This creation is successfully done only when the **<i>username</i>** in the **<mark>body</mark>** already exists in the User Table with the role Gate.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "location": "LAT56.494887LON21.342644",
@@ -460,10 +455,9 @@ Here an example of the body:
 #### Route PUT: /gates/:id
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** the current Gates's id and in  the **<mark>body</mark>** of the request in postman the new data of the User (**<i>Username</i>**) the system updates it.
+**<mark>param</mark>** the current Gates's id and in  the **<mark>body</mark>** of the request in Postman the new data of the User (**<i>Username</i>**) the system updates it.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "newUsername": "gate"
@@ -475,7 +469,7 @@ Here an example of the body:
 #### Route DELETE: /gates/:id
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** an existing Gate's id of the request in postman the system deletes it.
+**<mark>param</mark>** an existing Gate's id of the request in Postman the system deletes it.
 
 ### Routes /sections
 
@@ -489,18 +483,17 @@ This route can only be used by an User with role operator (JWT Token Required) a
 
 #### Route GET: /sections/:id
 
-This route can only be used by an User with role operator (JWT Token Required). By typing an existing id of a Section in the **<mark>param</mark>** of the request in postman it shows its data (**<i>InitialGate, FinalGate, Distance</i>**) in the table Sections.
+This route can only be used by an User with role operator (JWT Token Required). By typing an existing id of a Section in the **<mark>param</mark>** of the request in Postman it shows its data (**<i>InitialGate, FinalGate, Distance</i>**) in the table Sections.
 
 #### Route POST: /sections
 
-This route can only be used by an User with role operator (JWT Token Required). By typing in the **<mark>body</mark>** of the request in postman the data of the new Sections (**<i>finalGate, InitialGate, Distance</i>**) the system creates him.
+This route can only be used by an User with role operator (JWT Token Required). By typing in the **<mark>body</mark>** of the request in Postman the data of the new Sections (**<i>finalGate, InitialGate, Distance</i>**) the system creates him.
 
 The distance is automatically calculated by the system using the locations (Cordinates) of the initialGate and finalGate in the Gates Table.
 
 This creation is successfully done only when the **<i>initialGate and finalGate</i>** in the **<mark>body</mark>** already exists as Id in the Gates Table.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "initialGate" : 2,
@@ -511,14 +504,13 @@ Here an example of the body:
 #### Route PUT: /sections/:id
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** the current Section's id and in the **<mark>body</mark>** of the request in postman the new data of the Section (**<i>InitalGate, FinalGate</i>**) the system updates it.
+**<mark>param</mark>** the current Section's id and in the **<mark>body</mark>** of the request in Postman the new data of the Section (**<i>InitalGate, FinalGate</i>**) the system updates it.
 
 The distance is automatically calculated by the system using the locations (Cordinates) of the initialGate and finalGate in the Gates Table.
 
 This update is successfully done only when the **<i>initialGate and finalGate</i>** in the **<mark>body</mark>** already exists as Id in the Gates Table.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "newInitialGate" : 1,
@@ -529,7 +521,7 @@ Here an example of the body:
 #### Route DELETE: /sections/:id
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** an existing Section's id of the request in postman the system deletes it.
+**<mark>param</mark>** an existing Section's id of the request in Postman the system deletes it.
 
 ### Routes /transits
 
@@ -543,12 +535,12 @@ This route can only be used by an User with role operator (JWT Token Required) a
 
 #### Route GET: /transits/:id
 
-This route can only be used by an User with role operator (JWT Token Required). By typing an existing id of a Transit in the **<mark>param</mark>** of the request in postman it shows its data (**<i>plate, transit_date, speed, weather, vehicles_types, gate, used</i>**) in the table Sections:
+This route can only be used by an User with role operator (JWT Token Required). By typing an existing id of a Transit in the **<mark>param</mark>** of the request in Postman it shows its data (**<i>plate, transit_date, speed, weather, vehicles_types, gate, used</i>**) in the table Sections:
 
-- plate: plate of the vehicle tha passed through the Gate. In the only case that the plate is non recognized it must be set as **<i>"notFound"</i>** in the creation ad updating routes.
-- transit_date: the Date automatically created when the DB saves the new instance;
-- speed: speed of the vehicle in that moment;
-- weather: climate condition in that moment. Can only be **<i>good weather or bad weather</i>**; 
+- plate: plate of the vehicle tha passed through the Gate. In the case that the plate is not recognized it must be set as **<i>"notFound"</i>** in the creation ad updating routes.
+- transit_date: the Date automatically created when the DB saves the new instance.
+- speed: speed of the vehicle in that moment.
+- weather: climate condition in that moment. Can only be **<i>good weather or bad weather</i>**. 
 - gate: the Id of the Gate the vehicle passed through.
 - used: a boolean variable that is **<i>false</i>** when the transits isn't used in a tickets and **<i>true</i>** when it is.
 
@@ -558,14 +550,13 @@ This route can only be used by an User with role operator (JWT Token Required) a
 
 #### Route POST: /transits
 
-This route can only be used by an User with role operator or gate (JWT Token Required). By typing in the **<mark>body</mark>** of the request in postman the data of the new Transits (**<i>plate, speed, weather, vehicles_types, gate</i>**) the system creates him.
+This route can only be used by an User with role operator or gate (JWT Token Required). By typing in the **<mark>body</mark>** of the request in Postman the data of the new Transits (**<i>plate, speed, weather, vehicles_types, gate</i>**) the system creates him.
 
 The transit_date is automatically calculated by the system during the creation.
 
 This creation is successfully done only when all the variables respect the Foreign Keys.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "plate": "notFound",
@@ -579,14 +570,13 @@ Here an example of the body:
 #### Route PUT: /transits/:id
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** the current Transits's id and in the **<mark>body</mark>** of the request in postman the new data of the Transit (**<i>plate, speed, weather, vehicles_types, gate</i>**) the system updates it.
+**<mark>param</mark>** the current Transits's id and in the **<mark>body</mark>** of the request in Postman the new data of the Transit (**<i>plate, speed, weather, vehicles_types, gate</i>**) the system updates it.
 
 The transit_date is automatically calculated by the system during the update.
 
 This creation is successfully done only when all the variables respect the Foreign Keys.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "newPlate": "XZ456EX",
@@ -600,7 +590,7 @@ Here an example of the body:
 #### Route DELETE: /transits/:id
 
 This route can only be used by an User with role operator (JWT Token Required). By typing in the 
-**<mark>param</mark>** an existing Transits's id of the request in postman the system deletes it.
+**<mark>param</mark>** an existing Transits's id of the request in Postman the system deletes it.
 
 ### Routes /tickets
 
@@ -620,8 +610,7 @@ This route can only be used by an User with role operator or driver (JWT Token R
 - startDate and endDate: it is a time filter that ensure that the only Tickets shown were created by the system between this dates;
 - format: this variable gives the oppurtunity to choose the output format of the Postam Response. Can only be **<i>json</i>** or **<i>pdf</i>**.
 
-Here an example of the body:
-
+Here there is an example of the body:
 ```
 {
   "plates": "YX987ZT, AB123CD, XZ456EX",
@@ -635,13 +624,13 @@ Here an example of the body:
 
 #### Route get: /stats/:method
 
-This route can only be used by an User with role operator (JWT Token Required). If the **<mark>param</mark>** is **<remark>getFrequentSections</remark>** the application shows the Sections with the most Tickets. Else, if the **<mark>param</mark>** is **<remark>getMinMaxSpeed</remark>** the application shows the Tickets with the maximum and minimum vehicle speed.
+This route can only be used by an User with role operator (JWT Token Required). If the **<mark>param</mark>** is **<remark>getFrequentSections</remark>** the application shows the Sections with the most Tickets. In alternative, if the **<mark>param</mark>** is **<remark>getMinMaxSpeed</remark>** the application shows the Tickets with the maximum and minimum vehicle speed.
 
-By typing in the **<mark>body</mark>** of the request in postman the time filter for the Stats (**<i>startDate and endDate</i>**) the system shows only the istance of the Table Tickets created between this dates.
+By typing in the **<mark>body</mark>** of the request in Postman the time filter for the Stats (**<i>startDate and endDate</i>**) it shows only the istance of the Table Tickets created between this dates.
 
 **<mark>If there isn't the body of the request the system filter all the istances in the Tickets Table</mark>**
 
-Here an example of the body:
+Here there is an example of the body:
 
 ```
 {
@@ -654,7 +643,7 @@ Here an example of the body:
 
 | Route            | Method | Description                                       | JWT Authentication |
 | ---------------- | ------ | ------------------------------------------------- | ------------------ |
-| /users           | GET    | Retrieve al Users                                 | No                 |
+| /users           | GET    | GET all the Users                                 | No                 |
 | /users/:username | GET    | Retrieve a single user                            | Yes                |
 | /users           | POST   | Make a new User with role Gate                    | Yes                |
 | /users/:username | PUT    | Update a single User                              | Yes                |
@@ -1575,7 +1564,7 @@ bike
 
 ### Settings pre-Demo
 
-Thid demo creates and shows new Tickets. If you want to try it save this file as `.json` (`example.json`) and use the button `import` in you Directory in Postman.
+This demo creates and shows new Tickets. If you want to try it save this file as `.json` (`example.json`) and use the button `import` in you Directory in Postman.
 
 **<mark>In this Demo the auth key isn't initialized. You have to generate a new one and save it in every "value" of "key":</mark>**
 
